@@ -9,21 +9,21 @@ from django.contrib.sessions.models import Session
 #password
 
 #Profile class extends standar django User model with other functionalities
-# class Profile(models.Model):
-#     #default id
-#     user = models.OneToOneField(User, on_delete=models.CASCADE)
-#     avatar = models.ImageField(default='default.jpg', blank=True)
-#     bank_account_nr = models.CharField(max_length=30) #TODO set to real max len
-#     date_created = models.DateField()
-#     telephone_number = models.CharField()
-#     number_of_opinions = models.IntegerField(default=0)
-#     avg_opinion = models.DecimalField(default=0.0)
-#
-#     def __str__(self):
-#         return "{0} Profile".format(self.user.username)
-#
-#     def save(self):
-#         super().save()
+class Profile(models.Model):
+    #default id
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    # avatar = models.ImageField(default='default.jpg', blank=True)
+    bank_account_nr = models.CharField(max_length=30) #TODO set to real max len
+    date_created = models.DateField()
+    telephone_number = models.CharField(max_length=15)
+    number_of_opinions = models.IntegerField(default=0)
+    avg_opinion = models.DecimalField(max_digits=4, decimal_places=3, default=0.0)
+
+    def __str__(self):
+        return "{0} Profile".format(self.user.username)
+
+    def save(self):
+        super().save()
 
     # def save(self, *args, **kwargs):
     #     super(Profile, self).save(*args, **kwargs)
@@ -47,29 +47,29 @@ from django.contrib.sessions.models import Session
 #     def __str__(self):
 #         return "{0}, {1}, {2} - {3}".format(self.city, self.street, self.home_number, self.user.username)
 #
-# class Product(models.Model):
-#     image = models.ImageField(default='default.jpg', blank=True)
-#     product_name = models.CharField(max_length=50)
-#     description = models.TextField()
-#     is_new = models.BooleanField() #False-used, True-new
+class Product(models.Model):
+    image = models.ImageField(default='default.jpg', blank=True)
+    product_name = models.CharField(max_length=50)
+    description = models.TextField()
+    is_new = models.BooleanField() #False-used, True-new
+
+    def __str__(self):
+        return '{0} {1}'.format(self.product_name, self.is_new)
 #
-#     def __str__(self):
-#         return '{0} {1}'.format(self.product_name, self.is_new)
-#
-# class Auction(models.Model):
-#     user_seller = models.ForeignKey(User, on_delete=models.CASCADE, related_name='seller_user')
-#     product = models.OneToOneField(Product, on_delete=models.CASCADE, related_name='product')
-#     # user_highest_bid = models.OneToOneField(User, on_delete=models.CASCADE)
-#     user_highest_bid = models.IntegerField()
-#     date_started = models.DateTimeField()
-#     date_end = models.DateTimeField()
-#     starting_price = models.DecimalField()
-#     highest_bid = models.DecimalField()
-#     minimal_price = models.DecimalField()
-#     is_shipping_av = models.BooleanField()
-#
-#     def __str__(self):
-#         return "{0} - Auction".format(self.product)
+class Auction(models.Model):
+    user_seller = models.ForeignKey(User, on_delete=models.CASCADE, related_name='seller_user')
+    product = models.OneToOneField(Product, on_delete=models.CASCADE, related_name='product')
+    # user_highest_bid = models.OneToOneField(User, on_delete=models.CASCADE)
+    user_highest_bid = models.IntegerField()
+    date_started = models.DateTimeField()
+    date_end = models.DateTimeField()
+    starting_price = models.DecimalField(max_digits=12, decimal_places=2)
+    highest_bid = models.DecimalField(max_digits=12, decimal_places=2)
+    minimal_price = models.DecimalField(max_digits=12, decimal_places=2)
+    is_shipping_av = models.BooleanField()
+
+    def __str__(self):
+        return "{0} - Auction".format(self.product)
 #
 # class Message(models.Model):
 #     sender = models.ForeignKey(User, related_name='sender_user')
