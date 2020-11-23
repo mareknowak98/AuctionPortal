@@ -25,11 +25,7 @@
           <b-modal id="loginModal" title="Log in" @ok="login" ok-title="Log in">
             <label class="mb-2">Please enter either your username or email address, then your password, and press Log in.</label>
             <b-form-input class="mb-2" placeholder="Username" v-model="username"></b-form-input>
-<<<<<<< HEAD
             <!-- <b-form-input class="mb-2" placeholder="Email" v-model="email" autocomplete="email"></b-form-input> -->
-=======
-            <b-form-input class="mb-2" placeholder="Email" v-model="email" autocomplete="email"></b-form-input>
->>>>>>> e7b4a62dfda04af125d32e07af8c789f09a8fcb9
             <b-form-input class="mb-2" placeholder="Password" v-model="password" type="password"></b-form-input>
           </b-modal>
 
@@ -68,7 +64,6 @@
   </div>
 </template>
 
-<<<<<<< HEAD
 
 
 <script>
@@ -107,11 +102,6 @@ import axios from 'axios';
       this.token = null;
       }
     }
-=======
-<script>
-  export default {
-    name: "Navbar",
->>>>>>> e7b4a62dfda04af125d32e07af8c789f09a8fcb9
   }
 </script>
 
