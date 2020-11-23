@@ -23,6 +23,9 @@ router.register(r'users', views.UserViewSet)
 from django.conf.urls.static import static
 from django.conf import settings
 from rest_framework.authtoken import views
+# router.register(r'groups', views.GroupViewSet)
+from django.conf.urls.static import static
+from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),

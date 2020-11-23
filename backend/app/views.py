@@ -5,6 +5,7 @@ from app.serializers import UserSerializer, ProductSerializer, AuctionSerializer
 from .models import Product, Auction
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
+from rest_framework import serializers
 
 class UserViewSet(viewsets.ModelViewSet):
     """
@@ -13,6 +14,7 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all().order_by('-date_joined')
     serializer_class = UserSerializer
     # permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
 
 
 class ProductViewSet(viewsets.ModelViewSet):

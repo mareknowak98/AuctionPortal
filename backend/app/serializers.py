@@ -12,6 +12,8 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
     def create(self, validated_data):
         user = User.objects.create_user(**validated_data)
         return user
+        fields = ['id', 'username', 'email']
+
 
 class ProductSerializer(serializers.HyperlinkedModelSerializer):
     image = serializers.ImageField(
