@@ -17,14 +17,19 @@ from django.contrib import admin
 from django.urls import include, path
 from rest_framework import routers
 from app import views
-# from
 from app import urls
 router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
-# router.register(r'groups', views.GroupViewSet)
+from django.conf.urls.static import static
+from django.conf import settings
+from rest_framework.authtoken import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     # path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('api/', include(urls)),
+    path('api-token-auth/', views.obtain_auth_token),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

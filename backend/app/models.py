@@ -1,19 +1,29 @@
 from django.db import models
 from django.contrib.auth.models import User
 from PIL import Image
-from django.contrib.sessions.models import Session
+from django.dispatch import receiver
+from django.db.models.signals import post_save
+from django.contrib.auth.models import User
+from rest_framework.authtoken.models import Token
 
-#default User, fields in use
-#login
-#mail
-#password
 
-#Profile class extends standar django User model with other functionalities
+@receiver(post_save, sender=User)
+def create_auth_token(sender, instance=None, created=False, **kwargs):
+    if created:
+        Token.objects.create(user=instance)
+
+
+# default User, fields in use
+# login
+# mail
+# password
+
+# Profile class extends standar django User model with other functionalities
 class Profile(models.Model):
-    #default id
+    # default id
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     # avatar = models.ImageField(default='default.jpg', blank=True)
-    bank_account_nr = models.CharField(max_length=30) #TODO set to real max len
+    bank_account_nr = models.CharField(max_length=30)  # TODO set to real max len
     date_created = models.DateField()
     telephone_number = models.CharField(max_length=15)
     number_of_opinions = models.IntegerField(default=0)
@@ -48,25 +58,27 @@ class Profile(models.Model):
 #         return "{0}, {1}, {2} - {3}".format(self.city, self.street, self.home_number, self.user.username)
 #
 class Product(models.Model):
-    image = models.ImageField(default='default.jpg', blank=True)
+    image = models.ImageField(default='default.jpg', blank=True, null=True)
     product_name = models.CharField(max_length=50)
     description = models.TextField()
-    is_new = models.BooleanField() #False-used, True-new
+    is_new = models.BooleanField()  # False-used, True-new
 
     def __str__(self):
         return '{0} {1}'.format(self.product_name, self.is_new)
+
+
 #
 class Auction(models.Model):
     user_seller = models.ForeignKey(User, on_delete=models.CASCADE, related_name='seller_user')
     product = models.OneToOneField(Product, on_delete=models.CASCADE, related_name='product')
     # user_highest_bid = models.OneToOneField(User, on_delete=models.CASCADE)
-    user_highest_bid = models.IntegerField()
+    user_highest_bid = models.IntegerField(blank=True, null=True)
     date_started = models.DateTimeField()
     date_end = models.DateTimeField()
     starting_price = models.DecimalField(max_digits=12, decimal_places=2)
-    highest_bid = models.DecimalField(max_digits=12, decimal_places=2)
-    minimal_price = models.DecimalField(max_digits=12, decimal_places=2)
-    is_shipping_av = models.BooleanField()
+    highest_bid = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)
+    minimal_price = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)
+    is_shipping_av = models.BooleanField(default=False)
 
     def __str__(self):
         return "{0} - Auction".format(self.product)
