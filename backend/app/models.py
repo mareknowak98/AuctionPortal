@@ -48,7 +48,7 @@ class Profile(models.Model):
 #         return "{0}, {1}, {2} - {3}".format(self.city, self.street, self.home_number, self.user.username)
 #
 class Product(models.Model):
-    image = models.ImageField(default='default.jpg', blank=True)
+    image = models.ImageField(default='default.jpg', blank=True, null=True)
     product_name = models.CharField(max_length=50)
     description = models.TextField()
     is_new = models.BooleanField() #False-used, True-new
@@ -60,13 +60,15 @@ class Auction(models.Model):
     user_seller = models.ForeignKey(User, on_delete=models.CASCADE, related_name='seller_user')
     product = models.OneToOneField(Product, on_delete=models.CASCADE, related_name='product')
     # user_highest_bid = models.OneToOneField(User, on_delete=models.CASCADE)
-    user_highest_bid = models.IntegerField()
+    user_highest_bid = models.IntegerField(blank=True, null=True)
     date_started = models.DateTimeField()
     date_end = models.DateTimeField()
     starting_price = models.DecimalField(max_digits=12, decimal_places=2)
-    highest_bid = models.DecimalField(max_digits=12, decimal_places=2)
-    minimal_price = models.DecimalField(max_digits=12, decimal_places=2)
-    is_shipping_av = models.BooleanField()
+    highest_bid = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)
+    minimal_price = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)
+    is_shipping_av = models.BooleanField(default=False)
+
+
 
     def __str__(self):
         return "{0} - Auction".format(self.product)
