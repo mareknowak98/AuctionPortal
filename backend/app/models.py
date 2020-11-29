@@ -57,8 +57,16 @@ class Profile(models.Model):
 #     def __str__(self):
 #         return "{0}, {1}, {2} - {3}".format(self.city, self.street, self.home_number, self.user.username)
 #
+
+class Category(models.Model):
+    category_name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return '{} category'.format(self.category_name)
+
 class Product(models.Model):
     image = models.ImageField(default='default.jpg', blank=True, null=True)
+    category = models.ForeignKey(Category, on_delete=models.PROTECT, related_name='category', default=4)
     product_name = models.CharField(max_length=50)
     description = models.TextField()
     is_new = models.BooleanField()  # False-used, True-new
@@ -69,7 +77,7 @@ class Product(models.Model):
 
 #
 class Auction(models.Model):
-    user_seller = models.ForeignKey(User, on_delete=models.CASCADE, related_name='seller_user')
+    user_seller = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_seller')
     product = models.OneToOneField(Product, on_delete=models.CASCADE, related_name='product')
     # user_highest_bid = models.OneToOneField(User, on_delete=models.CASCADE)
     user_highest_bid = models.IntegerField(blank=True, null=True)
