@@ -1,11 +1,13 @@
 from django.contrib.auth.models import User, Group
 from rest_framework import viewsets
 from rest_framework import permissions
-from app.serializers import UserSerializer, ProductSerializer, AuctionSerializer, CategorySerializer
+from app.serializers import UserSerializer, ProductSerializer, AuctionSerializer, CategorySerializer,AuctionCreateSerializer, ProductCreateSerializer
 from .models import Product, Auction, Category
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework import serializers
+from rest_framework import generics
+from rest_framework.response import Response
 
 class UserViewSet(viewsets.ModelViewSet):
     """
@@ -27,6 +29,13 @@ class ProductViewSet(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
     # permission_classes = [permissions.IsAuthenticated]
 
+class ProductCreateViewSet(viewsets.ModelViewSet):
+    queryset = Product.objects.all()
+    serializer_class = ProductCreateSerializer
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+
+
 class AuctionViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows users to be viewed or edited.
@@ -35,3 +44,15 @@ class AuctionViewSet(viewsets.ModelViewSet):
     serializer_class = AuctionSerializer
     authentication_classes = (TokenAuthentication, )
     permission_classes = (IsAuthenticatedOrReadOnly, )
+
+class AuctionCreate(viewsets.ModelViewSet):
+    """
+    Create Auction - only for authenticated users.
+    """
+    queryset = Auction.objects.all()
+    serializer_class = AuctionCreateSerializer
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+
+    def post(self, request, format=None):
+        return Response("ok")
