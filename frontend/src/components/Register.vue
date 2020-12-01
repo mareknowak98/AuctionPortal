@@ -77,11 +77,12 @@ import axios from 'axios';
     data() {
       return {
         form: {
-          token: localStorage.getItem('user-token') || null,
           username: '',
           email: '',
           password1: '',
           password2: '',
+          token: localStorage.getItem('user-token') || null,
+
         },
       }
     },
