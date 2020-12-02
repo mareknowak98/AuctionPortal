@@ -64,21 +64,28 @@ class Category(models.Model):
     def __str__(self):
         return '{} category'.format(self.category_name)
 
-class Product(models.Model):
-    image = models.ImageField(default='default.jpg', blank=True, null=True)
-    category = models.ForeignKey(Category, on_delete=models.PROTECT, related_name='category', default=4)
-    product_name = models.CharField(max_length=50)
-    description = models.TextField()
-    is_new = models.BooleanField()  # False-used, True-new
-
-    def __str__(self):
-        return '{0} {1}'.format(self.product_name, self.is_new)
+# class Product(models.Model):
+#     image = models.ImageField(default='default.jpg', blank=True, null=True)
+#     category = models.ForeignKey(Category, on_delete=models.PROTECT, related_name='category', default=4)
+#     product_name = models.CharField(max_length=50)
+#     description = models.TextField()
+#     is_new = models.BooleanField()  # False-used, True-new
+#
+#     def __str__(self):
+#         return '{0} {1}'.format(self.product_name, self.is_new)
 
 
 #
 class Auction(models.Model):
     user_seller = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_seller')
-    product = models.OneToOneField(Product, on_delete=models.CASCADE, related_name='product')
+
+    image = models.ImageField(default='default.jpg', blank=True, null=True)
+    category = models.ForeignKey(Category, on_delete=models.PROTECT, related_name='category', default=4)
+    product_name = models.CharField(max_length=50, default='')
+    description = models.TextField(blank=True, null=True)
+    is_new = models.BooleanField(blank=True, null=True)
+
+    # product = models.OneToOneField(Product, on_delete=models.CASCADE, related_name='product')
     # user_highest_bid = models.OneToOneField(User, on_delete=models.CASCADE)
     user_highest_bid = models.IntegerField(blank=True, null=True)
     date_started = models.DateTimeField()
@@ -91,7 +98,7 @@ class Auction(models.Model):
 
 
     def __str__(self):
-        return "{0} - Auction".format(self.product)
+        return "{0} - Auction".format(self.product_name)
 #
 # class Message(models.Model):
 #     sender = models.ForeignKey(User, related_name='sender_user')

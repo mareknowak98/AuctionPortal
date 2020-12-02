@@ -132,6 +132,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+CORS_ALLOW_HEADERS = ['authorization',]
 #example ports
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:8080",
@@ -143,6 +144,10 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
 REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.AllowAny',
         # 'rest_framework_simplejwt.authentication.JWTAuthentication',

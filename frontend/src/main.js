@@ -4,12 +4,12 @@ import Register from './components/Register.vue';
 import Home from './views/Home.vue';
 import ListAuctions from './components/ListAuctions.vue';
 
-
 import "./registerServiceWorker";
 // import router from "./router";
 import store from "./store";
 import axios from "axios";
 import VueRouter from 'vue-router';
+import NewAuction from './components/CreateNewAuction.vue';
 
 window.axios = require('axios');
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
@@ -40,6 +40,11 @@ const routes = [{
         name: "auction",
         component: ListAuctions
     },
+    {
+        path: basePath + "/newauction",
+        name: "newauction",
+        component: NewAuction
+    },
 ]
 
 Vue.mixin({
@@ -52,15 +57,15 @@ Vue.mixin({
         $getToken: function() {
             return localStorage.getItem("token");
         },
-        $getCategories: function() {
-            axios.post('http://127.0.0.1:8000/api/categories', {})
-                .then(resp => {
-                    this.categories = resp.data;
-                })
-                .catch(err => {
-                    console.log(err);
-                })
-        },
+        // $getCategories: function() {
+        //     axios.get('http://127.0.0.1:8000/api/categories')
+        //         .then(resp => {
+        //             this.categories = resp.data;
+        //         })
+        //         .catch(err => {
+        //             console.log(err);
+        //         });
+        // },
         $getUserId: function() {
             return parseInt(localStorage.getItem("id"));
         },

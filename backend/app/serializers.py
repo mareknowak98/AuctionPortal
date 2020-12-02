@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User, Group
 from rest_framework import serializers
-from .models import Product, Auction, Category
+from .models import Auction, Category
 from rest_framework.authentication import TokenAuthentication
 
 
@@ -29,7 +29,30 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = ['id', 'category_name']
         # fields = ['category_name',]
 
-class ProductSerializer(serializers.ModelSerializer):
+# class ProductSerializer(serializers.ModelSerializer):
+#     category = CategorySerializer(many=False)
+#     image = serializers.ImageField(
+#         max_length=None,
+#         use_url=True
+#     )
+#
+#     class Meta:
+#         model = Product
+#         fields = ['id', 'category','image', 'product_name', 'description', 'is_new']
+#
+# class ProductCreateSerializer(serializers.ModelSerializer):
+#     category = serializers.PrimaryKeyRelatedField(many=False, queryset=Category.objects.all())
+#     image = serializers.ImageField(
+#         max_length=None,
+#         use_url=True
+#     )
+#     class Meta:
+#         model = Product
+#         fields = ['id', 'category','image', 'product_name', 'description', 'is_new']
+
+class AuctionSerializer(serializers.ModelSerializer):
+    user_seller = UserSerializer(many=False)
+    # product = ProductSerializer(many=False)
     category = CategorySerializer(many=False)
     image = serializers.ImageField(
         max_length=None,
@@ -37,36 +60,23 @@ class ProductSerializer(serializers.ModelSerializer):
     )
 
     class Meta:
-        model = Product
-        fields = ['id', 'category','image', 'product_name', 'description', 'is_new']
+        model = Auction
+        fields = ['id', 'category','image', 'product_name', 'description', 'is_new', 'user_seller', 'user_highest_bid', 'date_started', 'date_end', 'starting_price', 'highest_bid', 'minimal_price', 'is_shipping_av']
 
-class ProductCreateSerializer(serializers.ModelSerializer):
+
+class AuctionCreateSerializer(serializers.ModelSerializer):
+    # product = serializers.PrimaryKeyRelatedField(many=False, queryset=Product.objects.all())
+    user_seller = serializers.PrimaryKeyRelatedField(default=serializers.CurrentUserDefault(), queryset=User.objects.all())
     category = serializers.PrimaryKeyRelatedField(many=False, queryset=Category.objects.all())
     image = serializers.ImageField(
         max_length=None,
         use_url=True
     )
-    class Meta:
-        model = Product
-        fields = ['id', 'category','image', 'product_name', 'description', 'is_new']
-
-class AuctionSerializer(serializers.ModelSerializer):
-    user_seller = UserSerializer(many=False)
-    product = ProductSerializer(many=False)
 
     class Meta:
         model = Auction
-        fields = ['id', 'user_seller', 'product', 'user_highest_bid', 'date_started', 'date_end', 'starting_price', 'highest_bid', 'minimal_price', 'is_shipping_av']
+        fields = ['id', 'category','image', 'product_name', 'description', 'is_new', 'user_seller',  'user_highest_bid', 'date_started', 'date_end', 'starting_price', 'highest_bid', 'minimal_price', 'is_shipping_av']
 
-
-class AuctionCreateSerializer(serializers.ModelSerializer):
-    product = serializers.PrimaryKeyRelatedField(many=False, queryset=Product.objects.all())
-    user_seller = serializers.PrimaryKeyRelatedField(default=serializers.CurrentUserDefault(), queryset=User.objects.all())
-
-    class Meta:
-        model = Auction
-        fields = ['id', 'user_seller', 'product', 'user_highest_bid', 'date_started', 'date_end', 'starting_price',
-                  'highest_bid', 'minimal_price', 'is_shipping_av']
 
     ##wasn't needed XDD
     # def create(self, validated_data):
