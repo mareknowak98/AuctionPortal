@@ -1,14 +1,17 @@
+from datetime import datetime
+
 from django.contrib.auth.models import User, Group
+from django.http import HttpResponseNotAllowed
 from rest_framework import viewsets
 from rest_framework import permissions
-from app.serializers import UserSerializer, AuctionSerializer, CategorySerializer, AuctionCreateSerializer
-from .models import Auction, Category
+from app.serializers import UserSerializer, AuctionSerializer, CategorySerializer, AuctionCreateSerializer, BidSerializer, BidCreateSerializer
+from .models import Auction, Category, Bid
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework import serializers
 from rest_framework import generics
 from rest_framework.response import Response
-
+from rest_framework.decorators import action
 class UserViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows users to be viewed or edited.
@@ -20,20 +23,6 @@ class UserViewSet(viewsets.ModelViewSet):
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
-
-# class ProductViewSet(viewsets.ModelViewSet):
-#     """
-#     API endpoint that allows users to be viewed or edited.
-#     """
-#     queryset = Product.objects.all()
-#     serializer_class = ProductSerializer
-#     # permission_classes = [permissions.IsAuthenticated]
-
-# class ProductCreateViewSet(viewsets.ModelViewSet):
-#     queryset = Product.objects.all()
-#     serializer_class = ProductCreateSerializer
-#     authentication_classes = (TokenAuthentication,)
-#     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
 
 class AuctionViewSet(viewsets.ModelViewSet):
@@ -56,3 +45,55 @@ class AuctionCreate(viewsets.ModelViewSet):
 
     def post(self, request, format=None):
         return Response("ok")
+
+class BidViewSet(viewsets.ModelViewSet):
+    queryset = Bid.objects.all()
+    serializer_class = BidSerializer
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def create(self, request, *args, **kwargs):
+        data = request.data
+        auctionID = Auction.objects.get(id=data['bidAuction'])
+
+
+        userbuyerID = User.objects.get(id=request.user.id)
+
+        print("Es")
+        newBid = Bid.objects.create(bidUserBuyer=userbuyerID,
+                                    bidAuction=auctionID,
+                                    bidPrice=data['bidPrice'],
+                                    )
+        if not request.user.is_authenticated:
+            return HttpResponseNotAllowed("You must be logged!")
+        print("Es1")
+
+        if int(userbuyerID.id) == auctionID.user_seller.id:
+            return HttpResponseNotAllowed("You cannot bid your own auction!")
+        print("Es2")
+
+        if str(auctionID.date_end) < str(datetime.now().strftime("%Y-%m-%d %H:%M")):
+            return HttpResponseNotAllowed("This auction is overdue!")
+        print("Es3")
+
+        if auctionID.user_highest_bid is not None and auctionID.highest_bid is not None:
+            if float(auctionID.highest_bid) >= float(data['bidPrice']):
+                return HttpResponseNotAllowed("Bid offer have to be higher than current highest bid!")
+        print("Es")
+
+        Auction.objects.filter(id=data['bidAuction']).update(highest_bid=data['bidPrice'])
+        Auction.objects.filter(id=data['bidAuction']).update(user_highest_bid=userbuyerID.id)
+        print("Es")
+
+        serializer = BidCreateSerializer(newBid, many=False)
+        return Response(serializer.data)
+
+class BidCreate(viewsets.ModelViewSet):
+    # pass
+    queryset = Bid.objects.all()
+    serializer_class = BidCreateSerializer
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+
+
+

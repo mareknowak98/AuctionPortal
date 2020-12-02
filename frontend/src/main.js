@@ -10,6 +10,7 @@ import store from "./store";
 import axios from "axios";
 import VueRouter from 'vue-router';
 import NewAuction from './components/CreateNewAuction.vue';
+import DetailedAuction from './components/DetailedAuction.vue';
 
 window.axios = require('axios');
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
@@ -44,6 +45,11 @@ const routes = [{
         path: basePath + "/newauction",
         name: "newauction",
         component: NewAuction
+    },
+    {
+        path: basePath + "/auctions/:auctionId",
+        name: "auctionDetail",
+        component: DetailedAuction
     },
 ]
 
