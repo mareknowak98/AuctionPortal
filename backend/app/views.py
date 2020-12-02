@@ -56,40 +56,31 @@ class BidViewSet(viewsets.ModelViewSet):
         data = request.data
         auctionID = Auction.objects.get(id=data['bidAuction'])
 
-
         userbuyerID = User.objects.get(id=request.user.id)
-
-        print("Es")
         newBid = Bid.objects.create(bidUserBuyer=userbuyerID,
                                     bidAuction=auctionID,
                                     bidPrice=data['bidPrice'],
                                     )
         if not request.user.is_authenticated:
             return HttpResponseNotAllowed("You must be logged!")
-        print("Es1")
 
         if int(userbuyerID.id) == auctionID.user_seller.id:
             return HttpResponseNotAllowed("You cannot bid your own auction!")
-        print("Es2")
 
         if str(auctionID.date_end) < str(datetime.now().strftime("%Y-%m-%d %H:%M")):
             return HttpResponseNotAllowed("This auction is overdue!")
-        print("Es3")
 
         if auctionID.user_highest_bid is not None and auctionID.highest_bid is not None:
             if float(auctionID.highest_bid) >= float(data['bidPrice']):
                 return HttpResponseNotAllowed("Bid offer have to be higher than current highest bid!")
-        print("Es")
 
         Auction.objects.filter(id=data['bidAuction']).update(highest_bid=data['bidPrice'])
         Auction.objects.filter(id=data['bidAuction']).update(user_highest_bid=userbuyerID.id)
-        print("Es")
 
         serializer = BidCreateSerializer(newBid, many=False)
         return Response(serializer.data)
 
 class BidCreate(viewsets.ModelViewSet):
-    # pass
     queryset = Bid.objects.all()
     serializer_class = BidCreateSerializer
     authentication_classes = (TokenAuthentication,)
