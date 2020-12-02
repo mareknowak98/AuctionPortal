@@ -16,6 +16,7 @@
           :state="Boolean(image)"
           placeholder="Choose a file or drop it here..."
           drop-placeholder="Drop file here..."
+          type='file'
         ></b-form-file>
         <div class="mt-3">Selected file: {{ image ? image.name : '' }}</div>
         </b-form-group>
@@ -120,10 +121,11 @@
 </template>
 
 
-
+{% csrf_token %}
 <script>
 import Navbar from './Navbar.vue'
 
+import {TokenService} from '../store/service'
 
 import axios from 'axios';
   export default {
@@ -153,7 +155,7 @@ import axios from 'axios';
       }
     },
     mounted: function () {
-      // this.token = this.$getToken();
+      this.token = TokenService.getToken();
       this.categories = this.getCategories();
       console.log("Token to " + this.form.token);
     },
@@ -166,6 +168,7 @@ import axios from 'axios';
           })
           .catch(err => console.log(err));
       },
+
       createAuction(){
         var fulldate_end = "" + this.date_end + "T" + this.date_end_hr + "Z"
         this.debugtext1 = fulldate_end
@@ -184,31 +187,33 @@ import axios from 'axios';
 
         console.log('Date string is ' + fulldate_end)
 
-        axios.post('http://127.0.0.1:8000/api/auctioncreate/',
-          {
-          headers:{
-            'Authorization': `Token ${this.token}`
-          }},
-          {
-          image: this.image,
-          product_name: this.product_name,
-          description: this.description,
-          is_new: this.is_new,
-          category: this.selectedCategory,
-          date_started: fulldate_start,
-          date_end: fulldate_end,
-          starting_price: this.starting_price,
-          minimal_price: this.minimal_price,
-          is_shipping_av: this.is_shipping_av,
-          })
-          .then(resp => {
-            console.log(resp);
-          })
-          .catch(err => {
-          console.log(err);
-          })
-        // this.$goToAnotherPage('/');
+      this.token = TokenService.getToken();
+      const formData = new FormData();
+
+      formData.append("image", this.image)
+      formData.append("product_name", this.product_name)
+      formData.append("description", this.description)
+      formData.append("is_new", this.is_new)
+      formData.append("category", this.selectedCategory)
+      formData.append("date_started", fulldate_start)
+      formData.append("date_end", fulldate_end)
+      formData.append("starting_price", this.starting_price)
+      formData.append("minimal_price", this.minimal_price)
+      formData.append("is_shipping_av", this.is_shipping_av)
+      
+      let axiosConfig = {
+        headers: {
+          'Authorization': 'Token ' + this.token
+        }
+      };
+      axios.post(`http://127.0.0.1:8000/api/auctioncreate/`, formData,axiosConfig)
+      .then(res => console.log(res.data))
+      .catch(err => console.log(err))
       },
+    },
+    created() {
+      let token;
+      this.token = TokenService.getToken();
     }
 
   }

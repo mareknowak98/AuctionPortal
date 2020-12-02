@@ -132,13 +132,21 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-CORS_ALLOW_HEADERS = ['authorization',]
+# CORS_ALLOW_HEADERS = ['authorization',]
 #example ports
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:8080",
-    "http://localhost:8081",
-    "http://localhost:8082",
-]
+# CORS_ALLOWED_ORIGINS = [
+#     "http://localhost:8080",
+#     "http://localhost:8081",
+#     "http://localhost:8082",
+# ]
+MIDDLEWARE_CLASSES = (
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.BrokenLinkEmailsMiddleware',
+    'django.middleware.common.CommonMiddleware',
+)
+
+CORS_ORIGIN_ALLOW_ALL = True
+# CORS_ALLOW_CREDENTIALS = True
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
