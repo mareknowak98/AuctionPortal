@@ -13,16 +13,10 @@ def create_auth_token(sender, instance=None, created=False, **kwargs):
         Token.objects.create(user=instance)
 
 
-# default User, fields in use
-# login
-# mail
-# password
-
-# Profile class extends standar django User model with other functionalities
+# Profile class extends standard django User model with other functionalities
 class Profile(models.Model):
-    # default id
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    # avatar = models.ImageField(default='default.jpg', blank=True)
+    avatar = models.ImageField(default='default.jpg', blank=True)
     bank_account_nr = models.CharField(max_length=30)  # TODO set to real max len
     date_created = models.DateField()
     telephone_number = models.CharField(max_length=15)
@@ -35,17 +29,35 @@ class Profile(models.Model):
     def save(self):
         super().save()
 
-    # def save(self, *args, **kwargs):
-    #     super(Profile, self).save(*args, **kwargs)
-    #     img = Image.open(self.avatar.path)
-    #     if img.height > 300 or img.width > 300:
-    #         output_size = (300, 300)
-    #         img.thumbnail(output_size)
-    #         img.save(self.image.path)
+    def save(self, *args, **kwargs):
+        super(Profile, self).save(*args, **kwargs)
+        img = Image.open(self.avatar.path)
+        if img.height > 300 or img.width > 300:
+            output_size = (300, 300)
+            img.thumbnail(output_size)
+            img.save(self.image.path)
 
+#class to form custom Integer Field
+class IntegerRangeField(models.IntegerField):
+    def __init__(self, verbose_name=None, name=None, min_value=None, max_value=None, **kwargs):
+        self.min_value, self.max_value = min_value, max_value
+        models.IntegerField.__init__(self, verbose_name, name, **kwargs)
 
-# #TODO to fix later
+    def formfield(self, **kwargs):
+        defaults = {'min_value': self.min_value, 'max_value': self.max_value}
+        defaults.update(kwargs)
+        return super(IntegerRangeField, self).formfield(**defaults)
 
+class UserOpinion(models.Model):
+    opinionUserAbout = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user1')
+    opinionUserAuthor = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user2')
+    opinionDescription = models.TextField(max_length=300, blank=True, null=True)
+    opinionStars = IntegerRangeField(min_value=1, max_value=5)
+
+    def __str__(self):
+        "{0} opinion about {1}({2})".format(self.opinionUserAuthor.username, self.opinionUserAbout.username, self.opinionStars)
+
+##TODO to fix later
 # class Address(models.Model):
 #     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='address_user')
 #     country = models.CharField(max_length=50, null=True, blank=True)
@@ -65,18 +77,6 @@ class Category(models.Model):
         return '{} category'.format(self.category_name)
 
 
-# class Product(models.Model):
-#     image = models.ImageField(default='default.jpg', blank=True, null=True)
-#     category = models.ForeignKey(Category, on_delete=models.PROTECT, related_name='category', default=4)
-#     product_name = models.CharField(max_length=50)
-#     description = models.TextField()
-#     is_new = models.BooleanField()  # False-used, True-new
-#
-#     def __str__(self):
-#         return '{0} {1}'.format(self.product_name, self.is_new)
-
-
-#
 class Auction(models.Model):
     user_seller = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_seller')
 
@@ -110,7 +110,8 @@ class Bid(models.Model):
     bidDate = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return "Bid made by {0} on {1} auction - {2}$".format(self.bidUserBuyer.username, self.bidAuction.product_name, self.bidPrice)
+        return "Bid made by {0} on {1} auction - {2}$".format(self.bidUserBuyer.username, self.bidAuction.product_name,
+                                                              self.bidPrice)
 
 # class Message(models.Model):
 #     sender = models.ForeignKey(User, related_name='sender_user')
@@ -121,10 +122,3 @@ class Bid(models.Model):
 #     def __str__(self):
 #         return "{0} -> {1} message".format(self.sender, self.receiver)
 #
-# class AuctionsWon(models.Model):
-#     user = models.ForeignKey(User, related_name='winner_user')
-#     auction = models.ForeignKey(Auction, related_name='auction_won')
-#     end_price = models.DecimalField()
-#
-#     def __str__(self):
-#         return "{0} won by {1}".format(self.auction, self.user.username)
