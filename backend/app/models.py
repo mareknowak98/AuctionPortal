@@ -11,31 +11,33 @@ from rest_framework.authtoken.models import Token
 def create_auth_token(sender, instance=None, created=False, **kwargs):
     if created:
         Token.objects.create(user=instance)
+        Profile.objects.create(profileUser=instance)
 
 
 # Profile class extends standard django User model with other functionalities
 class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    avatar = models.ImageField(default='default.jpg', blank=True)
-    bank_account_nr = models.CharField(max_length=30)  # TODO set to real max len
-    date_created = models.DateField()
-    telephone_number = models.CharField(max_length=15)
-    number_of_opinions = models.IntegerField(default=0)
-    avg_opinion = models.DecimalField(max_digits=4, decimal_places=3, default=0.0)
+    profileUserName = models.CharField(blank=True, null=True, max_length=50)
+    profileUserSurname = models.CharField(blank=True, null=True, max_length=50)
+    profileUser = models.OneToOneField(User, on_delete=models.CASCADE)
+    profileAvatar = models.ImageField(default='../media/default.jpg', blank=True, null=True)
+    profileBankAccountNr = models.CharField(max_length=30, blank=True, null=True)  # TODO set to real max len
+    profileTelephoneNumber = models.CharField(max_length=15, blank=True, null=True)
+    profileNumberOfOpinions = models.IntegerField(default=0)
+    profileAvgOpinion = models.DecimalField(max_digits=4, decimal_places=3, default=0.0)
 
     def __str__(self):
-        return "{0} Profile".format(self.user.username)
+        return "{0} Profile".format(self.profileUser.username)
 
     def save(self):
         super().save()
 
     def save(self, *args, **kwargs):
         super(Profile, self).save(*args, **kwargs)
-        img = Image.open(self.avatar.path)
+        img = Image.open(self.profileAvatar.path)
         if img.height > 300 or img.width > 300:
             output_size = (300, 300)
             img.thumbnail(output_size)
-            img.save(self.image.path)
+            img.save(self.profileAvatar.path)
 
 #class to form custom Integer Field
 class IntegerRangeField(models.IntegerField):
@@ -80,7 +82,7 @@ class Category(models.Model):
 class Auction(models.Model):
     user_seller = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_seller')
 
-    image = models.ImageField(default='default.jpg', blank=True, null=True)
+    image = models.ImageField(default='../media/default_auction.jpg', blank=True, null=True)
     category = models.ForeignKey(Category, on_delete=models.PROTECT, related_name='category', default=4)
     product_name = models.CharField(max_length=50, default='')
     description = models.TextField(blank=True, null=True)

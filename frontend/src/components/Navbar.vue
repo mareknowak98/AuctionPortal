@@ -1,9 +1,9 @@
 <template>
   <div>
     
-    <div v-if="errorFlag" style="color: red;">
+    <!-- <div v-if="errorFlag" style="color: red;">
       {{ error }}
-    </div>
+    </div> -->
 
     <div class="taskbar">
 
@@ -18,7 +18,7 @@
           Log in
         </b-button>
 
-        <b-button class="mb-2 mr-sm-2 mb-sm-0" variant='primary' v-on:click="$goToAnotherPage('/register')">
+        <b-button class="mb-2 mr-sm-2 mb-sm-0" variant='primary' v-on:click="$goToAnotherPage('/register/')">
           Register
         </b-button>
 
@@ -123,9 +123,16 @@ import axios from 'axios';
         username: '',
         password: '',
         token: localStorage.getItem('user-token') || null,
+        userId: null,
       }
     },
+    mounted: function (){
+      this.userId = this.$getUserId();
+    },
     methods: {
+      goToUserPage: function () {
+        this.$goToAnotherPage('/myprofile');
+      },
       login(){
         axios.post('http://127.0.0.1:8000/api-token-auth/',{
           username: this.username,
@@ -142,10 +149,23 @@ import axios from 'axios';
         })
       },
 
-    logout() {
-      localStorage.removeItem('user-token');
-      this.token = null;
-      }
+      logout() {
+        localStorage.removeItem('user-token');
+        this.token = null;
+        },
+
+      // $getUserId: function() {
+      //     var userId = '';
+      //     let axiosConfig = {
+      //         headers: {
+      //             'Authorization': 'Token ' + this.token
+      //         }
+      //     };
+      //     axios.get(`http://127.0.0.1:8000/api/user-id`, axiosConfig)
+      //         .then(res => console.log(this.userId = res.data[0].id))
+      //         .catch(err => console.log(err))
+      //     return userId;
+      // },      
     }
   }
 </script>

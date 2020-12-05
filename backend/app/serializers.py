@@ -1,13 +1,13 @@
 from django.contrib.auth.models import User, Group
 from rest_framework import serializers
-from .models import Auction, Category, Bid
+from .models import Auction, Category, Bid, Profile
 from rest_framework.authentication import TokenAuthentication
 
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'username', 'password', 'email']
+        fields = ['id', 'username', 'password', 'email', 'date_joined']
         extra_kwargs = {'password': {'required': True, 'write_only': True}}
 
     def validate(self, attrs):
@@ -22,6 +22,16 @@ class UserSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         user = User.objects.create_user(**validated_data)
         return user
+
+
+class ProfileSerializer(serializers.ModelSerializer):
+    profileUser = UserSerializer(many=False)
+
+    class Meta:
+        model = Profile
+        fields = ['id', 'profileUserName', 'profileUserSurname', 'profileUser', 'profileAvatar', 'profileBankAccountNr',
+                  'profileTelephoneNumber', 'profileNumberOfOpinions', 'profileAvgOpinion']
+
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
@@ -41,12 +51,15 @@ class AuctionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Auction
-        fields = ['id', 'category','image', 'product_name', 'description', 'is_new', 'user_seller', 'user_highest_bid', 'date_started', 'date_end', 'starting_price', 'highest_bid', 'minimal_price', 'is_shipping_av', 'is_active']
+        fields = ['id', 'category', 'image', 'product_name', 'description', 'is_new', 'user_seller', 'user_highest_bid',
+                  'date_started', 'date_end', 'starting_price', 'highest_bid', 'minimal_price', 'is_shipping_av',
+                  'is_active']
 
 
 class AuctionCreateSerializer(serializers.ModelSerializer):
     # product = serializers.PrimaryKeyRelatedField(many=False, queryset=Product.objects.all())
-    user_seller = serializers.PrimaryKeyRelatedField(default=serializers.CurrentUserDefault(), queryset=User.objects.all())
+    user_seller = serializers.PrimaryKeyRelatedField(default=serializers.CurrentUserDefault(),
+                                                     queryset=User.objects.all())
     category = serializers.PrimaryKeyRelatedField(many=False, queryset=Category.objects.all())
     image = serializers.ImageField(
         max_length=None,
@@ -55,18 +68,24 @@ class AuctionCreateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Auction
-        fields = ['id', 'category','image', 'product_name', 'description', 'is_new', 'user_seller',  'user_highest_bid', 'date_started', 'date_end', 'starting_price', 'highest_bid', 'minimal_price', 'is_shipping_av']
+        fields = ['id', 'category', 'image', 'product_name', 'description', 'is_new', 'user_seller', 'user_highest_bid',
+                  'date_started', 'date_end', 'starting_price', 'highest_bid', 'minimal_price', 'is_shipping_av']
+
 
 class BidSerializer(serializers.ModelSerializer):
     bidUserBuyer = UserSerializer(many=False)
     bidAuction = AuctionSerializer(many=False)
+
     class Meta:
         model = Bid
         fields = ['id', 'bidUserBuyer', 'bidAuction', 'bidPrice', 'bidDate']
 
+
 class BidCreateSerializer(serializers.ModelSerializer):
-    bidUserBuyer = serializers.PrimaryKeyRelatedField(default=serializers.CurrentUserDefault(), queryset=User.objects.all())
+    bidUserBuyer = serializers.PrimaryKeyRelatedField(default=serializers.CurrentUserDefault(),
+                                                      queryset=User.objects.all())
     bidAuction = serializers.PrimaryKeyRelatedField(many=False, queryset=Auction.objects.all())
+
     class Meta:
         model = Bid
         fields = ['id', 'bidUserBuyer', 'bidAuction', 'bidPrice', 'bidDate']

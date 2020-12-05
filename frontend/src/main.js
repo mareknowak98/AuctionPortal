@@ -11,6 +11,7 @@ import axios from "axios";
 import VueRouter from 'vue-router';
 import NewAuction from './components/CreateNewAuction.vue';
 import DetailedAuction from './components/DetailedAuction.vue';
+import Profile from './components/UpdateProfile.vue';
 
 window.axios = require('axios');
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
@@ -22,6 +23,8 @@ Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+
+axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 
 
 const basePath = process.env.BASE_PATH || '/auctions';
@@ -51,9 +54,19 @@ const routes = [{
         name: "auctionDetail",
         component: DetailedAuction
     },
+    {
+        path: basePath + "/myprofile",
+        name: "profile",
+        component: Profile
+    },
 ]
 
 Vue.mixin({
+    // data() {
+    //     return {
+    //         userId: '',
+    //     }
+    // },
     methods: {
         $goToAnotherPage: function(page) {
             console.log("going");
@@ -72,8 +85,24 @@ Vue.mixin({
         //             console.log(err);
         //         });
         // },
+        // $getUserId: function() {
+        //     return parseInt(localStorage.getItem("id"));
+        // },
+
         $getUserId: function() {
-            return parseInt(localStorage.getItem("id"));
+
+            let axiosConfig = {
+                headers: {
+                    'Authorization': 'Token ' + localStorage.getItem("user-token")
+                }
+            };
+            var userId;
+            axios.get(`http://127.0.0.1:8000/api/user-id`, axiosConfig)
+                .then(res => this.userId = res.data[0].id)
+                .catch(err => console.log(err))
+                // console.log("1: " + this.userId)
+                // console.log("2: " + parseInt(this.userId))
+            return userId;
         },
     },
 
@@ -86,11 +115,6 @@ const router = new VueRouter({
 
 Vue.config.productionTip = false;
 
-// new Vue({
-//     router: router,
-//     store,
-//     render: h => h(App)
-// }).$mount("#app");
 
 Vue.prototype.$basePath = basePath;
 

@@ -132,48 +132,23 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-CORS_ALLOW_HEADERS = ['authorization',]
+CORS_ALLOW_HEADERS = ['*',]
 #example ports
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:8080",
     "http://localhost:8081",
     "http://localhost:8082",
 ]
-# MIDDLEWARE_CLASSES = (
-#     'corsheaders.middleware.CorsMiddleware',
-#     'django.middleware.common.BrokenLinkEmailsMiddleware',
-#     'django.middleware.common.CommonMiddleware',
-# )
-# CORS_ALLOW_METHODS = [
-#     'DELETE',
-#     'GET',
-#     'OPTIONS',
-#     'PATCH',
-#     'POST',
-#     'PUT',
-# ]
-# CORS_ALLOW_HEADERS = [
-#     'accept',
-#     'accept-encoding',
-#     'authorization',
-#     'content-type',
-#     'dnt',
-#     'origin',
-#     'user-agent',
-#     'x-csrftoken',
-#     'x-requested-with'
-# ]
-# CORS_ORIGIN_ALLOW_ALL = True
-# CORS_ALLOW_CREDENTIALS = True
+
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
 REST_FRAMEWORK = {
-    # 'DEFAULT_AUTHENTICATION_CLASSES': [
-    #     'rest_framework.authentication.TokenAuthentication',
-    #     'rest_framework.authentication.SessionAuthentication',
-    # ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.AllowAny',
         # 'rest_framework_simplejwt.authentication.JWTAuthentication',
