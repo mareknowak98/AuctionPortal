@@ -39,7 +39,8 @@ class Profile(models.Model):
             img.thumbnail(output_size)
             img.save(self.profileAvatar.path)
 
-#class to form custom Integer Field
+
+# class to form custom Integer Field
 class IntegerRangeField(models.IntegerField):
     def __init__(self, verbose_name=None, name=None, min_value=None, max_value=None, **kwargs):
         self.min_value, self.max_value = min_value, max_value
@@ -50,6 +51,7 @@ class IntegerRangeField(models.IntegerField):
         defaults.update(kwargs)
         return super(IntegerRangeField, self).formfield(**defaults)
 
+
 class UserOpinion(models.Model):
     opinionUserAbout = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user1')
     opinionUserAuthor = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user2')
@@ -57,7 +59,9 @@ class UserOpinion(models.Model):
     opinionStars = IntegerRangeField(min_value=1, max_value=5)
 
     def __str__(self):
-        "{0} opinion about {1}({2})".format(self.opinionUserAuthor.username, self.opinionUserAbout.username, self.opinionStars)
+        "{0} opinion about {1}({2})".format(self.opinionUserAuthor.username, self.opinionUserAbout.username,
+                                            self.opinionStars)
+
 
 ##TODO to fix later
 # class Address(models.Model):
@@ -114,6 +118,24 @@ class Bid(models.Model):
     def __str__(self):
         return "Bid made by {0} on {1} auction - {2}$".format(self.bidUserBuyer.username, self.bidAuction.product_name,
                                                               self.bidPrice)
+
+
+class Message(models.Model):
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    is_deleted = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.content
+
+
+class UserMessage(models.Model):
+    message = models.ForeignKey(Message, on_delete=models.CASCADE)
+    from_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='from_user')
+    to_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='to_user_id')
+    is_deleted = models.BooleanField(default=False)
+
 
 # class Message(models.Model):
 #     sender = models.ForeignKey(User, related_name='sender_user')
