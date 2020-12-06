@@ -94,25 +94,25 @@ class BidCreateSerializer(serializers.ModelSerializer):
 class MessageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Message
-        fields = ("id", "content", "is_deleted")
+        fields = ("id", "messageContent", "messageCreatedAt")
 
 
 class UserMessageSerializer(serializers.ModelSerializer):
-    message = MessageSerializer()
-    is_deleted = serializers.BooleanField(default=False)
+    usermessMessage = MessageSerializer()
+    usermessIsDeleted = serializers.BooleanField(default=False)
 
     class Meta:
         model = UserMessage
         fields = [
             "id",
-            "message",
-            "from_user",
-            "to_user",
-            "is_deleted"
+            "usermessMessage",
+            "usermessFromUser",
+            "usermessToUser",
+            "usermessIsDeleted"
         ]
 
     def create(self, validated_data):
-        msg_data = validated_data.pop('message')
+        msg_data = validated_data.pop('usermessMessage')
         message = Message.objects.create(**msg_data)
-        user_msg = UserMessage.objects.create(message=message, **validated_data)
+        user_msg = UserMessage.objects.create(usermessMessage=message, **validated_data)
         return user_msg

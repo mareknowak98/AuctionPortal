@@ -188,14 +188,8 @@ def response_created(data):
 @decorators.permission_classes([IsOwner, ])
 def get_inbox_messages(request):
     user = request.user
-    msgbox = UserMessage.objects.filter(to_user=user)
+    msgbox = UserMessage.objects.filter(usermessToUser=user)
     serializer = UserMessageSerializer(msgbox, many=True)
-
-    log = {
-        'user': user.id,
-        'action': "get_inbox"
-    }
-
     return response_created(serializer.data)
 
 
@@ -203,13 +197,8 @@ def get_inbox_messages(request):
 @decorators.permission_classes([IsOwner, ])
 def get_outbox_messages(request):
     user = request.user
-    msgbox = UserMessage.objects.filter(from_user=user)
+    msgbox = UserMessage.objects.filter(usermessFromUser=user)
     serializer = UserMessageSerializer(msgbox, many=True)
-
-    log = {
-        'user': user.id,
-        'action': "get_outbox"
-    }
     return response_created(serializer.data)
 
 
@@ -232,10 +221,10 @@ def send_message(request):
 
 
         data = {
-            'from_user': user.id,
-            'to_user': to_user_id,
-            'message': {
-                'content': request.POST.get('text')
+            'usermessFromUser': user.id,
+            'usermessToUser': to_user_id,
+            'usermessMessage': {
+                'messageContent': request.POST.get('text')
             }
         }
         user_msg_serializer = UserMessageSerializer(data=data)
@@ -243,9 +232,4 @@ def send_message(request):
             return response_validation_error(user_msg_serializer.errors)
 
         user_msg_serializer.save()
-
-        log = {
-            'user': user.id,
-            'action': "send"
-        }
         return response_created({'success'})

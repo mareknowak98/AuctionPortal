@@ -121,20 +121,20 @@ class Bid(models.Model):
 
 
 class Message(models.Model):
-    content = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    is_deleted = models.BooleanField(default=False)
+    messageContent = models.TextField()
+    messageCreatedAt = models.DateTimeField(auto_now_add=True)
+    messageUpdatedAt = models.DateTimeField(auto_now=True)
+    messageIsDeleted = models.BooleanField(default=False)
 
     def __str__(self):
         return self.content
 
 
 class UserMessage(models.Model):
-    message = models.ForeignKey(Message, on_delete=models.CASCADE)
-    from_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='from_user')
-    to_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='to_user_id')
-    is_deleted = models.BooleanField(default=False)
+    usermessMessage = models.ForeignKey(Message, on_delete=models.CASCADE)
+    usermessFromUser = models.ForeignKey(User, on_delete=models.CASCADE, related_name='from_user')
+    usermessToUser = models.ForeignKey(User, on_delete=models.CASCADE, related_name='to_user_id')
+    usermessIsDeleted = models.BooleanField(default=False)
 
 
 # class Message(models.Model):
