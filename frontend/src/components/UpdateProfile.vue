@@ -116,7 +116,6 @@ import axios from 'axios';
       .catch(err => console.log(err))
       },
 
-
       updateProfile(){
         const formData = new FormData();
         formData.append("profileUserName", this.name)

@@ -6,14 +6,15 @@ from django.http import HttpResponseNotAllowed
 from rest_framework import viewsets
 from rest_framework import permissions
 from app.serializers import UserSerializer, AuctionSerializer, CategorySerializer, AuctionCreateSerializer, \
-    BidSerializer, BidCreateSerializer, ProfileSerializer
-from .models import Auction, Category, Bid, Profile
+    BidSerializer, BidCreateSerializer, ProfileSerializer, UserMessageSerializer
+from .models import Auction, Category, Bid, Profile, UserMessage
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework import serializers
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.decorators import action
+from rest_framework import response, decorators, permissions, status
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -166,3 +167,69 @@ class ProfileViewSet(viewsets.ModelViewSet):
         profile.save()
         serializer = ProfileSerializer(profile, many=False)
         return Response(serializer.data)
+
+
+##############
+class IsOwner(permissions.BasePermission):
+
+    def has_object_permission(self, request, view, obj):
+        return obj.owner == request.user
+
+
+def response_validation_error(error):
+    return response.Response(error, status.HTTP_400_BAD_REQUEST)
+
+
+def response_created(data):
+    return response.Response(data, status.HTTP_201_CREATED)
+
+
+@decorators.api_view(["GET"])
+@decorators.permission_classes([IsOwner, ])
+def get_inbox_messages(request):
+    user = request.user
+    msgbox = UserMessage.objects.filter(usermessToUser=user)
+    serializer = UserMessageSerializer(msgbox, many=True)
+    return response_created(serializer.data)
+
+
+@decorators.api_view(["GET"])
+@decorators.permission_classes([IsOwner, ])
+def get_outbox_messages(request):
+    user = request.user
+    msgbox = UserMessage.objects.filter(usermessFromUser=user)
+    serializer = UserMessageSerializer(msgbox, many=True)
+    return response_created(serializer.data)
+
+
+@decorators.api_view(["POST"])
+@decorators.permission_classes([IsOwner, ])
+def send_message(request):
+    if request.method == 'POST':
+        user = request.user
+
+        to_user_id = request.POST.get('to_user_id')
+        text = request.POST.get('text')
+        if not to_user_id:
+            return response_validation_error({'to_user_id': ["This field is required."]})
+
+        if not text:
+            return response_validation_error({'text': ["This field is required."]})
+
+        if not User.objects.filter(pk=to_user_id).exists():
+            return response_validation_error({'to_user_id': ["User should be exist."]})
+
+
+        data = {
+            'usermessFromUser': user.id,
+            'usermessToUser': to_user_id,
+            'usermessMessage': {
+                'messageContent': request.POST.get('text')
+            }
+        }
+        user_msg_serializer = UserMessageSerializer(data=data)
+        if not user_msg_serializer.is_valid():
+            return response_validation_error(user_msg_serializer.errors)
+
+        user_msg_serializer.save()
+        return response_created({'success'})

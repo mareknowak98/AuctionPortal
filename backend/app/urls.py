@@ -1,6 +1,7 @@
 from django.conf.urls import url, include
 from rest_framework import routers
 from app import views
+from django.urls import path
 
 router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet, basename='users')
@@ -15,5 +16,8 @@ router.register(r'user-id', views.UserViewSet, basename="UserId")
 
 
 urlpatterns = [
-    url(r'^', include(router.urls))
+    path(r'messaging/get-inbox/', views.get_inbox_messages, name='get_inbox'),
+    path(r'messaging/get-outbox/', views.get_outbox_messages, name='get_outbox'),
+    path(r'messaging/send/', views.send_message, name='send'),
+    url(r'^', include(router.urls)),
 ]
