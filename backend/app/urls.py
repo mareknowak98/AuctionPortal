@@ -13,6 +13,7 @@ router.register(r'makebid', views.BidCreate, basename="makebid")
 router.register(r'profile', views.ProfileViewSet, basename="profile")
 router.register(r'user-id', views.UserViewSet, basename="UserId")
 router.register(r'profileUser', views.ProfileUserViewSet, basename="profileUser")
+router.register(r'messages', views.MessageViewset, basename="messages")
 
 
 urlpatterns = [

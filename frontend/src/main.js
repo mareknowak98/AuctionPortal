@@ -14,6 +14,7 @@ import DetailedAuction from './components/DetailedAuction.vue';
 import Profile from './components/UpdateProfile.vue';
 import UserProfile from './components/UserProfile.vue';
 import UserMessage from './components/SendMessage.vue';
+import MessageManager from './components/MessageManager.vue';
 
 window.axios = require('axios');
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
@@ -71,6 +72,11 @@ const routes = [{
         name: "message",
         component: UserMessage
     },
+    {
+        path: basePath + "/messages",
+        name: "messages",
+        component: MessageManager
+    },
 ]
 
 Vue.mixin({
@@ -83,19 +89,6 @@ Vue.mixin({
         $getToken: function() {
             return localStorage.getItem("token");
         },
-        // $getCategories: function() {
-        //     axios.get('http://127.0.0.1:8000/api/categories')
-        //         .then(resp => {
-        //             this.categories = resp.data;
-        //         })
-        //         .catch(err => {
-        //             console.log(err);
-        //         });
-        // },
-        // $getUserId: function() {
-        //     return parseInt(localStorage.getItem("id"));
-        // },
-
         $getUserId: function() {
             let axiosConfig = {
                 headers: {

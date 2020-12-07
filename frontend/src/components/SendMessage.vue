@@ -5,9 +5,18 @@
 
   <div v-if="token != null">
     <h1>---</h1>
-    <!-- <b-list-group v-for="profile in profileData" :key="profile.id">
-        {{ profile }}
-    </b-list-group> -->
+    <b-list-group v-for="message in messages" :key="message.id">
+      <b-list-group-item class="auctionListItem">
+        <div v-if="message.dest == 'to'">
+          <p>From: {{message.text}}</p>
+        </div>
+        <div v-else>
+          <p>To: {{message.text}}</p>
+        </div>
+        <p>Date: {{message.date}}</p>
+
+      </b-list-group-item>
+    </b-list-group>
     
     <b-form-textarea
       id="textarea"
@@ -50,10 +59,13 @@ import axios from 'axios';
       return {
         userToId: '',
         messageText: '',
+        messages: [],
       }
     },
 
     mounted: function () {
+      this.userToId = this.$route.params.userId;
+      this.getMessages()
 
     },
 
@@ -67,18 +79,75 @@ import axios from 'axios';
               headers: {
                   'Authorization': 'Token ' + localStorage.getItem("user-token")
               }
-          };
+          }; 
           axios.post(`http://127.0.0.1:8000/api/messaging/send/`, formData, axiosConfig)
               .then(res => console.log(res.data))
               .catch(err => console.log(err))
           console.log("test" + this.profileId)
       },
-        
+      getMessages(){
+          const formData = new FormData();
+          formData.append("userToID", this.userToId)
+
+          let axiosConfig = {
+              headers: {
+                  'Authorization': 'Token ' + localStorage.getItem("user-token")
+              }
+          };
+          axios.post(`http://127.0.0.1:8000/api/messages/getMessagesWithUser/`, formData, axiosConfig)
+              .then(res => this.messages = res.data)
+              .then(res =>{
+                this.processMessages()
+              })
+              .catch(err => console.log(err))
+
+          // this.processMessages()
+      },
+
+      convertToJSON(array) {
+        var objArray = [];
+        for (var i = 1; i < array.length; i++) {
+          objArray[i - 1] = {};
+          for (var k = 0; k < array[0].length && k < array[i].length; k++) {
+            var key = array[0][k];
+            objArray[i - 1][key] = array[i][k]
+          }
+        }
+
+        return objArray;
+      },
+
+      processMessages(){
+        let messageList = []
+        console.log(this.messages['to'][0].id)
+        for (let msg in this.messages['to']){
+          let tmp = []
+          tmp.push(this.messages['to'][parseInt(msg)].id)
+          tmp.push("to")
+          tmp.push(this.messages['to'][parseInt(msg)].messageContent)
+          tmp.push(this.messages['to'][parseInt(msg)].messageCreatedAt)
+          messageList.push(tmp)
+        }
+        for (let msg in this.messages['from']){
+          let tmp = []
+          tmp.push(this.messages['from'][parseInt(msg)].id)
+          tmp.push("from")
+          tmp.push(this.messages['from'][parseInt(msg)].messageContent)
+          tmp.push(this.messages['from'][parseInt(msg)].messageCreatedAt)
+          messageList.push(tmp)
+        }
+        messageList = messageList.sort(function(a, b) {
+          return a[0] - b[0];
+        });
+        messageList.unshift(['id', 'dest', 'text', 'date'])
+        this.messages = this.convertToJSON(messageList)
+
+      },
     },
     created() {
       let token;
       this.token = TokenService.getToken();
-      this.userToId = this.$route.params.userId;
+
     }
   }
 </script>

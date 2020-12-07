@@ -6,7 +6,7 @@ from django.http import HttpResponseNotAllowed, JsonResponse
 from rest_framework import viewsets
 from rest_framework import permissions
 from app.serializers import UserSerializer, AuctionSerializer, CategorySerializer, AuctionCreateSerializer, \
-    BidSerializer, BidCreateSerializer, ProfileSerializer, UserMessageSerializer, Profile2Serializer
+    BidSerializer, BidCreateSerializer, ProfileSerializer, UserMessageSerializer, Profile2Serializer, MessageSerializer
 from .models import Auction, Category, Bid, Profile, UserMessage, Message
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
@@ -124,9 +124,6 @@ class ProfileViewSet(viewsets.ModelViewSet):
         data = request.data
         profile = self.get_object()
         userID = User.objects.get(id=profile.profileUser.id)  # check if user which send request == this profile owner
-        print("req data = {}".format(request.data))
-        # print("neme {}".format(data['profileUserName']))
-        # print("surname {}".format(data['profileUserSurname']))
         if not request.user.is_authenticated:
             return HttpResponseNotAllowed("You must be logged!")
 
@@ -136,7 +133,8 @@ class ProfileViewSet(viewsets.ModelViewSet):
             print(1)
             return HttpResponseNotAllowed("Dont try to change somebody else profile!")
 
-        if not len(data['profileUserName']) > 0 and data['profileUserName'].isalpha() or not len(data['profileUserSurname'])>0 and data['profileUserSurname'].isalpha():
+        if not len(data['profileUserName']) > 0 and data['profileUserName'].isalpha() or not len(
+                data['profileUserSurname']) > 0 and data['profileUserSurname'].isalpha():
             print(2)
             return HttpResponseNotAllowed("Name and surname have to be letter strings")
 
@@ -168,6 +166,7 @@ class ProfileViewSet(viewsets.ModelViewSet):
         serializer = ProfileSerializer(profile, many=False)
         return Response(serializer.data)
 
+
 ##############
 class ProfileUserViewSet(viewsets.ModelViewSet):
     queryset = Profile.objects.all()
@@ -179,6 +178,7 @@ class ProfileUserViewSet(viewsets.ModelViewSet):
         instance = self.get_object()
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
+
 
 ##############
 class IsOwner(permissions.BasePermission):
@@ -230,7 +230,6 @@ def send_message(request):
         if not User.objects.filter(pk=to_user_id).exists():
             return response_validation_error({'to_user_id': ["User should be exist."]})
 
-
         data = {
             'usermessFromUser': user.id,
             'usermessToUser': to_user_id,
@@ -250,23 +249,44 @@ def send_message(request):
 def get_user_profile_by_auction_id(request):
     if request.method == 'POST':
         auctionId = request.POST.get('id')
-        # print(userID)
         auction = Auction.objects.get(id=auctionId)
         userID = User.objects.get(id=auction.user_seller.id)
         userProfileID = Profile.objects.get(profileUser=userID)
         return response_created({userProfileID.id})
 
-from itertools import chain
 
+
+# return all users with messages with request user
 @decorators.api_view(["GET"])
 def get_messages_user_list(request):
     if request.method == 'GET':
         user = request.user
         print(user.id)
-        messages = UserMessage.objects.filter(usermessFromUser=user).values('usermessToUser__id','usermessToUser__username').distinct()
-        messages2 = UserMessage.objects.filter(usermessToUser=user).values('usermessFromUser_id','usermessFromUser__username').distinct()
-        # print(messages)
-        # print(messages2)
+        messages = UserMessage.objects.filter(usermessFromUser=user).values('usermessToUser__id',
+                                                                            'usermessToUser__username').distinct()
+        messages2 = UserMessage.objects.filter(usermessToUser=user).values('usermessFromUser_id',
+                                                                           'usermessFromUser__username').distinct()
         messages.union(messages2)
         print(messages)
         return response_created(messages)
+
+
+class MessageViewset(viewsets.ModelViewSet):
+    queryset = Message.objects.all()
+    serializer_class = MessageSerializer
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (permissions.IsAuthenticated,)
+
+    #returns send and received messages with selected user params:
+    #userToID - user to check messages with
+    #endpoint: http://127.0.0.1:8000/api/messages/getMessagesWithUser/
+    @action(detail=False, methods=['post'])
+    def getMessagesWithUser(self, request, **kwargs):
+        user = request.user
+        data = request.data
+        send_user_messages = UserMessage.objects.filter(usermessFromUser=user.id, usermessToUser=data['userToID'])
+        send_messages = Message.objects.filter(id__in=send_user_messages.values_list('usermessMessage', flat=False))
+        received_user_messages = UserMessage.objects.filter(usermessToUser=user.id, usermessFromUser=data['userToID'])
+        received_messages = Message.objects.filter(
+            id__in=received_user_messages.values_list('usermessMessage', flat=False))
+        return Response({'from': MessageSerializer(send_messages, many=True).data, "to": MessageSerializer(received_messages, many=True).data})

@@ -136,7 +136,8 @@ class UserMessage(models.Model):
     usermessToUser = models.ForeignKey(User, on_delete=models.CASCADE, related_name='to_user_id')
     usermessIsDeleted = models.BooleanField(default=False)
 
-
+    def __str__(self):
+        return "UserMessage {}".format(self.usermessMessage)
 # class Message(models.Model):
 #     sender = models.ForeignKey(User, related_name='sender_user')
 #     receiver = models.ForeignKey(User, related_name='receiver_user')

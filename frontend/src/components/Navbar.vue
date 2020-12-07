@@ -43,6 +43,10 @@
           Me
         </b-button>
 
+        <b-button class="mb-2 mr-sm-2 mb-sm-0" variant='primary' v-on:click="$goToAnotherPage('/messages')">
+          Messages
+        </b-button>
+
         <b-dropdown class="mb-2 mr-sm-2 mb-sm-0" variant='primary' id="buyingDropdown" text="Buying">
           <!-- <b-dropdown-item v-on:click="$goToAnotherPage('/won')">Auctions I've won</b-dropdown-item> -->
           <!-- <b-dropdown-item v-on:click="$goToAnotherPage('/bidding_on')">Auctions I'm bidding on</b-dropdown-item> -->
