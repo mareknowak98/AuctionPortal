@@ -24,6 +24,11 @@ class UserSerializer(serializers.ModelSerializer):
         return user
 
 
+class UserMiniSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'date_joined']
+
 class ProfileSerializer(serializers.ModelSerializer):
     profileUser = UserSerializer(many=False)
 
@@ -31,6 +36,13 @@ class ProfileSerializer(serializers.ModelSerializer):
         model = Profile
         fields = ['id', 'profileUserName', 'profileUserSurname', 'profileUser', 'profileAvatar', 'profileBankAccountNr',
                   'profileTelephoneNumber', 'profileNumberOfOpinions', 'profileAvgOpinion']
+
+class Profile2Serializer(serializers.ModelSerializer):
+    profileUser = UserMiniSerializer(many=False)
+
+    class Meta:
+        model = Profile
+        fields = ['id', 'profileUser', 'profileAvatar', 'profileNumberOfOpinions', 'profileAvgOpinion']
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -41,7 +53,7 @@ class CategorySerializer(serializers.ModelSerializer):
 
 
 class AuctionSerializer(serializers.ModelSerializer):
-    user_seller = UserSerializer(many=False)
+    user_seller = UserMiniSerializer(many=False)
     # product = ProductSerializer(many=False)
     category = CategorySerializer(many=False)
     image = serializers.ImageField(

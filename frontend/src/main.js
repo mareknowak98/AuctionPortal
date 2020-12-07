@@ -12,6 +12,8 @@ import VueRouter from 'vue-router';
 import NewAuction from './components/CreateNewAuction.vue';
 import DetailedAuction from './components/DetailedAuction.vue';
 import Profile from './components/UpdateProfile.vue';
+import UserProfile from './components/UserProfile.vue';
+import UserMessage from './components/SendMessage.vue';
 
 window.axios = require('axios');
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
@@ -59,14 +61,19 @@ const routes = [{
         name: "profile",
         component: Profile
     },
+    {
+        path: basePath + "/profile/:profileId",
+        name: "userProfile",
+        component: UserProfile
+    },
+    {
+        path: basePath + "/message/:userId",
+        name: "message",
+        component: UserMessage
+    },
 ]
 
 Vue.mixin({
-    // data() {
-    //     return {
-    //         userId: '',
-    //     }
-    // },
     methods: {
         $goToAnotherPage: function(page) {
             console.log("going");
@@ -90,7 +97,6 @@ Vue.mixin({
         // },
 
         $getUserId: function() {
-
             let axiosConfig = {
                 headers: {
                     'Authorization': 'Token ' + localStorage.getItem("user-token")
@@ -100,8 +106,6 @@ Vue.mixin({
             axios.get(`http://127.0.0.1:8000/api/user-id`, axiosConfig)
                 .then(res => this.userId = res.data[0].id)
                 .catch(err => console.log(err))
-                // console.log("1: " + this.userId)
-                // console.log("2: " + parseInt(this.userId))
             return userId;
         },
     },

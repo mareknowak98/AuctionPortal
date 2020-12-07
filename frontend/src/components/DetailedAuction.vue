@@ -30,6 +30,8 @@
             <!-- This is a form text block (formerly known as help block) -->
             <!-- <b-form-text id="input-live-help"></b-form-text> -->
             <b-button type="submit" variant="primary" v-on:click="bidAuction">Submit</b-button>
+            <h1></h1>
+            <b-button variant="outline-primary" v-on:click="$goToAnotherPage('/profile/' + userProfileId + '/')" >Go to users profile</b-button>
 
         </div>
     </div>
@@ -60,23 +62,19 @@ import axios from 'axios';
           auctionid: '',
           bid: '',
           auction: [],
+          userProfileId: '',
       }
     },
 
-    mounted: function () {
-        this.auctionid = this.$route.params.auctionId;
-        this.getAuction(this.auctionid)
+    mounted: function (){
+      // this.getUserProfileId();
     },
 
     methods:{
     getAuction(id){
     console.log("http://localhost:8000/api/auctions/" + id)
       axios.get("http://localhost:8000/api/auctions/" + id)
-        .then(res => {
-            console.log(res.data)
-            console.log("http://localhost:8000/api/auctions/" + id)
-            this.auction = res.data
-            })
+        .then(res => this.auction = res.data)
         .catch(err => console.log(err));
     },
 
@@ -101,16 +99,33 @@ import axios from 'axios';
         axios.post(`http://127.0.0.1:8000/api/bids/`, formData, axiosConfig)
         .then(res => console.log(res.data))
         .catch(err => console.log(err))
-
         this.getAuction(this.auctionid)
+
     },
 
+    getUserProfileId() {
+        const formData = new FormData();
+        formData.append("id", this.auctionid)
+        let axiosConfig = {
+            headers: {
+                'Authorization': 'Token ' + localStorage.getItem("user-token")
+            }
+        };
+        axios.post(`http://127.0.0.1:8000/api/get_user_profile_by_auction_id/`, formData, axiosConfig)
+            .then(res => console.log(this.userProfileId = res.data[0]))
+            .catch(err => console.log(err))
+        console.log("test" + this.profileId)
+        return this.userProfileId;
+    },
 
     },
 
     created() {
       let token;
       this.token = TokenService.getToken();
+      this.auctionid = this.$route.params.auctionId;
+      this.getAuction(this.auctionid)
+      this.getUserProfileId();
     }
   }
 </script>
