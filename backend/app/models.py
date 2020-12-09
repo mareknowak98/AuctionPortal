@@ -6,6 +6,8 @@ from django.db.models.signals import post_save
 from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
 
+import app.tasks
+import datetime as dt
 
 @receiver(post_save, sender=User)
 def create_auth_token(sender, instance=None, created=False, **kwargs):
@@ -52,15 +54,16 @@ class IntegerRangeField(models.IntegerField):
         return super(IntegerRangeField, self).formfield(**defaults)
 
 
+
 class UserOpinion(models.Model):
-    opinionUserAbout = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user1')
-    opinionUserAuthor = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user2')
+    opinionUserAbout = models.ForeignKey(User, on_delete=models.CASCADE, related_name='userAbout')
+    opinionUserAuthor = models.ForeignKey(User, on_delete=models.CASCADE, related_name='userAuthor')
     opinionDescription = models.TextField(max_length=300, blank=True, null=True)
     opinionStars = IntegerRangeField(min_value=1, max_value=5)
+    opinionDate = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        "{0} opinion about {1}({2})".format(self.opinionUserAuthor.username, self.opinionUserAbout.username,
-                                            self.opinionStars)
+        return "{0} opinion about {1}({2})".format(self.opinionUserAuthor.username, self.opinionUserAbout.username, self.opinionStars)
 
 
 ##TODO to fix later
@@ -85,15 +88,11 @@ class Category(models.Model):
 
 class Auction(models.Model):
     user_seller = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_seller')
-
     image = models.ImageField(default='../media/default_auction.jpg', blank=True, null=True)
     category = models.ForeignKey(Category, on_delete=models.PROTECT, related_name='category', default=4)
     product_name = models.CharField(max_length=50, default='')
     description = models.TextField(blank=True, null=True)
     is_new = models.BooleanField(blank=True, null=True)
-
-    # product = models.OneToOneField(Product, on_delete=models.CASCADE, related_name='product')
-    # user_highest_bid = models.OneToOneField(User, on_delete=models.CASCADE)
     user_highest_bid = models.IntegerField(blank=True, null=True)
     date_started = models.DateTimeField()
     date_end = models.DateTimeField()
@@ -104,8 +103,18 @@ class Auction(models.Model):
 
     is_active = models.BooleanField(default=True)
 
+    def save(self, *args, **kwargs):
+        create_task = False
+        if self.pk is None:
+            create_task=True
+        super(Auction, self).save(*args, **kwargs)
+        if create_task:
+            app.tasks.set_inactive.apply_async(args=[self.id], eta=self.date_end+dt.timedelta(hours=-1))
+
     def __str__(self):
         return "{0} - Auction".format(self.product_name)
+
+
 
 
 # TODO start using more systemathic naming like this below
@@ -138,12 +147,4 @@ class UserMessage(models.Model):
 
     def __str__(self):
         return "UserMessage {}".format(self.usermessMessage)
-# class Message(models.Model):
-#     sender = models.ForeignKey(User, related_name='sender_user')
-#     receiver = models.ForeignKey(User, related_name='receiver_user')
-#     message = models.TextField(default='')
-#     send_at = models.DateTimeField()
-#
-#     def __str__(self):
-#         return "{0} -> {1} message".format(self.sender, self.receiver)
-#
+

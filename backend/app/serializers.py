@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User, Group
 from rest_framework import serializers
-from .models import Auction, Category, Bid, Profile, Message, UserMessage
+from .models import Auction, Category, Bid, Profile, Message, UserMessage, UserOpinion
 from rest_framework.authentication import TokenAuthentication
 
 
@@ -49,12 +49,10 @@ class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = ['id', 'category_name']
-        # fields = ['category_name',]
 
 
 class AuctionSerializer(serializers.ModelSerializer):
     user_seller = UserMiniSerializer(many=False)
-    # product = ProductSerializer(many=False)
     category = CategorySerializer(many=False)
     image = serializers.ImageField(
         max_length=None,
@@ -69,7 +67,6 @@ class AuctionSerializer(serializers.ModelSerializer):
 
 
 class AuctionCreateSerializer(serializers.ModelSerializer):
-    # product = serializers.PrimaryKeyRelatedField(many=False, queryset=Product.objects.all())
     user_seller = serializers.PrimaryKeyRelatedField(default=serializers.CurrentUserDefault(),
                                                      queryset=User.objects.all())
     category = serializers.PrimaryKeyRelatedField(many=False, queryset=Category.objects.all())
@@ -106,7 +103,7 @@ class BidCreateSerializer(serializers.ModelSerializer):
 class MessageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Message
-        fields = ("id", "messageContent", "messageCreatedAt")
+        fields = ["id", "messageContent", "messageCreatedAt"]
 
 
 class UserMessageSerializer(serializers.ModelSerializer):
@@ -128,3 +125,14 @@ class UserMessageSerializer(serializers.ModelSerializer):
         message = Message.objects.create(**msg_data)
         user_msg = UserMessage.objects.create(usermessMessage=message, **validated_data)
         return user_msg
+
+class OpinionSerializer(serializers.ModelSerializer):
+    opinionUserAuthor = serializers.PrimaryKeyRelatedField(default=serializers.CurrentUserDefault(), many=False, queryset=User.objects.all())
+    opinionUserAbout = serializers.PrimaryKeyRelatedField(many=False, queryset=User.objects.all())
+
+    # opinionUserAuthor = UserMiniSerializer()
+    # opinionUserAbout = UserMiniSerializer()
+    class Meta:
+        model = UserOpinion
+        fields = ["id", 'opinionUserAuthor', 'opinionUserAbout', 'opinionDescription', 'opinionStars', 'opinionDate']
+

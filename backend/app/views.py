@@ -6,8 +6,8 @@ from django.http import HttpResponseNotAllowed, JsonResponse
 from rest_framework import viewsets
 from rest_framework import permissions
 from app.serializers import UserSerializer, AuctionSerializer, CategorySerializer, AuctionCreateSerializer, \
-    BidSerializer, BidCreateSerializer, ProfileSerializer, UserMessageSerializer, Profile2Serializer, MessageSerializer
-from .models import Auction, Category, Bid, Profile, UserMessage, Message
+    BidSerializer, BidCreateSerializer, ProfileSerializer, UserMessageSerializer, Profile2Serializer, MessageSerializer, OpinionSerializer
+from .models import Auction, Category, Bid, Profile, UserMessage, Message, UserOpinion
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework import serializers
@@ -44,6 +44,39 @@ class AuctionViewSet(viewsets.ModelViewSet):
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticatedOrReadOnly,)
 
+    #params:
+    #active - boolean, determine the output to active/ended auctions
+    #endpoint: http://127.0.0.1:8000/api/auctions/getMyAuctions/?active=True
+    @action(detail=False, methods=['get'])
+    def getMyAuctions(self, request, **kwargs):
+        is_active = self.request.query_params.get('active', None)
+        user = request.user
+        myAuctions = Auction.objects.filter(user_seller=user, is_active=is_active)
+        serializer = AuctionSerializer(myAuctions, many=True)
+        return Response(serializer.data)
+
+    #params:
+    #active - boolean, determine the output to active/ended auctions
+    #endpoint: http://127.0.0.1:8000/api/auctions/getMyParticipatedAuctions/?active=True
+    @action(detail=False, methods=['get'])
+    def getMyParticipatedAuctions(self, request, **kwargs):
+        is_active = self.request.query_params.get('active', None)
+        user = request.user
+        bids = Bid.objects.filter(bidUserBuyer=user)
+        auctions_queryset = Auction.objects.filter(id__in=bids.values_list('bidAuction', flat=False),
+                                                   is_active=is_active)
+        serializer = AuctionSerializer(auctions_queryset, many=True)
+        return Response(serializer.data)
+
+
+    #endpoint: http://127.0.0.1:8000/api/auctions/getMyWinAuctions
+    @action(detail=False, methods=['get'])
+    def getMyWonAuctions(self, request, **kwargs):
+        user = request.user
+        print(user)
+        auctions_queryset = Auction.objects.filter(user_highest_bid=user.id, is_active=False)
+        serializer = AuctionSerializer(auctions_queryset, many=True)
+        return Response(serializer.data)
 
 class AuctionCreate(viewsets.ModelViewSet):
     """
@@ -109,14 +142,6 @@ class ProfileViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         print(self.request.user.id)
         user = self.request.user
-        # print(len(self.request.data) == 0)
-        # if len(self.request.data) == 0:
-        #     print("num 1")
-        #     return Profile.objects.all()
-        # data = self.request.data
-        # # print(data)
-        # user = data['userProfile']
-        # print("num 2")
         return Profile.objects.filter(profileUser=user)
 
     def update(self, request, *args, **kwargs):
@@ -127,8 +152,6 @@ class ProfileViewSet(viewsets.ModelViewSet):
         if not request.user.is_authenticated:
             return HttpResponseNotAllowed("You must be logged!")
 
-        # print("1 {}".format(request.user.id))
-        # print("2 {}".format(userID.id))
         if request.user.id != userID.id:
             print(1)
             return HttpResponseNotAllowed("Dont try to change somebody else profile!")
@@ -139,12 +162,6 @@ class ProfileViewSet(viewsets.ModelViewSet):
             return HttpResponseNotAllowed("Name and surname have to be letter strings")
 
         if len(data['profileNumberOfOpinions']) > 0 or len(data['profileAvgOpinion']) > 0:
-            print(3)
-            # print(data['profileNumberOfOpinions'] is None)
-            # print(data['profileAvgOpinion'] is None)
-            # print("data:" + data['profileNumberOfOpinions'] + ".")
-            # print(type(data['profileAvgOpinion']))
-            # print(len(data['profileAvgOpinion']))
             return HttpResponseNotAllowed("You can't do this!")
 
         if re.match("^[0-9 ]+$", data['profileBankAccountNr']):
@@ -277,9 +294,11 @@ class MessageViewset(viewsets.ModelViewSet):
     authentication_classes = (TokenAuthentication,)
     permission_classes = (permissions.IsAuthenticated,)
 
-    #returns send and received messages with selected user params:
-    #userToID - user to check messages with
-    #endpoint: http://127.0.0.1:8000/api/messages/getMessagesWithUser/
+    '''
+    returns send and received messages with selected user params:
+    userToID - user to check messages with
+    endpoint: http://127.0.0.1:8000/api/messages/getMessagesWithUser/
+    '''
     @action(detail=False, methods=['post'])
     def getMessagesWithUser(self, request, **kwargs):
         user = request.user
@@ -290,3 +309,29 @@ class MessageViewset(viewsets.ModelViewSet):
         received_messages = Message.objects.filter(
             id__in=received_user_messages.values_list('usermessMessage', flat=False))
         return Response({'from': MessageSerializer(send_messages, many=True).data, "to": MessageSerializer(received_messages, many=True).data})
+
+class OpinionViewSet(viewsets.ModelViewSet):
+    queryset = UserOpinion.objects.all()
+    serializer_class = OpinionSerializer
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+
+    def create(self, request, *args, **kwargs):
+        data = request.data
+        if request.user == data['opinionUserAbout']:
+            return HttpResponseNotAllowed("You cant write opinion about yourself!")
+        if int(data['opinionStars']) > 5 or int(data['opinionStars']) < 1:
+            return HttpResponseNotAllowed("1-5 rating scale")
+        newOpinion = UserOpinion.objects.create(
+                                    opinionUserAuthor=request.user,
+                                    opinionUserAbout=User.objects.get(id=data['opinionUserAbout']),
+                                    opinionDescription=data['opinionDescription'],
+                                    opinionStars=data['opinionStars'],
+                                    )
+
+        serializer = OpinionSerializer(newOpinion, many=False)
+        return Response(serializer.data)
+
+    def partial_update(self, request, *args, **kwargs):
+        pass
+        return Response("Not done yet")

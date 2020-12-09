@@ -14,6 +14,7 @@ router.register(r'profile', views.ProfileViewSet, basename="profile")
 router.register(r'user-id', views.UserViewSet, basename="UserId")
 router.register(r'profileUser', views.ProfileUserViewSet, basename="profileUser")
 router.register(r'messages', views.MessageViewset, basename="messages")
+router.register(r'opinion', views.OpinionViewSet, basename="opinion")
 
 
 urlpatterns = [

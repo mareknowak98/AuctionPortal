@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Auction, Category, Bid, Profile, Message, UserMessage
+from .models import Auction, Category, Bid, Profile, Message, UserMessage, UserOpinion
 # Register your models here.
 
 # admin.site.register(Product)
@@ -9,3 +9,5 @@ admin.site.register(Bid)
 admin.site.register(Profile)
 admin.site.register(Message)
 admin.site.register(UserMessage)
+admin.site.register(UserOpinion)
+
