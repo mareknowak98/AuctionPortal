@@ -90,7 +90,6 @@
           <b-form-input
             id="input-1"
             v-model="minimal_price"
-            required
             placeholder="..."
           ></b-form-input>
         </b-form-group>

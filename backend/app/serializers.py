@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User, Group
 from rest_framework import serializers
-from .models import Auction, Category, Bid, Profile, Message, UserMessage, UserOpinion
+from .models import Auction, Category, Bid, Profile, Message, UserMessage, UserOpinion, AuctionReport
 from rest_framework.authentication import TokenAuthentication
 
 
@@ -35,14 +35,14 @@ class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
         fields = ['id', 'profileUserName', 'profileUserSurname', 'profileUser', 'profileAvatar', 'profileBankAccountNr',
-                  'profileTelephoneNumber', 'profileNumberOfOpinions', 'profileAvgOpinion']
+                  'profileTelephoneNumber']
 
 class Profile2Serializer(serializers.ModelSerializer):
     profileUser = UserMiniSerializer(many=False)
 
     class Meta:
         model = Profile
-        fields = ['id', 'profileUser', 'profileAvatar', 'profileNumberOfOpinions', 'profileAvgOpinion']
+        fields = ['id', 'profileUser', 'profileAvatar']
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -136,3 +136,9 @@ class OpinionSerializer(serializers.ModelSerializer):
         model = UserOpinion
         fields = ["id", 'opinionUserAuthor', 'opinionUserAbout', 'opinionDescription', 'opinionStars', 'opinionDate']
 
+class ReportSerializer(serializers.ModelSerializer):
+    reportUser = serializers.PrimaryKeyRelatedField(default=serializers.CurrentUserDefault(), many=False, queryset=User.objects.all())
+    reportAuction = serializers.PrimaryKeyRelatedField(many=False, queryset=Auction.objects.all())
+    class Meta:
+        model = AuctionReport
+        fields = ["id", 'reportAuction', 'reportUser', 'reportContent']

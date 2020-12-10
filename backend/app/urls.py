@@ -15,7 +15,7 @@ router.register(r'user-id', views.UserViewSet, basename="UserId")
 router.register(r'profileUser', views.ProfileUserViewSet, basename="profileUser")
 router.register(r'messages', views.MessageViewset, basename="messages")
 router.register(r'opinion', views.OpinionViewSet, basename="opinion")
-
+router.register(r'report', views.ReportViewSet, basename="report")
 
 urlpatterns = [
     path(r'messaging/get-inbox/', views.get_inbox_messages, name='get_inbox'),

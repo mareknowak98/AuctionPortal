@@ -1,13 +1,16 @@
 import re
+import datetime as dt
 from datetime import datetime
 
+import pytz
 from django.contrib.auth.models import User, Group
 from django.http import HttpResponseNotAllowed, JsonResponse
-from rest_framework import viewsets
+from rest_framework import viewsets, mixins
 from rest_framework import permissions
 from app.serializers import UserSerializer, AuctionSerializer, CategorySerializer, AuctionCreateSerializer, \
-    BidSerializer, BidCreateSerializer, ProfileSerializer, UserMessageSerializer, Profile2Serializer, MessageSerializer, OpinionSerializer
-from .models import Auction, Category, Bid, Profile, UserMessage, Message, UserOpinion
+    BidSerializer, BidCreateSerializer, ProfileSerializer, UserMessageSerializer, Profile2Serializer, MessageSerializer, \
+    OpinionSerializer, ReportSerializer
+from .models import Auction, Category, Bid, Profile, UserMessage, Message, UserOpinion, AuctionReport
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework import serializers
@@ -24,9 +27,9 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all().order_by('-date_joined')
     serializer_class = UserSerializer
 
-    # permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
     def get_queryset(self):
-        # print(self.request.user.id)
         return User.objects.filter(id=self.request.user.id)
 
 
@@ -44,20 +47,24 @@ class AuctionViewSet(viewsets.ModelViewSet):
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticatedOrReadOnly,)
 
-    #params:
-    #active - boolean, determine the output to active/ended auctions
-    #endpoint: http://127.0.0.1:8000/api/auctions/getMyAuctions/?active=True
+    # params:
+    # active - boolean, determine the output to active/ended auctions
+    # http://127.0.0.1:8000/api/auctions/getMyAuctions/?active=True&ended=False
     @action(detail=False, methods=['get'])
     def getMyAuctions(self, request, **kwargs):
         is_active = self.request.query_params.get('active', None)
+        is_ended = self.request.query_params.get('ended', None)
         user = request.user
-        myAuctions = Auction.objects.filter(user_seller=user, is_active=is_active)
+        if is_active and not is_ended:
+            Auction.objects.filter(user_seller=user, is_active=is_active, user_highest_bid=None)
+        else:
+            myAuctions = Auction.objects.filter(user_seller=user, is_active=is_active)
         serializer = AuctionSerializer(myAuctions, many=True)
         return Response(serializer.data)
 
-    #params:
-    #active - boolean, determine the output to active/ended auctions
-    #endpoint: http://127.0.0.1:8000/api/auctions/getMyParticipatedAuctions/?active=True
+    # params:
+    # active - boolean, determine the output to active/ended auctions
+    # endpoint: http://127.0.0.1:8000/api/auctions/getMyParticipatedAuctions/?active=True
     @action(detail=False, methods=['get'])
     def getMyParticipatedAuctions(self, request, **kwargs):
         is_active = self.request.query_params.get('active', None)
@@ -68,8 +75,7 @@ class AuctionViewSet(viewsets.ModelViewSet):
         serializer = AuctionSerializer(auctions_queryset, many=True)
         return Response(serializer.data)
 
-
-    #endpoint: http://127.0.0.1:8000/api/auctions/getMyWinAuctions
+    # endpoint: http://127.0.0.1:8000/api/auctions/getMyWinAuctions
     @action(detail=False, methods=['get'])
     def getMyWonAuctions(self, request, **kwargs):
         user = request.user
@@ -77,6 +83,7 @@ class AuctionViewSet(viewsets.ModelViewSet):
         auctions_queryset = Auction.objects.filter(user_highest_bid=user.id, is_active=False)
         serializer = AuctionSerializer(auctions_queryset, many=True)
         return Response(serializer.data)
+
 
 class AuctionCreate(viewsets.ModelViewSet):
     """
@@ -87,8 +94,72 @@ class AuctionCreate(viewsets.ModelViewSet):
     authentication_classes = (TokenAuthentication,)
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
-    def post(self, request, format=None):
-        return Response("ok")
+    def create(self, request, *args, **kwargs):
+        user = request.user
+        data = request.data
+        # print(data)
+        flag1 = True if data['is_new'] == 'true' else False
+        flag2 = True if data['is_shipping_av'] == 'true' else False
+        if data['image'] != 'null':
+            image = data['image']
+        else:
+            image = '/default_auction.jpg'
+
+        if data['date_started'] > data['date_end']:
+            HttpResponseNotAllowed("You cannot set ending date in the past")
+        if data['minimal_price'] != "" and data['starting_price'] > data['minimal_price']:
+            HttpResponseNotAllowed("Starting Price must be higher than minimal price")
+        if data['minimal_price'] == "":
+            min_price = data['starting_price']
+        else:
+            min_price = data['minimal_price']
+
+        newAuction = Auction.objects.create(
+            user_seller=user,
+            image=image,
+            category=Category.objects.get(id=data['category']),
+            product_name=data['product_name'],
+            description=data['description'],
+            is_new=flag1,
+            date_started=data['date_started'],
+            date_end=data['date_end'],
+            starting_price=data['starting_price'],
+            minimal_price=min_price,
+            is_shipping_av=flag2,
+        )
+        serializer = AuctionCreateSerializer(newAuction, many=False)
+        return Response(serializer.data)
+
+    # endpoint: (patch) http://127.0.0.1:8000/api/auctioncreate/88/
+    def partial_update(self, request, *args, **kwargs):
+        data = request.data
+        auction_obj = self.get_object()
+        auction_obj.image = data.get('image', auction_obj.image)
+        auction_obj.category = Category.objects.get(id=data.get('category', auction_obj.category.id))
+        auction_obj.product_name = data.get('product_name', auction_obj.product_name)
+        auction_obj.description = data.get('description', auction_obj.description)
+        auction_obj.is_new = data.get('auction_obj', auction_obj.is_new)
+        auction_obj.is_shipping_av = data.get('is_shipping_av', auction_obj.is_shipping_av)
+
+        if data.get('date_end'):
+            return HttpResponseNotAllowed("You cannot change end date of auction")
+        if data.get('starting_price') or data.get('minimal_price'):
+            return HttpResponseNotAllowed("You cannot this")
+        if data.get('highest_bid') or data.get('user_highest_bid') or data.get('date_started') or data.get(
+                'user_seller') or data.get('is_active'):
+            return HttpResponseNotAllowed("You are not alleowed to change this params")
+
+        auction_obj.save()
+        serializer = AuctionCreateSerializer(auction_obj, many=False)
+        return Response(serializer.data)
+
+    def destroy(self, request, *args, **kwargs):
+        user = request.user
+        auction_obj = self.get_object()
+        if user == auction_obj.user_seller:
+            return super(AuctionCreate, self).destroy(request, *args, **kwargs)
+        else:
+            return HttpResponseNotAllowed("You are not alleowed to delete not your auctions")
 
 
 class BidViewSet(viewsets.ModelViewSet):
@@ -153,20 +224,15 @@ class ProfileViewSet(viewsets.ModelViewSet):
             return HttpResponseNotAllowed("You must be logged!")
 
         if request.user.id != userID.id:
-            print(1)
             return HttpResponseNotAllowed("Dont try to change somebody else profile!")
 
         if not len(data['profileUserName']) > 0 and data['profileUserName'].isalpha() or not len(
                 data['profileUserSurname']) > 0 and data['profileUserSurname'].isalpha():
-            print(2)
             return HttpResponseNotAllowed("Name and surname have to be letter strings")
 
-        if len(data['profileNumberOfOpinions']) > 0 or len(data['profileAvgOpinion']) > 0:
-            return HttpResponseNotAllowed("You can't do this!")
-
         if re.match("^[0-9 ]+$", data['profileBankAccountNr']):
-            print(4)
             return HttpResponseNotAllowed("Account number may only contains digits")
+
         if len(data['profileUserName']) > 0:
             profile.profileUserName = data['profileUserName']
         if len(data['profileUserSurname']) > 0:
@@ -178,7 +244,6 @@ class ProfileViewSet(viewsets.ModelViewSet):
         if data['profileAvatar'] is not None and not isinstance(data['profileAvatar'], str):
             profile.profileAvatar = data['profileAvatar']
 
-        print("correct")
         profile.save()
         serializer = ProfileSerializer(profile, many=False)
         return Response(serializer.data)
@@ -272,7 +337,6 @@ def get_user_profile_by_auction_id(request):
         return response_created({userProfileID.id})
 
 
-
 # return all users with messages with request user
 @decorators.api_view(["GET"])
 def get_messages_user_list(request):
@@ -299,6 +363,7 @@ class MessageViewset(viewsets.ModelViewSet):
     userToID - user to check messages with
     endpoint: http://127.0.0.1:8000/api/messages/getMessagesWithUser/
     '''
+
     @action(detail=False, methods=['post'])
     def getMessagesWithUser(self, request, **kwargs):
         user = request.user
@@ -308,7 +373,9 @@ class MessageViewset(viewsets.ModelViewSet):
         received_user_messages = UserMessage.objects.filter(usermessToUser=user.id, usermessFromUser=data['userToID'])
         received_messages = Message.objects.filter(
             id__in=received_user_messages.values_list('usermessMessage', flat=False))
-        return Response({'from': MessageSerializer(send_messages, many=True).data, "to": MessageSerializer(received_messages, many=True).data})
+        return Response({'from': MessageSerializer(send_messages, many=True).data,
+                         "to": MessageSerializer(received_messages, many=True).data})
+
 
 class OpinionViewSet(viewsets.ModelViewSet):
     queryset = UserOpinion.objects.all()
@@ -323,15 +390,101 @@ class OpinionViewSet(viewsets.ModelViewSet):
         if int(data['opinionStars']) > 5 or int(data['opinionStars']) < 1:
             return HttpResponseNotAllowed("1-5 rating scale")
         newOpinion = UserOpinion.objects.create(
-                                    opinionUserAuthor=request.user,
-                                    opinionUserAbout=User.objects.get(id=data['opinionUserAbout']),
-                                    opinionDescription=data['opinionDescription'],
-                                    opinionStars=data['opinionStars'],
-                                    )
+            opinionUserAuthor=request.user,
+            opinionUserAbout=User.objects.get(id=data['opinionUserAbout']),
+            opinionDescription=data['opinionDescription'],
+            opinionStars=data['opinionStars'],
+        )
 
         serializer = OpinionSerializer(newOpinion, many=False)
         return Response(serializer.data)
 
     def partial_update(self, request, *args, **kwargs):
-        pass
-        return Response("Not done yet")
+        data = request.data
+        opinion_obj = self.get_object()
+        if int(data.get('opinionStars')) > 5 or int(data.get('opinionStars')) < 1:
+            return HttpResponseNotAllowed("1-5 rating scale")
+        opinion_obj.opinionDescription = data.get('opinionDescription', opinion_obj.opinionDescription)
+        opinion_obj.opinionStars = data.get('opinionStars', opinion_obj.opinionStars)
+        tz = pytz.timezone('Poland')  # -1 hour idk why
+        opinion_obj.opinionDate = datetime.now() + dt.timedelta(hours=1)
+        opinion_obj.save()
+        serializer = OpinionSerializer(opinion_obj, many=False)
+        return Response(serializer.data)
+
+    def destroy(self, request, *args, **kwargs):
+        user = request.user
+        opinion_obj = self.get_object()
+        if user == opinion_obj.opinionUserAuthor:
+            return super(OpinionViewSet, self).destroy(request, *args, **kwargs)
+        else:
+            return HttpResponseNotAllowed("You are not alleowed to delete not your opinions")
+
+    # endpoint: http://127.0.0.1:8000/api/opinion/getUserOpinions?user_id=20
+    @action(detail=False, methods=['get'])
+    def getUserOpinions(self, request, **kwargs):
+        user_id = self.request.query_params.get('user_id', None)
+        try:
+            user = User.objects.get(id=user_id)
+            user_opinion = UserOpinion.objects.filter(opinionUserAbout=user)
+            serializer = OpinionSerializer(user_opinion, many=True)
+            return Response(serializer.data)
+        except:
+            return Response("no such user")
+
+    # endpoint: http://127.0.0.1:8000/api/opinion/getUserAvgRating?user_id=20
+    @action(detail=False, methods=['get'])
+    def getUserAvgRating(self, request, **kwargs):
+        user_id = self.request.query_params.get('user_id', None)
+        try:
+            user = User.objects.get(id=user_id)
+            user_opinion = UserOpinion.objects.filter(opinionUserAbout=user)
+            ratings = list(user_opinion.values("opinionStars"))
+            result = float(sum(d['opinionStars'] for d in ratings)) / len(ratings)
+            return Response(result)
+        except:
+            return Response("no such user")
+
+
+class ReportViewSet(viewsets.ModelViewSet):
+    queryset = AuctionReport.objects.all()
+    serializer_class = ReportSerializer
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def create(self, request, *args, **kwargs):
+        user = request.user
+        data = request.data
+        report_content = data.get('reportContent', 'No description available.')
+        try:
+            auction = Auction.objects.get(id=data.get('reportAuction'))
+            newReport = AuctionReport.objects.create(
+                reportAuction=auction,
+                reportUser=user,
+                reportContent=report_content,
+            )
+            serializer = ReportSerializer(newReport, many=False)
+            return Response(serializer.data)
+        except AssertionError:
+            return Response("Error")
+        except:
+            return Response("no such user or auction")
+
+    def destroy(self, request, *args, **kwargs):
+        if request.user.is_staff or request.user.is_superuser:
+            return super(ReportViewSet, self).destroy(request, *args, **kwargs)
+        else:
+            return HttpResponseNotAllowed("Only allowed for staff and superusers")
+
+    @action(detail=False, methods=['get'])
+    def getReports(self, request, **kwargs):
+        user = request.user
+        print(user)
+        if user.is_staff or user.is_superuser:
+            reports_queryset = AuctionReport.objects.all()
+            serializer = ReportSerializer(reports_queryset, many=True)
+            return Response(serializer.data)
+        else:
+            return HttpResponseNotAllowed("Only allowed for staff and superusers")
+
+

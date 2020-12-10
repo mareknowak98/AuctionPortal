@@ -8,6 +8,7 @@ from rest_framework.authtoken.models import Token
 
 import app.tasks
 import datetime as dt
+from datetime import datetime
 
 @receiver(post_save, sender=User)
 def create_auth_token(sender, instance=None, created=False, **kwargs):
@@ -24,8 +25,6 @@ class Profile(models.Model):
     profileAvatar = models.ImageField(default='../media/default.jpg', blank=True, null=True)
     profileBankAccountNr = models.CharField(max_length=30, blank=True, null=True)  # TODO set to real max len
     profileTelephoneNumber = models.CharField(max_length=15, blank=True, null=True)
-    profileNumberOfOpinions = models.IntegerField(default=0)
-    profileAvgOpinion = models.DecimalField(max_digits=4, decimal_places=3, default=0.0)
 
     def __str__(self):
         return "{0} Profile".format(self.profileUser.username)
@@ -109,7 +108,7 @@ class Auction(models.Model):
             create_task=True
         super(Auction, self).save(*args, **kwargs)
         if create_task:
-            app.tasks.set_inactive.apply_async(args=[self.id], eta=self.date_end+dt.timedelta(hours=-1))
+            app.tasks.set_inactive.apply_async(args=[self.id], eta=datetime.strptime(self.date_end[:-1], "%Y-%m-%dT%H:%M:%S") +dt.timedelta(hours=-1))
 
     def __str__(self):
         return "{0} - Auction".format(self.product_name)
@@ -146,5 +145,12 @@ class UserMessage(models.Model):
     usermessIsDeleted = models.BooleanField(default=False)
 
     def __str__(self):
-        return "UserMessage {}".format(self.usermessMessage)
+        return "UserMessage {0}".format(self.usermessMessage)
 
+class AuctionReport(models.Model):
+    reportAuction = models.ForeignKey(Auction, on_delete=models.CASCADE)
+    reportUser = models.ForeignKey(User, on_delete=models.CASCADE)
+    reportContent = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return "Report: {0} by {1}".format(self.reportAuction, self.reportUser)
