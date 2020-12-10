@@ -33,8 +33,6 @@ class UserViewSet(viewsets.ModelViewSet):
     #     return User.objects.filter(id=self.request.user.id)
 
 
-
-
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
@@ -48,6 +46,57 @@ class AuctionViewSet(viewsets.ModelViewSet):
     serializer_class = AuctionSerializer
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticatedOrReadOnly,)
+    # search_fields = ('product_name', 'description')
+
+    def list(self, request, *args, **kwargs):
+        params = request.GET
+        print(list(params.values()))
+        auctions = Auction.objects.all().filter(is_active=True)
+        title = self.request.query_params.get('title', None)
+        desc = self.request.query_params.get('desc', None) #description
+        cat = self.request.query_params.get('cat', None) #category (id)
+        min = self.request.query_params.get('min', None) #min price
+        max = self.request.query_params.get('max', None) #min price
+        time_left = self.request.query_params.get('time_left', None) #1 ascending(shortest time), 2 descending(longest time), none without sorting
+        new = self.request.query_params.get('new', None)
+        ship = self.request.query_params.get('ship', None) #shipping
+        price = self.request.query_params.get('price', None) #1 ascending(min price -> max price), 2 descending, none without sorting
+        ##TODO remove prints and reparin price ordering
+        if title:
+            print(1)
+            auctions = auctions.filter(product_name__icontains=title)
+        if desc:
+            print(2)
+            auctions = Auction.objects.all().filter(product_name__icontains=title) | Auction.objects.all().filter(description__icontains=desc, is_active=True)
+        if cat:
+            print(3)
+            auctions = auctions.filter(category=Category.objects.get(id=cat))
+        if min:
+            print(4)
+            auctions = auctions.filter(highest_bid__gte=min)
+        if max:
+            print(5)
+            auctions = auctions.filter(highest_bid__lte=max)
+        if new:
+            print(6)
+            auctions = auctions.filter(is_new=new)
+        if ship:
+            print(7)
+            auctions = auctions.filter(is_shipping_av=ship)
+        if time_left and int(time_left) == 1:
+            print(8)
+            auctions = auctions.order_by('date_end')
+        if time_left and int(time_left) == 2:
+            print(9)
+            auctions = auctions.order_by('-date_end')
+        if price and int(price) == 1:
+            print(10)
+            auctions = auctions.order_by('highest_bid')
+        if price and int(price) == 2:
+            print(11)
+            auctions = auctions.order_by('-highest_bid')
+        serializer = AuctionSerializer(auctions, many=True)
+        return Response(serializer.data)
 
     # params:
     # active - boolean, determine the output to active/ended auctions
@@ -344,13 +393,11 @@ def get_user_profile_by_auction_id(request):
 def get_messages_user_list(request):
     if request.method == 'GET':
         user = request.user
-        print(user.id)
         messages = UserMessage.objects.filter(usermessFromUser=user).values('usermessToUser__id',
                                                                             'usermessToUser__username').distinct()
         messages2 = UserMessage.objects.filter(usermessToUser=user).values('usermessFromUser_id',
                                                                            'usermessFromUser__username').distinct()
         messages.union(messages2)
-        print(messages)
         return response_created(messages)
 
 
@@ -489,13 +536,14 @@ class ReportViewSet(viewsets.ModelViewSet):
         else:
             return HttpResponseNotAllowed("Only allowed for staff and superusers")
 
+
 class StaffViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     authentication_classes = (TokenAuthentication,)
     permission_classes = (permissions.IsAuthenticated,)
 
-    #endpoint: http://127.0.0.1:8000/api/staff/isStaffUser?user_id=23
+    # endpoint: http://127.0.0.1:8000/api/staff/isStaffUser?user_id=23
     @action(detail=False, methods=['get'])
     def isStaffUser(self, request, *args, **kwargs):
         user_id = self.request.query_params.get('user_id', None)

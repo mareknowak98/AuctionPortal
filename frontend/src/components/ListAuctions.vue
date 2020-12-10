@@ -4,7 +4,7 @@
       <b-list-group-item :to="$basePath + '/auctions/' + auction.id" class="auctionListItem">
         <h2>{{auction.product_name}}</h2>
         <div>
-          <b-img :src= auction.image  fluid alt="Responsive image" height="180px" width="250px"></b-img>
+          <b-img :src= "'http://localhost:8000' + auction.image " fluid alt="Responsive image" height="180px" width="250px"></b-img>
         </div>
         <p>{{ auction.highest_bid }}</p>
         {{ auction }}
