@@ -1,5 +1,7 @@
 from django.contrib.auth.models import User, Group
 from rest_framework import serializers
+from rest_framework.response import Response
+
 from .models import Auction, Category, Bid, Profile, Message, UserMessage, UserOpinion, AuctionReport
 from rest_framework.authentication import TokenAuthentication
 
@@ -22,6 +24,7 @@ class UserSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         user = User.objects.create_user(**validated_data)
         return user
+
 
 
 class UserMiniSerializer(serializers.ModelSerializer):

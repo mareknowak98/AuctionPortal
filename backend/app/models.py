@@ -153,4 +153,4 @@ class AuctionReport(models.Model):
     reportContent = models.TextField(blank=True, null=True)
 
     def __str__(self):
-        return "Report: {0} by {1}".format(self.reportAuction, self.reportUser)
+        return "Reportser: {0} by {1}".format(self.reportAuction, self.reportUser)

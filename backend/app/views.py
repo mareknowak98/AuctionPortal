@@ -29,8 +29,10 @@ class UserViewSet(viewsets.ModelViewSet):
 
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
-    def get_queryset(self):
-        return User.objects.filter(id=self.request.user.id)
+    # def get_queryset(self):
+    #     return User.objects.filter(id=self.request.user.id)
+
+
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
@@ -487,4 +489,83 @@ class ReportViewSet(viewsets.ModelViewSet):
         else:
             return HttpResponseNotAllowed("Only allowed for staff and superusers")
 
+class StaffViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (permissions.IsAuthenticated,)
 
+    #endpoint: http://127.0.0.1:8000/api/staff/isStaffUser?user_id=23
+    @action(detail=False, methods=['get'])
+    def isStaffUser(self, request, *args, **kwargs):
+        user_id = self.request.query_params.get('user_id', None)
+        user = User.objects.get(id=user_id)
+        if user.is_staff or user.is_superuser:
+            return Response("True")
+        else:
+            return Response("False")
+
+    # endpoint: http://127.0.0.1:8000/api/staff/grantStaffStatus/
+    @action(detail=False, methods=['post'])
+    def grantStaffStatus(self, request, *args, **kwargs):
+        data = request.data
+        user_request = request.user
+        user_id = data.get('user_id')
+        if user_request.is_staff or user_request.is_superuser:
+            user_grant_status = User.objects.get(id=user_id)
+            user_grant_status.is_staff = True
+            user_grant_status.save()
+            return Response("ok")
+        else:
+            return HttpResponseNotAllowed("Allowed only for staff members!")
+
+    # endpoint: http://127.0.0.1:8000/api/staff/revokeStaffStatus/
+    @action(detail=False, methods=['post'])
+    def revokeStaffStatus(self, request, *args, **kwargs):
+        data = request.data
+        user_request = request.user
+        user_id = data.get('user_id')
+        if user_request.is_staff or user_request.is_superuser:
+            user_revoke_status = User.objects.get(id=user_id)
+            user_revoke_status.is_staff = False
+            user_revoke_status.save()
+            return Response("ok")
+        else:
+            return HttpResponseNotAllowed("Allowed only for staff members!")
+
+    # endpoint: http://127.0.0.1:8000/api/staff/deleteUser/
+    @action(detail=False, methods=['post'])
+    def deleteUser(self, request, *args, **kwargs):
+        data = request.data
+        user_request = request.user
+        user_id = data.get('user_id')
+        if user_request.is_staff or user_request.is_superuser:
+            try:
+                user_to_delete = User.objects.get(id=user_id)
+                if user_to_delete.is_staff or user_to_delete.is_superuser:
+                    return HttpResponseNotAllowed("Not allowed")
+                user_to_delete.delete()
+            except User.DoesNotExist:
+                return Response("No such user")
+            except Exception as e:
+                return Response({'err': e.message})
+        else:
+            return HttpResponseNotAllowed("Allowed only for staff members!")
+
+    # endpoint: http://127.0.0.1:8000/api/staff/deleteAuction/
+    @action(detail=False, methods=['post'])
+    def deleteAuction(self, request, *args, **kwargs):
+        data = request.data
+        user_request = request.user
+        auction_id = data.get('auction_id')
+        if user_request.is_staff or user_request.is_superuser:
+            try:
+                auction_to_delete = Auction.objects.get(id=auction_id)
+                auction_to_delete.delete()
+                return Response("ok")
+            except Auction.DoesNotExist:
+                return Response("No such auction")
+            except Exception as e:
+                return Response({'err': e.message})
+        else:
+            return HttpResponseNotAllowed("Allowed only for staff members!")
