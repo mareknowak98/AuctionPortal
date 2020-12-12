@@ -3,6 +3,7 @@ import App from "./App.vue";
 import Register from './components/Register.vue';
 // import Home from './views/Home.vue';
 import ListAuctions from './components/ListAuctions.vue';
+import EnlargeableImage from '@diracleo/vue-enlargeable-image';
 
 import "./registerServiceWorker";
 // import router from "./router";
@@ -25,25 +26,29 @@ Vue.use(VueRouter);
 Vue.use(BootstrapVue)
     // Optionally install the BootstrapVue icon components plugin
 Vue.use(IconsPlugin)
+Vue.use(EnlargeableImage)
+Vue.component('enlargeable-image', EnlargeableImage)
+
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 
 
-const basePath = process.env.BASE_PATH || '/';
+const basePath = process.env.BASE_PATH || '/auctions';
 console.log(basePath)
-const routes = [{
-
+const routes = [
+    {
+        path: basePath + "/",
+        name: "home",
+        component: Home
+    },
+    {
         path: basePath + "/register",
         name: "register",
         component: Register
     },
-    {
-        path: basePath + "",
-        name: "home",
-        component: Home
-    },
+
     // {
     //     path: basePath + "/auctions",
     //     name: "auction",

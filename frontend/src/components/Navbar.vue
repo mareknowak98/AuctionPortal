@@ -65,7 +65,7 @@
           <!-- Right aligned nav items -->
           <b-navbar-nav class="ml-auto">
             <b-nav-item size="sm" v-on:click="$goToAnotherPage('/messages')" class="my-2 my-sm-0"><b-icon icon="envelope" variant="success" font-scale="1.5"></b-icon></b-nav-item>
-            <b-avatar variant="info" src="https://placekitten.com/300/300"></b-avatar>
+            <b-avatar variant="info" :src=profileData.profileAvatar></b-avatar>
             <b-nav-item v-on:click="goToUserPage()">My Account</b-nav-item>
             <b-nav-item v-on:click="logout()">Log Out</b-nav-item>
           </b-navbar-nav>
@@ -91,10 +91,11 @@ import axios from 'axios';
         password: '',
         token: localStorage.getItem('user-token') || null,
         userId: null,
+        profileData: [],
       }
     },
     mounted: function (){
-      this.userId = this.$getUserId();
+      this.userId = this.$getUserId()
     },
     methods: {
       goToUserPage: function () {
@@ -107,8 +108,13 @@ import axios from 'axios';
         })
         .then(resp => {
         this.token = resp.data.token;
-        // console.log(this.token) #dont want to
         localStorage.setItem('user-token',resp.data.token)
+        this.username = '';
+        this.password = '';
+        })
+        .then(resp =>{
+          console.log(this.userId)
+          this.getProfile(this.userId)
         })
         .catch(err => {
           console.log(err);
@@ -120,6 +126,18 @@ import axios from 'axios';
         localStorage.removeItem('user-token');
         this.token = null;
         },
+
+      getProfile(id){
+        console.log("costam")
+        let axiosConfig = {
+            headers: {
+            'Authorization': 'Token ' + this.token
+            }
+        };
+        axios.get(`http://127.0.0.1:8000/api/profileUser/getProfileByUserId?id=` + id , axiosConfig)
+        .then(res => this.profileData = res.data)
+        .catch(err => console.log(err))
+      },
 
     }
   }

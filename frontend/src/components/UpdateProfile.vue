@@ -1,7 +1,8 @@
 <template>
-  <div class = jumbotron>
+  <div class="container">
   <h1 class="title"> Profile Update </h1>
   <navbar></navbar>
+  <b-jumbotron class="jumbotron jumbotron-home">
 
   <div v-if="token != null">
       <p>{{this.userId}}</p>
@@ -68,7 +69,7 @@
   <div v-else>
   <h1>Log in to edit your profile</h1>
   </div>
-
+  </b-jumbotron>
   </div>
 </template>
 
@@ -137,7 +138,7 @@ import axios from 'axios';
 
         location.reload();
         },
-        
+
     },
     created() {
       let token;
@@ -149,5 +150,9 @@ import axios from 'axios';
 </script>
 
 <style scoped>
-
+@media (min-width: 100px) {
+    .container{
+        max-width: 1400px;
+    }
+}
 </style>

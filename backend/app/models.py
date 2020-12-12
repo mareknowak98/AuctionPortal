@@ -84,7 +84,6 @@ class Category(models.Model):
     def __str__(self):
         return '{} category'.format(self.category_name)
 
-
 class Auction(models.Model):
     user_seller = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_seller')
     image = models.ImageField(default='../media/default_auction.jpg', blank=True, null=True)
@@ -100,13 +99,15 @@ class Auction(models.Model):
     minimal_price = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)
     is_shipping_av = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
-
+    auctionShippingCost = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
 
     def save(self, *args, **kwargs):
         create_task = False
         if self.pk is None:
             self.highest_bid = self.minimal_price
             create_task=True
+            if self.is_shipping_av:
+                self.auctionShippingCost = 20.0
 
         super(Auction, self).save(*args, **kwargs)
         if create_task:

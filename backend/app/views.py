@@ -1,20 +1,16 @@
 import re
 import datetime as dt
 from datetime import datetime
-
 import pytz
 from django.contrib.auth.models import User, Group
 from django.http import HttpResponseNotAllowed, JsonResponse
 from rest_framework import viewsets, mixins
-from rest_framework import permissions
 from app.serializers import UserSerializer, AuctionSerializer, CategorySerializer, AuctionCreateSerializer, \
     BidSerializer, BidCreateSerializer, ProfileSerializer, UserMessageSerializer, Profile2Serializer, MessageSerializer, \
     OpinionSerializer, ReportSerializer
 from .models import Auction, Category, Bid, Profile, UserMessage, Message, UserOpinion, AuctionReport
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
-from rest_framework import serializers
-from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework import response, decorators, permissions, status
@@ -29,8 +25,9 @@ class UserViewSet(viewsets.ModelViewSet):
 
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
-    # def get_queryset(self):
-    #     return User.objects.filter(id=self.request.user.id)
+    def get_queryset(self):
+        return User.objects.filter(id=self.request.user.id)
+
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
@@ -263,6 +260,10 @@ class ProfileViewSet(viewsets.ModelViewSet):
     authentication_classes = (TokenAuthentication,)
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
+    # def retrieve(self, request, *args, **kwargs):
+    #     data = request.data
+    #     print(data)
+
     def get_queryset(self):
         print(self.request.user.id)
         user = self.request.user
@@ -314,6 +315,14 @@ class ProfileUserViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
 
+    #endpoint http://127.0.0.1:8000/api/profileUser/getProfileByUserId?id=2
+    @action(detail=False, methods=['GET'])
+    def getProfileByUserId(self, request, **kwargs):
+        user_id = request.GET.get('id')
+        print(user_id)
+        profile = Profile.objects.get(profileUser=User.objects.get(id=user_id))
+        serializer = Profile2Serializer(profile)
+        return Response(serializer.data);
 
 ##############
 class IsOwner(permissions.BasePermission):

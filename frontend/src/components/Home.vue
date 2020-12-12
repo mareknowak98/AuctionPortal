@@ -92,6 +92,19 @@
             <ListAuctions/>
            </b-col>
          </b-row>
+         <div>
+           <!-- <div id="footercontainer">
+             <div class="fluid-container footer">
+               <p class="text-center">Marek Nowak Engeenering Thesis Project. WFiIS AGH 2020/2021. All Rights Reserved.</p>
+             </div>
+           </div>
+
+           <div id="root">
+              <footer-style></footer-style>
+            </div> -->
+
+            <Footer></Footer>
+         </div>
        </b-container>
      </b-jumbotron>
   </div>
@@ -102,12 +115,14 @@
 <script>
 import ListAuctions from '../components/ListAuctions.vue';
 import Navbar from '../components/Navbar.vue';
+import Footer from '../components/Footer.vue';
 import axios from 'axios';
 export default {
   name: "Home",
   components: {
     ListAuctions,
     Navbar,
+    Footer,
   },
   data() {
     return{
@@ -171,8 +186,4 @@ export default {
         max-width: 1400px;
     }
 }
-/* .b-form-checkbox-home{
-  padding-left: 0%;
-} */
-
 </style>

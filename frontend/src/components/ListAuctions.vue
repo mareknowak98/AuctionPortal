@@ -7,7 +7,7 @@
         <b-card no-body class="overflow-hidden">
           <b-row no-gutters>
             <tr>
-              <td width="250px">
+              <td width="300px">
                 <b-card-img :src="'http://localhost:8000' + auction.image"  fluid alt="Responsive image"></b-card-img>
             </td>
 
@@ -20,7 +20,7 @@
                         {{auction.description}}
                        </div>
                 </b-card-text>
-                <p>Highest offer: <strong>{{auction.user_highest_bid}}$</strong></p>
+                <p>Highest offer: <strong>{{auction.highest_bid}}$</strong></p>
               </b-card-body>
             </b-col>
           </b-row>
@@ -70,7 +70,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 #entity-list {
-    max-height: 200px;
+    max-height: 150px;
     overflow-y: scroll;
     overflow-x: hidden;
     div {

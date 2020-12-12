@@ -1,8 +1,7 @@
 <template>
-  <div class = jumbotron>
-  <h1 class="title"> New Auction </h1>
+  <div class="container">
   <navbar></navbar>
-  <b-jumbotron>
+  <b-jumbotron class="jumbotron jumbotron-home">
     <div v-if="token != null">
       <h1>Add an auciton</h1>
 
@@ -72,7 +71,7 @@
         ></b-form-datepicker>
         <p>Value: '{{ date_end }}'</p>
 
-        <b-form-timepicker 
+        <b-form-timepicker
         required
         v-model="date_end_hr" locale="en"></b-form-timepicker>
         <div class="mt-2">Value: '{{ date_end_hr }}'</div>
@@ -179,7 +178,7 @@ import axios from 'axios';
         var yyyy = today.getFullYear();
 
 
-        var fulldate_start = yyyy + "-" + mm + "-" + dd + "T" + today.getHours() + ":" 
+        var fulldate_start = yyyy + "-" + mm + "-" + dd + "T" + today.getHours() + ":"
           + today.getMinutes() + ":" + today.getSeconds() + "Z";
 
         this.debugtext2 = fulldate_start
@@ -199,7 +198,7 @@ import axios from 'axios';
       formData.append("starting_price", this.starting_price)
       formData.append("minimal_price", this.minimal_price)
       formData.append("is_shipping_av", this.is_shipping_av)
-      
+
       let axiosConfig = {
         headers: {
           'Authorization': 'Token ' + this.token
@@ -219,5 +218,19 @@ import axios from 'axios';
 </script>
 
 <style scoped>
+@import '../styles/style.css';
+
+@media (min-width: 100px) {
+    .container{
+        max-width: 1400px;
+    }
+}
+.jumbotron-home{
+    margin: 0%;
+    padding: 1%;
+    padding-left:0.5%;
+    padding-right:0.5%;
+
+}
 
 </style>

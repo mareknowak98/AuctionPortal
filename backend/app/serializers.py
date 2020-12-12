@@ -66,7 +66,7 @@ class AuctionSerializer(serializers.ModelSerializer):
         model = Auction
         fields = ['id', 'category', 'image', 'product_name', 'description', 'is_new', 'user_seller', 'user_highest_bid',
                   'date_started', 'date_end', 'starting_price', 'highest_bid', 'minimal_price', 'is_shipping_av',
-                  'is_active']
+                  'is_active', 'auctionShippingCost']
 
 
 class AuctionCreateSerializer(serializers.ModelSerializer):

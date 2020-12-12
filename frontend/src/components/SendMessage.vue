@@ -1,44 +1,44 @@
 <template>
-  <div class = jumbotron>
-  <h1 class="title"> Send message to user: {{this.userToId}} </h1>
+  <div class="container">
   <navbar></navbar>
+  <b-jumbotron class="jumbotron jumbotron-home">
 
-  <div v-if="token != null">
-    <h1>---</h1>
-    <b-list-group v-for="message in messages" :key="message.id">
-      <b-list-group-item class="auctionListItem">
-        <div v-if="message.dest == 'to'">
-          <p>From: {{message.text}}</p>
-        </div>
-        <div v-else>
-          <p>To: {{message.text}}</p>
-        </div>
-        <p>Date: {{message.date}}</p>
+    <div v-if="token != null">
+      <h1>---</h1>
+      <b-list-group v-for="message in messages" :key="message.id">
+        <b-list-group-item class="auctionListItem">
+          <div v-if="message.dest == 'to'">
+            <p>From: {{message.text}}</p>
+          </div>
+          <div v-else>
+            <p>To: {{message.text}}</p>
+          </div>
+          <p>Date: {{message.date}}</p>
 
-      </b-list-group-item>
-    </b-list-group>
-    
-    <b-form-textarea
-      id="textarea"
-      v-model="messageText"
-      placeholder="Enter message..."
-      rows="3"
-      max-rows="6"
-    ></b-form-textarea>
-    
-    
-    
-    <b-button variant="outline-primary" v-on:click="sendMessage()">Send</b-button>
+        </b-list-group-item>
+      </b-list-group>
 
-  </div>
-
-  
+      <b-form-textarea
+        id="textarea"
+        v-model="messageText"
+        placeholder="Enter message..."
+        rows="3"
+        max-rows="6"
+      ></b-form-textarea>
 
 
-  <div v-else>
-  <h1>Log in to send messages</h1>
-  </div>
 
+      <b-button variant="outline-primary" v-on:click="sendMessage()">Send</b-button>
+
+    </div>
+
+
+
+
+    <div v-else>
+    <h1>Log in to send messages</h1>
+    </div>
+  </b-jumbotron>
   </div>
 </template>
 
@@ -79,7 +79,7 @@ import axios from 'axios';
               headers: {
                   'Authorization': 'Token ' + localStorage.getItem("user-token")
               }
-          }; 
+          };
           axios.post(`http://127.0.0.1:8000/api/messaging/send/`, formData, axiosConfig)
               .then(res => console.log(res.data))
               .catch(err => console.log(err))
@@ -153,5 +153,9 @@ import axios from 'axios';
 </script>
 
 <style scoped>
-
+@media (min-width: 100px) {
+    .container{
+        max-width: 1400px;
+    }
+}
 </style>

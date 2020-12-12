@@ -1,58 +1,107 @@
 <template>
-  <div class = jumbotron>
-  <h1 class="title"> DetailedAuction </h1>
+  <div class="container">
   <navbar></navbar>
-    <h2>{{auction.product_name}}</h2>
-    <div>
-        <b-img :src= auction.image  fluid alt="Responsive image" height="180px" width="250px"></b-img>
-    </div>
-    <p>{{ auction.highest_bid }}</p>
-    {{ auction }}
+  <b-jumbotron class="jumbotron jumbotron-home">
 
-    <div v-if="token != null">
+    <b-container class="bv-example-row">
+      <b-row>
+        <b-col sm="4">
+          <enlargeable-image :src=auction.image :src_large=auction.image />
+        </b-col>
+        <b-col sm="5">
+          <h1>{{auction.product_name}}</h1>
+          <h2>Highest offer: <strong>{{auction.highest_bid}}$</strong></h2>
+          <p>Category: <strong>{{auction.category.category_name}}</strong></p>
+          <div v-if="auction.is_new==null">Condition: -</div>
+          <div v-if="auction.is_new==true">Condition: New</div>
+          <div v-if="auction.is_new==false">Condition: Used</div>
+          <p>Auction in term: {{auction.date_started}} - {{auction.date_end}}</p>
+          <p>Time to end: {{time_left}}</p>
+          <div v-if="auction.is_shipping_av==true">
+          <p>Shipping: <strong>Yes ({{auction.auctionShippingCost}})$ </strong></p></div>
+          <div v-if="auction.is_shipping_av==false">
+          <p>Shipping: No</p></div>
+          <div v-if="auction.is_shipping_av==null">
+          <p>Shipping: - </p></div>
+        </b-col>
+        <b-col sm="3">
+          <b-container class="bv-example-row">
+            <b-row>
+              <b-col sm="10">
+                <div v-if="token != null">
+                    <div role="group">
+                        <label for="input-live">Your bid($):</label>
+                        <b-form-input
+                        id="input-live"
+                        v-model="bid"
+                        :state="nameState"
+                        aria-describedby="input-live-help input-live-feedback"
+                        placeholder="Enter your bid amount($)"
+                        trim
+                        ></b-form-input>
+                        <b-form-invalid-feedback id="input-live-feedback">
+                        Enter a numeric value
+                        </b-form-invalid-feedback>
+                      <b-row>
+                        <b-col sm="12">
+                          <b-button block type="submit" variant="secondary" v-on:click="bidAuction">Submit</b-button>
+                          <h1></h1>
+                        </b-col>
+                      </b-row>
+                    </div>
+                </div>
+          <p> </p>
+          from: <b-link v-on:click="$goToAnotherPage('/profile/' + userProfileId + '/')">{{auction.user_seller.username}}</b-link>
+          <div>
+             <b-form-rating
+               variant="warning"
+               v-model="user_rating"
+               readonly
+               show-value
+               show-value-max
+               precision="2"
+             ></b-form-rating>
+           </div>
+         </b-col>
+       </b-row>
+     </b-container>
 
-        <div role="group">
-            <label for="input-live">Your bid:</label>
-            <b-form-input
-            id="input-live"
-            v-model="bid"
-            :state="nameState"
-            aria-describedby="input-live-help input-live-feedback"
-            placeholder="Enter your bid amount($)"
-            trim
-            ></b-form-input>
+          <p></p>
 
-            <!-- This will only be shown if the preceding input has an invalid state -->
-            <b-form-invalid-feedback id="input-live-feedback">
-            Enter a numeric value
-            </b-form-invalid-feedback>
+        </b-col>
 
-            <!-- This is a form text block (formerly known as help block) -->
-            <!-- <b-form-text id="input-live-help"></b-form-text> -->
-            <b-button type="submit" variant="primary" v-on:click="bidAuction">Submit</b-button>
-            <h1></h1>
-            <b-button variant="outline-primary" v-on:click="$goToAnotherPage('/profile/' + userProfileId + '/')" >Go to users profile</b-button>
+        <b-col sm="12">
+        <p> </p>
+        <h2>Description:</h2>
+        <p>
+          {{auction.description}}
+        </p>
+      </b-col>
+      <b-col sm="0">
+      </b-col>
 
-        </div>
-    </div>
+      </b-row>
 
+    </b-container>
+
+    <!-- {{ auction }} -->
+  </b-jumbotron>
   </div>
 </template>
-
-
-{% csrf_token %}
 <script>
 import Navbar from './Navbar.vue';
 import {TokenService} from '../store/service';
 import axios from 'axios';
 
   export default {
-    name: "Register",
+    name: "DetailedAuction",
     components:{
         Navbar,
     },
     computed: {
       nameState() {
+        if (this.bid == "")
+          return "isnull"
         return this.isNumeric(this.bid) ? true : false
       }
     },
@@ -63,25 +112,40 @@ import axios from 'axios';
           bid: '',
           auction: [],
           userProfileId: '',
+          time_left: '',
+          user_rating: '',
       }
     },
-
     mounted: function (){
-      // this.getUserProfileId();
+      let recaptchaScript = document.createElement('script')
+      recaptchaScript.async = true
+      recaptchaScript.setAttribute('src', 'https://unpkg.com/@diracleo/vue-enlargeable-image/dist/vue-enlargeable-image.min.js')
+      document.head.appendChild(recaptchaScript)
+      this.token = TokenService.getToken();
+      this.auctionid = this.$route.params.auctionId;
+      this.getAuction(this.auctionid)
+      this.getUserProfileId();
+      window.setInterval(() => {
+        this.getTimeToEnd()
+      }, 1000)
+
+
     },
+
 
     methods:{
     getAuction(id){
     console.log("http://localhost:8000/api/auctions/" + id)
       axios.get("http://localhost:8000/api/auctions/" + id)
         .then(res => this.auction = res.data)
+        .then(res => this.getUserAvgRating(this.auction.user_seller.id))
         .catch(err => console.log(err));
     },
 
     //check if given string can be converted to numeric value
     isNumeric(str) {
-        if (typeof str != "string") return false 
-        return !isNaN(str) && !isNaN(parseFloat(str)) 
+        if (typeof str != "string") return false
+        return !isNaN(str) && !isNaN(parseFloat(str))
     },
 
     bidAuction(){
@@ -118,18 +182,44 @@ import axios from 'axios';
         return this.userProfileId;
     },
 
+    getTimeToEnd() {
+      try {
+        var ending_date = new Date(this.auction.date_end);
+        var now_date = new Date();
+        var time_between = ending_date - now_date;
+        var days = parseInt((time_between)/(24*3600*1000));
+        time_between -= days*(24*3600*1000);
+        var hours = parseInt((time_between)/(3600*1000));
+        time_between -= hours*(3600*1000);
+        var minutes = parseInt((time_between)/(60*1000));
+        time_between -= minutes*(60*1000);
+        var seconds = parseInt((time_between)/(1000));
+        var res = "" + days + "d" + hours +":" + minutes + ":" + seconds + "";
+        this.time_left = res
+      }
+      catch (error){
+        this.time_left = ""
+      }
+    },
+
+    getUserAvgRating(id){
+      axios.get(`http://127.0.0.1:8000/api/opinion/getUserAvgRating?user_id=` + this.auction.user_seller.id)
+          .then(res => console.log(this.user_rating = parseFloat(res.data)))
+          .catch(err => console.log(err))
+    },
+
     },
 
     created() {
-      let token;
-      this.token = TokenService.getToken();
-      this.auctionid = this.$route.params.auctionId;
-      this.getAuction(this.auctionid)
-      this.getUserProfileId();
+
     }
   }
 </script>
 
 <style scoped>
-
+@media (min-width: 100px) {
+    .container{
+        max-width: 1400px;
+    }
+}
 </style>
