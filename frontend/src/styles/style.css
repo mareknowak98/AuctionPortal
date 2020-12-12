@@ -1,0 +1,9 @@
+/* .bv-example-row .text-center{
+  border: 1px solid black;
+} */
+
+@media (min-width: 100px) {
+    .container{
+        max-width: 1400px;
+    }
+}

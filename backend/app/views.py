@@ -135,6 +135,8 @@ class AuctionViewSet(viewsets.ModelViewSet):
         serializer = AuctionSerializer(auctions_queryset, many=True)
         return Response(serializer.data)
 
+    ##TODO find and check hishest_bid parameter in case on ending auction
+
 
 class AuctionCreate(viewsets.ModelViewSet):
     """

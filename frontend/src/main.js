@@ -1,7 +1,7 @@
 import Vue from "vue";
 import App from "./App.vue";
 import Register from './components/Register.vue';
-import Home from './views/Home.vue';
+// import Home from './views/Home.vue';
 import ListAuctions from './components/ListAuctions.vue';
 
 import "./registerServiceWorker";
@@ -9,6 +9,7 @@ import "./registerServiceWorker";
 import store from "./store";
 import axios from "axios";
 import VueRouter from 'vue-router';
+import Home from './components/Home.vue';
 import NewAuction from './components/CreateNewAuction.vue';
 import DetailedAuction from './components/DetailedAuction.vue';
 import Profile from './components/UpdateProfile.vue';
@@ -30,23 +31,24 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 
 
-const basePath = process.env.BASE_PATH || '/auctions';
+const basePath = process.env.BASE_PATH || '/';
 console.log(basePath)
 const routes = [{
+
         path: basePath + "/register",
         name: "register",
         component: Register
     },
     {
-        path: basePath + "/",
+        path: basePath + "",
         name: "home",
         component: Home
     },
-    {
-        path: basePath + "/auctions",
-        name: "auction",
-        component: ListAuctions
-    },
+    // {
+    //     path: basePath + "/auctions",
+    //     name: "auction",
+    //     component: ListAuctions
+    // },
     {
         path: basePath + "/newauction",
         name: "newauction",

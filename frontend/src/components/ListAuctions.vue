@@ -1,13 +1,36 @@
 <template>
   <div class="">
     <b-list-group v-for="auction in auctions" :key="auction.id">
+
       <b-list-group-item :to="$basePath + '/auctions/' + auction.id" class="auctionListItem">
-        <h2>{{auction.product_name}}</h2>
+
+        <b-card no-body class="overflow-hidden">
+          <b-row no-gutters>
+            <tr>
+              <td width="250px">
+                <b-card-img :src="'http://localhost:8000' + auction.image"  fluid alt="Responsive image"></b-card-img>
+            </td>
+
+            </tr>
+            <b-col>
+              <b-card-body :title="auction.product_name">
+                <b-card-text>
+
+                      <div id="entity-list">
+                        {{auction.description}}
+                       </div>
+                </b-card-text>
+                <p>Highest offer: <strong>{{auction.user_highest_bid}}$</strong></p>
+              </b-card-body>
+            </b-col>
+          </b-row>
+        </b-card>
+        <!-- <h2>{{auction.product_name}}</h2>
         <div>
           <b-img :src= "'http://localhost:8000' + auction.image " fluid alt="Responsive image" height="180px" width="250px"></b-img>
         </div>
         <p>{{ auction.highest_bid }}</p>
-        {{ auction }}
+        {{ auction }} -->
       </b-list-group-item>
     </b-list-group>
 
@@ -45,3 +68,13 @@ export default {
   }
 };
 </script>
+<style lang="scss" scoped>
+#entity-list {
+    max-height: 200px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    div {
+        height: 40px;
+    }
+}
+</style>

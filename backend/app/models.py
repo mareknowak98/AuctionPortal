@@ -99,13 +99,15 @@ class Auction(models.Model):
     highest_bid = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)
     minimal_price = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)
     is_shipping_av = models.BooleanField(default=False)
-
     is_active = models.BooleanField(default=True)
+
 
     def save(self, *args, **kwargs):
         create_task = False
         if self.pk is None:
+            self.highest_bid = self.minimal_price
             create_task=True
+
         super(Auction, self).save(*args, **kwargs)
         if create_task:
             app.tasks.set_inactive.apply_async(args=[self.id], eta=datetime.strptime(self.date_end[:-1], "%Y-%m-%dT%H:%M:%S") +dt.timedelta(hours=-1))
