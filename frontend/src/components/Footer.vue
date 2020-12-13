@@ -43,6 +43,7 @@ body{
 #container2{
   border-radius: 10px;
   padding-top:2%;
+  margin-bottom:0%;
   margin-top:20px;
   /* width:100vw; */
   color:white;

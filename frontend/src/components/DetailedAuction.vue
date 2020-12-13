@@ -73,9 +73,9 @@
         <b-col sm="12">
         <p> </p>
         <h2>Description:</h2>
-        <p>
-          {{auction.description}}
-        </p>
+        <td id="mytext" v-html="auction.description">
+
+        </td>
       </b-col>
       <b-col sm="0">
       </b-col>
@@ -85,11 +85,13 @@
     </b-container>
 
     <!-- {{ auction }} -->
+    <Footer></Footer>
   </b-jumbotron>
   </div>
 </template>
 <script>
 import Navbar from './Navbar.vue';
+import Footer from './Footer.vue'
 import {TokenService} from '../store/service';
 import axios from 'axios';
 
@@ -97,6 +99,7 @@ import axios from 'axios';
     name: "DetailedAuction",
     components:{
         Navbar,
+        Footer,
     },
     computed: {
       nameState() {
@@ -121,6 +124,12 @@ import axios from 'axios';
       recaptchaScript.async = true
       recaptchaScript.setAttribute('src', 'https://unpkg.com/@diracleo/vue-enlargeable-image/dist/vue-enlargeable-image.min.js')
       document.head.appendChild(recaptchaScript)
+
+      // let recaptchaScript2 = document.createElement('script')
+      // recaptchaScript2.async = true
+      // recaptchaScript2.setAttribute('src', 'https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17/vue.js')
+      // document.head.appendChild(recaptchaScript2)
+
       this.token = TokenService.getToken();
       this.auctionid = this.$route.params.auctionId;
       this.getAuction(this.auctionid)
@@ -217,9 +226,22 @@ import axios from 'axios';
 </script>
 
 <style scoped>
+.jumbotron-home{
+    margin: 0%;
+    padding: 1%;
+    padding-left:0.5%;
+    padding-right:0.5%;
+
+}
+
 @media (min-width: 100px) {
     .container{
         max-width: 1400px;
     }
+}
+#mytext{
+  background-color: white;
+  border-radius: 10px;
+
 }
 </style>

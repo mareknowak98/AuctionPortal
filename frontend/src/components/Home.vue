@@ -103,9 +103,10 @@
               <footer-style></footer-style>
             </div> -->
 
-            <Footer></Footer>
          </div>
        </b-container>
+       <Footer></Footer>
+
      </b-jumbotron>
   </div>
 </template>
@@ -161,13 +162,7 @@ export default {
 .custom2 {
     width: 180px !important;
 }
-.jumbotron-home{
-    margin: 0%;
-    padding: 1%;
-    padding-left:0.5%;
-    padding-right:0.5%;
 
-}
 
 .myform1{
   padding: 0%;
@@ -185,5 +180,12 @@ export default {
     .container{
         max-width: 1400px;
     }
+}
+.jumbotron-home{
+    margin: 0%;
+    padding: 1%;
+    padding-left:0.5%;
+    padding-right:0.5%;
+
 }
 </style>

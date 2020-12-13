@@ -17,7 +17,8 @@
                 <b-card-text>
 
                       <div id="entity-list">
-                        {{auction.description}}
+                        <td id="mytext" v-html="auction.description">
+                        </td>
                        </div>
                 </b-card-text>
                 <p>Highest offer: <strong>{{auction.highest_bid}}$</strong></p>

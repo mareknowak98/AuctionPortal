@@ -5,6 +5,7 @@
     <div v-if="token != null">
       <h1>Add an auciton</h1>
 
+
       <b-form @submit.prevent="createAuction" >
 
 
@@ -41,15 +42,9 @@
         </b-form-group>
 
         <p>Auction Description</p>
-        <b-form-textarea
-          required
-          id="description"
-          v-model="text"
-          placeholder="..."
-          rows="3"
-          max-rows="6"
-        ></b-form-textarea>
-        <pre class="mt-3 mb-0">{{ text }}</pre>
+        <div id="textinput">
+          <vue-editor v-model="description" :editorToolbar="customToolbar"></vue-editor>
+        </div>
 
         <b-form-group id="radio1" label="Is this item new?"
           required
@@ -111,6 +106,9 @@
       <h1>Log in to add auction</h1>
     </div>
 
+
+
+
     <p>{{$data}}</p>
 
 
@@ -119,21 +117,26 @@
 </template>
 
 
-{% csrf_token %}
 <script>
 import Navbar from './Navbar.vue'
 
 import {TokenService} from '../store/service'
+import { VueEditor } from "vue2-editor";
 
 import axios from 'axios';
   export default {
     name: "NewAuction",
     components:{
         Navbar,
+        VueEditor,
     },
 
     data() {
       return{
+        content: "",
+        customToolbar: [["bold", "italic", "underline"], [{ list: "ordered" }, { list: "bullet" }]],
+
+
         product_name: '',
         categories: [],
         selectedCategory: '',
@@ -225,12 +228,9 @@ import axios from 'axios';
         max-width: 1400px;
     }
 }
-.jumbotron-home{
-    margin: 0%;
-    padding: 1%;
-    padding-left:0.5%;
-    padding-right:0.5%;
 
+#textinput{
+  background-color: white;
 }
 
 </style>

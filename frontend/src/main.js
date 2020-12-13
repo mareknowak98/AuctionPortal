@@ -17,18 +17,20 @@ import Profile from './components/UpdateProfile.vue';
 import UserProfile from './components/UserProfile.vue';
 import UserMessage from './components/SendMessage.vue';
 import MessageManager from './components/MessageManager.vue';
+// import loader from "vue-ui-preloader";
+
 
 window.axios = require('axios');
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 Vue.use(VueRouter);
-
+// Vue.use(loader);
 // Install BootstrapVue
 Vue.use(BootstrapVue)
     // Optionally install the BootstrapVue icon components plugin
 Vue.use(IconsPlugin)
 Vue.use(EnlargeableImage)
 Vue.component('enlargeable-image', EnlargeableImage)
-
+import { VueEditor } from "vue2-editor";
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
