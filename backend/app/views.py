@@ -1,20 +1,16 @@
 import re
 import datetime as dt
 from datetime import datetime
-
 import pytz
 from django.contrib.auth.models import User, Group
 from django.http import HttpResponseNotAllowed, JsonResponse
 from rest_framework import viewsets, mixins
-from rest_framework import permissions
 from app.serializers import UserSerializer, AuctionSerializer, CategorySerializer, AuctionCreateSerializer, \
     BidSerializer, BidCreateSerializer, ProfileSerializer, UserMessageSerializer, Profile2Serializer, MessageSerializer, \
     OpinionSerializer, ReportSerializer
 from .models import Auction, Category, Bid, Profile, UserMessage, Message, UserOpinion, AuctionReport
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
-from rest_framework import serializers
-from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework import response, decorators, permissions, status
@@ -29,8 +25,17 @@ class UserViewSet(viewsets.ModelViewSet):
 
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
-    # def get_queryset(self):
-    #     return User.objects.filter(id=self.request.user.id)
+    def get_queryset(self):
+        return User.objects.filter(id=self.request.user.id)
+
+    @action(detail=False, methods=['get'])
+    def getUsernameById(self, request, **kwargs):
+        id = self.request.query_params.get('id', None)
+        user = User.objects.get(id=id)
+        print(user.username)
+        return Response(user.username)
+
+
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
@@ -98,6 +103,7 @@ class AuctionViewSet(viewsets.ModelViewSet):
         serializer = AuctionSerializer(auctions, many=True)
         return Response(serializer.data)
 
+    ##TODO to fix
     # params:
     # active - boolean, determine the output to active/ended auctions
     # http://127.0.0.1:8000/api/auctions/getMyAuctions/?active=True&ended=False
@@ -107,7 +113,7 @@ class AuctionViewSet(viewsets.ModelViewSet):
         is_ended = self.request.query_params.get('ended', None)
         user = request.user
         if is_active and not is_ended:
-            Auction.objects.filter(user_seller=user, is_active=is_active, user_highest_bid=None)
+            Auction.objects.filter(user_seller=user, is_active=is_active)
         else:
             myAuctions = Auction.objects.filter(user_seller=user, is_active=is_active)
         serializer = AuctionSerializer(myAuctions, many=True)
@@ -134,6 +140,8 @@ class AuctionViewSet(viewsets.ModelViewSet):
         auctions_queryset = Auction.objects.filter(user_highest_bid=user.id, is_active=False)
         serializer = AuctionSerializer(auctions_queryset, many=True)
         return Response(serializer.data)
+
+    ##TODO find and check hishest_bid parameter in case on ending auction
 
 
 class AuctionCreate(viewsets.ModelViewSet):
@@ -261,6 +269,10 @@ class ProfileViewSet(viewsets.ModelViewSet):
     authentication_classes = (TokenAuthentication,)
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
+    # def retrieve(self, request, *args, **kwargs):
+    #     data = request.data
+    #     print(data)
+
     def get_queryset(self):
         print(self.request.user.id)
         user = self.request.user
@@ -299,6 +311,15 @@ class ProfileViewSet(viewsets.ModelViewSet):
         serializer = ProfileSerializer(profile, many=False)
         return Response(serializer.data)
 
+    #endpoint http://127.0.0.1:8000/api/profile/getUserIdByProfile?profile_id=5
+    @action(detail=False, methods=['GET'])
+    def getUserIdByProfile(self, request, **kwargs):
+        profile_id = request.GET.get('profile_id')
+        profile_get = Profile.objects.get(id=profile_id[0])
+        user = User.objects.filter(profile=profile_get).first()
+        return Response(user.id)
+
+
 
 ##############
 class ProfileUserViewSet(viewsets.ModelViewSet):
@@ -312,6 +333,22 @@ class ProfileUserViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
 
+    #endpoint http://127.0.0.1:8000/api/profileUser/getProfileByUserId?id=2
+    @action(detail=False, methods=['GET'])
+    def getProfileByUserId(self, request, **kwargs):
+        user_id = request.GET.get('id')
+        print(user_id)
+        profile = Profile.objects.get(profileUser=User.objects.get(id=user_id))
+        serializer = Profile2Serializer(profile)
+        return Response(serializer.data);
+
+    #endpoint http://127.0.0.1:8000/api/profileUser/getUserImage?user_id=20
+    @action(detail=False, methods=['GET'])
+    def getUserImage(self, request, **kwargs):
+        user_id = request.GET.get('user_id')
+        profile = Profile.objects.get(profileUser=User.objects.get(id=user_id))
+        serializer = Profile2Serializer(profile)
+        return Response(serializer.data['profileAvatar'])
 
 ##############
 class IsOwner(permissions.BasePermission):

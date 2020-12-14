@@ -1,24 +1,34 @@
 <template>
-  <div class = jumbotron>
-  <h1 class="title"> New Auction </h1>
+  <div class="container">
   <navbar></navbar>
-  <b-jumbotron>
+  <b-jumbotron class="jumbotron jumbotron-home">
     <div v-if="token != null">
-      <h1>Add an auciton</h1>
+      <h1 id="myh1">Add an auction</h1>
 
       <b-form @submit.prevent="createAuction" >
+        <b-container class="bv-example-row">
+          <b-row class="justify-content-md-center">
+            <b-col col lg="8">
 
 
         <b-form-group>
         <p>Choose image</p>
         <b-form-file
           v-model="image"
-          :state="Boolean(image)"
+
           placeholder="Choose a file or drop it here..."
           drop-placeholder="Drop file here..."
           type='file'
         ></b-form-file>
-        <div class="mt-3">Selected file: {{ image ? image.name : '' }}</div>
+        </b-form-group>
+
+        <b-form-group id="input-group-1" label="Name of auction:" label-for="input-1">
+          <b-form-input
+            id="input-1"
+            v-model="product_name"
+            required
+            placeholder="Enter auction name"
+          ></b-form-input>
         </b-form-group>
 
         <label class="mr-2">Category:&nbsp;</label>
@@ -32,109 +42,164 @@
           </b-form-select>
         </b-form-group>
 
-        <b-form-group id="input-group-1" label="Name of auction:" label-for="input-1">
-          <b-form-input
-            id="input-1"
-            v-model="product_name"
-            required
-            placeholder="Enter auction name"
-          ></b-form-input>
-        </b-form-group>
 
         <p>Auction Description</p>
-        <b-form-textarea
-          required
-          id="description"
-          v-model="text"
-          placeholder="..."
-          rows="3"
-          max-rows="6"
-        ></b-form-textarea>
-        <pre class="mt-3 mb-0">{{ text }}</pre>
+        <div id="textinput">
+          <vue-editor v-model="description" :editorToolbar="customToolbar"></vue-editor>
+        </div>
 
-        <b-form-group id="radio1" label="Is this item new?"
-          required
-        >
-          <b-form-radio-group id="radio-group-1" v-model="is_new" name="radio-sub-component1">
-            <b-form-radio :value="true">New</b-form-radio>
-            <b-form-radio :value="false">Used</b-form-radio>
+        <p> </p>
+        <b-form-group label="Condition:">
+          <b-form-radio-group v-model="is_new" :options="options" :state="state" name="radio-validation">
+            <b-form-invalid-feedback :state="state">Please select one</b-form-invalid-feedback>
+            <b-form-valid-feedback :state="state"></b-form-valid-feedback>
           </b-form-radio-group>
         </b-form-group>
 
-        <label for="datepicker-full-width">Choose a date</label>
-        <b-form-datepicker
-          required
-          id="datepicker-full-width"
-          v-model="date_end"
-          menu-class="w-100"
-          calendar-width="100%"
-          class="mb-2"
-        ></b-form-datepicker>
-        <p>Value: '{{ date_end }}'</p>
-
-        <b-form-timepicker 
-        required
-        v-model="date_end_hr" locale="en"></b-form-timepicker>
-        <div class="mt-2">Value: '{{ date_end_hr }}'</div>
-
-        <b-form-group id="input-group-1" label="Enter starting price" label-for="input-1">
-          <b-form-input
-            id="input-1"
-            v-model="starting_price"
+      <p>Enter end date:</p>
+      <b-row>
+        <b-col cols="6" >
+          <b-form-datepicker
             required
-            placeholder="..."
-          ></b-form-input>
-        </b-form-group>
+            id="datepicker-full-width"
+            v-model="date_end"
+            menu-class="w-100"
+            calendar-width="100%"
+            class="mb-2"
+          ></b-form-datepicker>
+        </b-col>
+          <b-col cols="5" ><vue-timepicker required v-model="date_end_hr"></vue-timepicker>
+        </b-col>
+    </b-row>
 
-        <b-form-group id="input-group-1" label="Enter minimal price" label-for="input-1">
+    <b-row>
+      <b-col cols="6" >
+    <div role="group">
+        <label for="input-live">Enter starting price: </label>
+        <b-form-input
+        id="input-live"
+        v-model="starting_price"
+        :state="priceState"
+        aria-describedby="input-live-help input-live-feedback"
+        placeholder="..."
+        trim
+        ></b-form-input>
+        <b-form-invalid-feedback id="input-live-feedback">
+        Enter a numeric value
+        </b-form-invalid-feedback>
+    </div>
+      </b-col>
+      <b-col cols="6" >
+    <div role="group">
+        <label for="input-live">Enter minimal price:</label>
+        <b-form-input
+        id="input-live"
+        v-model="minimal_price"
+        :state="minPrizeState"
+        aria-describedby="input-live-help input-live-feedback"
+        placeholder="..."
+        trim
+        ></b-form-input>
+        <b-form-invalid-feedback id="input-live-feedback">
+        Enter a numeric value
+        </b-form-invalid-feedback>
+    </div>
+    </b-col>
+  </b-row>
+  <div>
+    <p>   </p>
+    <b-form-group label="Is shipping available">
+      <b-form-radio-group v-model="is_shipping_av" :options="options2" :state="state2" name="radio-validation">
+        <b-form-invalid-feedback :state="state2">Please select one</b-form-invalid-feedback>
+        <b-form-valid-feedback :state="state2"></b-form-valid-feedback>
+      </b-form-radio-group>
+    </b-form-group>
+    <b-row>
+    <b-col cols="6" >
+
+    <div v-if="is_shipping_av == 'true'">
+      <div role="group">
+          <label for="input-live">Enter shipping costs: </label>
           <b-form-input
-            id="input-1"
-            v-model="minimal_price"
-            placeholder="..."
+          id="input-live"
+          v-model="shipping_cost"
+          :state="shippingState"
+          aria-describedby="input-live-help input-live-feedback"
+          placeholder="..."
+          trim
           ></b-form-input>
-        </b-form-group>
-
-        <b-form-group id="radio2" label="Is shipping available?"
-          required
-        >
-          <b-form-radio-group id="radio-group-2" v-model="is_shipping_av" name="radio-sub-component2">
-            <b-form-radio :value="true">Yes</b-form-radio>
-            <b-form-radio :value="false">No</b-form-radio>
-          </b-form-radio-group>
-        </b-form-group>
-
-        <b-button type="submit" variant="primary">Submit</b-button>
-
-        </b-form>
+          <b-form-invalid-feedback id="input-live-feedback">
+          Enter a numeric value
+          </b-form-invalid-feedback>
+      </div>
+    </div>
+    </b-col>
+    <b-col cols="6" >
+    </b-col>
+    </b-row>
 
     </div>
-    <div v-else>
-      <h1>Log in to add auction</h1>
-    </div>
 
-    <p>{{$data}}</p>
 
+    <p>         </p>
+
+
+      <b-button type="submit" variant="secondary">Submit</b-button>
+    </b-col>
+   </b-row>
+   </b-container>
+      </b-form>
+
+
+      </div>
+      <div v-else>
+        <h1>Log in to add auction</h1>
+      </div>
+
+
+
+    <!-- <p>{{$data}}</p> -->
+    <Footer></Footer>
 
   </b-jumbotron>
   </div>
 </template>
 
 
-{% csrf_token %}
 <script>
 import Navbar from './Navbar.vue'
-
+import VueTimepicker from 'vue2-timepicker'
+import Footer from './Footer.vue'
 import {TokenService} from '../store/service'
+import { VueEditor } from "vue2-editor";
+import '../styles/style.css';
+
 
 import axios from 'axios';
   export default {
     name: "NewAuction",
     components:{
         Navbar,
+        VueEditor,
+        VueTimepicker,
+        Footer,
     },
 
     data() {
       return{
+        content: "",
+        shipping_cost: "",
+        customToolbar: [["bold", "italic", "underline"], [{ list: "ordered" }, { list: "bullet" }]],
+        value: null,
+        options: [
+          { text: 'New', value: 'true' },
+          { text: 'Used', value: 'false' },
+        ],
+        options2: [
+          { text: 'Yes', value: 'true' },
+          { text: 'No', value: 'false' },
+        ],
+        date: null,
         product_name: '',
         categories: [],
         selectedCategory: '',
@@ -142,10 +207,11 @@ import axios from 'axios';
         description: '',
         is_new: null,
         date_end: '',
-        date_end_hr: '',
+        date_end_hr: '00:00',
         starting_price: '',
         minimal_price: '',
         is_shipping_av: null,
+        is_visable: this.is_shipping_av,
         token: localStorage.getItem('user-token') || null,
 
         debugtext1: '',
@@ -153,12 +219,56 @@ import axios from 'axios';
 
       }
     },
+
+    computed: {
+      state() {
+        return Boolean(this.is_new)
+      },
+      state2() {
+        return Boolean(this.is_shipping_av)
+      },
+      priceState() {
+        if (this.starting_price == "")
+          return "isnull"
+        return this.isNumeric(this.starting_price) ? true : false
+      },
+      minPrizeState() {
+        if (this.minimal_price == "")
+          return "isnull"
+        return this.isNumeric(this.minimal_price) ? true : false
+      },
+      shippingState() {
+        if (this.shipping_cost == "")
+          return "isnull"
+        return this.isNumeric(this.shipping_cost) ? true : false
+      },
+    },
+
+
     mounted: function () {
       this.token = TokenService.getToken();
       this.categories = this.getCategories();
       console.log("Token to " + this.form.token);
+
+
     },
     methods:{
+      getVisability(){
+        console.log("es")
+        if (this.is_shipping_av == null){
+          return 0;
+        }
+        if (this.is_shipping_av == true){
+          this.is_visable = "true"
+        }
+        else{
+          this.is_visable = "false"
+        }
+      },
+      isNumeric(str) {
+          if (typeof str != "string") return false
+          return !isNaN(str) && !isNaN(parseFloat(str))
+      },
       getCategories(){
         axios.get("http://127.0.0.1:8000/api/categories/")
           .then(res => {
@@ -179,35 +289,39 @@ import axios from 'axios';
         var yyyy = today.getFullYear();
 
 
-        var fulldate_start = yyyy + "-" + mm + "-" + dd + "T" + today.getHours() + ":" 
+        var fulldate_start = yyyy + "-" + mm + "-" + dd + "T" + today.getHours() + ":"
           + today.getMinutes() + ":" + today.getSeconds() + "Z";
 
         this.debugtext2 = fulldate_start
 
         console.log('Date string is ' + fulldate_end)
 
-      this.token = TokenService.getToken();
-      const formData = new FormData();
+        this.token = TokenService.getToken();
+        const formData = new FormData();
 
-      formData.append("image", this.image)
-      formData.append("product_name", this.product_name)
-      formData.append("description", this.description)
-      formData.append("is_new", this.is_new)
-      formData.append("category", this.selectedCategory)
-      formData.append("date_started", fulldate_start)
-      formData.append("date_end", fulldate_end)
-      formData.append("starting_price", this.starting_price)
-      formData.append("minimal_price", this.minimal_price)
-      formData.append("is_shipping_av", this.is_shipping_av)
-      
-      let axiosConfig = {
-        headers: {
-          'Authorization': 'Token ' + this.token
-        }
-      };
-      axios.post(`http://127.0.0.1:8000/api/auctioncreate/`, formData,axiosConfig)
-      .then(res => console.log(res.data))
-      .catch(err => console.log(err))
+        formData.append("image", this.image)
+        formData.append("product_name", this.product_name)
+        formData.append("description", this.description)
+        formData.append("is_new", this.is_new)
+        formData.append("category", this.selectedCategory)
+        formData.append("date_started", fulldate_start)
+        formData.append("date_end", fulldate_end)
+        formData.append("starting_price", this.starting_price)
+        formData.append("minimal_price", this.minimal_price)
+        formData.append("is_shipping_av", this.is_shipping_av)
+        formData.append("auctionShippingCost", this.sshipping_cost)
+
+        let axiosConfig = {
+          headers: {
+            'Authorization': 'Token ' + this.token
+          }
+        };
+        axios.post(`http://127.0.0.1:8000/api/auctioncreate/`, formData,axiosConfig)
+        .then(res => console.log(res.data))
+        .catch(err => console.log(err))
+
+        this.$sleep(500); //TODO check it
+        this.$router.back();
       },
     },
     created() {
@@ -219,5 +333,21 @@ import axios from 'axios';
 </script>
 
 <style scoped>
+@import '../styles/style.css';
+@import '~vue2-timepicker/dist/VueTimepicker.css';
+
+@media (min-width: 100px) {
+    .container{
+        max-width: 1400px;
+    }
+}
+
+#textinput{
+  background-color: white;
+}
+
+#myh1{
+  margin-bottom: 4%;
+}
 
 </style>

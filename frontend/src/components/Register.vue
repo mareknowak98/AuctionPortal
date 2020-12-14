@@ -1,9 +1,9 @@
 <template>
-  <div class = jumbotron>
+  <div class="container">
   <h1 class="title"> Register </h1>
   <navbar></navbar>
 
-    <b-jumbotron>
+  <b-jumbotron class="jumbotron jumbotron-home">
       <div v-if="token == null">
       <b-form @submit.prevent="registerUser" @reset="onReset">
       <b-form-group id="input-group-1" label="Your Username:" label-for="input-1">
@@ -55,7 +55,7 @@
     </b-form>
     <b-card class="mt-3" header="Form Data Result">
       <pre class="m-0">{{ form }}</pre>
-    </b-card> 
+    </b-card>
     </div>
   </b-jumbotron>
   </div>
@@ -136,5 +136,9 @@ import axios from 'axios';
 </script>
 
 <style scoped>
-
+@media (min-width: 100px) {
+    .container{
+        max-width: 1400px;
+    }
+}
 </style>

@@ -1,0 +1,3639 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>  <html class="no-js lt-ie9 lt-ie8 lt-ie7" xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://ogp.me/ns/fb#"> <![endif]-->
+<!--[if IE 7]> <html class="no-js lt-ie10 lt-ie9 lt-ie8" xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://ogp.me/ns/fb#"> <![endif]-->
+<!--[if IE 8]> <html class="no-js lt-ie10 lt-ie9" xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://ogp.me/ns/fb#"> <![endif]-->
+<!--[if IE 9]> <html class="no-js lt-ie10" xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://ogp.me/ns/fb#"> <![endif]-->
+<!--[if gt IE 9]><!--> <html lang="pl" class="no-js" xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://ogp.me/ns/fb#"> <!--<![endif]-->
+<html lang="pl">
+	<head><script type="2ee252c2e74f2a6f9ae45265-text/javascript">
+window.loaded = false;
+if (document.addEventListener) {
+	window.addEventListener("load", function() {
+		window.loaded = true;
+	}, false);
+} else {
+	if (window.attachEvent) {
+		window.attachEvent("onload", function() {
+			window.loaded = true;
+		});
+	} else {
+		window.onload = function() {
+			window.loaded = true;
+		};
+	}
+}
+var IDG = IDG || {};
+IDG.global = IDG.global || {};
+IDG.global.async = IDG.global.async || [];
+IDG.global.version = '3.5.714';
+IDG.global.load = IDG.global.load || {};
+IDG.global.load.script = function(url, id, async) {
+	if (document.getElementById(id)) {
+		return;
+	}
+	var po = document.createElement("script");
+	po.id = id;
+	po.type = "text/javascript";
+	if (!!async) {
+		po.async = 'true';
+	}
+	po.src = url;
+	var s = document.getElementsByTagName("script")[0];
+	s.parentNode.insertBefore(po, s);
+}
+
+//loaded anywhere on the page asynchronously.
+function jqIsReady() {
+	if (typeof jQuery === "undefined") {
+		setTimeout(function(){jqIsReady();},100);
+		return ;
+	}
+	if (typeof IDG.global.async == 'undefined') {
+		return;
+	}
+	if(IDG.global.async.length) { // there is some syncing to be done
+		var obj = IDG.global.async.shift();
+		if (obj[0] == "ready") {
+			jQuery(obj[1]);
+		}else if (obj[0] == "load"){
+			setTimeout(function(){
+				jQuery(obj[1]);
+			}, 50);
+		}
+		setTimeout(function(){jqIsReady();},5);
+		return;
+	}
+	
+	IDG.global.async = {
+		push: function(param){
+			if (param[0] =="ready") {
+				jQuery(param[1]);
+			}else if (param[0] =="load"){
+				setTimeout(function(){jQuery(param[1]);}, 700);
+			}
+		},
+		unshift: function(param){
+			if (param[0] =="ready") {
+				jQuery(param[1]);
+			}else if (param[0] =="load"){
+				setTimeout(function(){jQuery(param[1]);}, 700);
+			}
+		}
+	};
+};
+
+function IDG_INIT() {
+	console.log('IDG_INIT > window.loaded :: ' + window.loaded);
+	if (window.loaded){
+		setTimeout(function(){jqIsReady();}, 1000);
+		return;
+	}
+	setTimeout(function(){IDG_INIT();}, 1000);
+}
+setTimeout(function(){
+	IDG_INIT();
+}, 1500);
+</script>
+<script type="2ee252c2e74f2a6f9ae45265-text/javascript">
+var IDG = IDG || {};
+IDG.global = IDG.global || {};
+IDG.IndexExchange = IDG.IndexExchange || {};
+IDG.IndexExchange.init = function() {
+	if (typeof consent != 'undefined' && consent.runCode !== undefined && consent.runCode !== null) {
+		(function() {
+			var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+			po.src = '//js-sec.indexww.com/ht/p/183980-85107497850211.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+		})();
+	} else {
+		setTimeout(function(){IDG.IndexExchange.init()}, 500);
+	}
+};
+
+if (typeof IDG.global.async != 'undefined') {
+	IDG.global.async.push(['load', function () {
+		IDG.IndexExchange.init();
+	}]);
+} else {
+	IDG.IndexExchange.init();
+}
+</script>
+
+				<script type="2ee252c2e74f2a6f9ae45265-text/javascript">
+var isAdBlock = 1;
+</script>
+
+						<!-- Google Tag Manager -->
+<script type="2ee252c2e74f2a6f9ae45265-text/javascript">
+var IDG = IDG || {};
+IDG.global = IDG.global || {};
+IDG.GoogleTagManager = IDG.GoogleTagManager || {};
+IDG.GoogleTagManager.init = function() {
+	(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+	new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+	j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+	'https://www.googletagmanager.com/gtm.js?id='+i+dl;j.type='text/javascript';f.parentNode.insertBefore(j,f);
+	})(window,document,'script','dataLayer','GTM-PNXWHN');
+	
+	dataLayer.push({
+		'event': 'pageContent',
+		'pageContentStatus': '__'
+	});
+	dataLayer.push({
+		'event': 'pageTags',
+		'pageTagsStatus': '_gmail_poczta-gmail_google_internet_oprogramowanie_gmail-jako-klient-poczty_msp_'
+	});
+}
+
+if (typeof IDG.global.async != 'undefined') {
+	IDG.global.async.push(['ready', function () {
+		IDG.GoogleTagManager.init();
+	}]);
+} else {
+	IDG.GoogleTagManager.init();
+}
+</script>
+<!-- End Google Tag Manager -->
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Gmail jako klient poczty -  PC World - Testy i Ceny sprzętu PC, RTV, Foto, Porady IT, Download, Aktualności</title>	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<script type="2ee252c2e74f2a6f9ae45265-text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga(function() {
+	var allTrackers = ga.getAll();
+});
+
+ga('create', 'UA-27229335-1', 'pcworld.pl', {'useAmpClientId': true});
+ga('create', 'UA-19960671-1', 'auto', {'name': 'idgglobal', 'useAmpClientId': true});  // New tracker.
+
+var dimensionValue1 = '__';
+ga('set', 'dimension1', dimensionValue1);
+
+var dimensionValue2 = '_Gmail_poczta Gmail_Google_internet_Oprogramowanie_Gmail jako klient poczty_MŚP_';
+ga('set', 'dimension2', dimensionValue2);
+
+
+var dimensionValue4 = '__';
+ga('set', 'dimension4', dimensionValue4);
+
+
+var IDG = IDG || {};
+IDG.global = IDG.global || {};
+
+
+setTimeout(function() {
+	ga('send', 'event', 'Gmail jako klient poczty -  PC World - Testy i Ceny sprzętu PC, RTV, Foto, Porady IT, Download, Aktualności', 'Wizyta');
+},20000);
+
+ga('send', 'pageview');
+ga('idgglobal.send', 'pageview'); // Send page view for new tracker.
+
+function trackGoogleAnalytics(articleId, slideNumber,articleUri) {
+	slideNumber = (slideNumber) ? '#' + slideNumber : '';
+	ga('send', 'pageview', articleUri + slideNumber);
+	ga('idgglobal.send', 'pageview', articleUri + slideNumber);
+	//_gaq.push(['_trackPageview']);
+	//gaq.push(['_trackPageview', articleUri + slideNumber]);
+}
+</script>	<meta name="robots" content="noarchive" />
+	<meta name="rating" content="General" />
+	<meta name="robots" content="NOODP,NOYDIR" />		<!--  fav and touch icons -->
+<link rel="shortcut icon" type="image/x-icon" href="/favicon/favicon.ico" />	
+<link rel="apple-touch-icon" sizes="57x57" href="/favicon/apple-icon-57x57.png" />
+<link rel="apple-touch-icon" sizes="60x60" href="/favicon/apple-icon-60x60.png" />
+<link rel="apple-touch-icon" sizes="72x72" href="/favicon/apple-icon-72x72.png" />
+<link rel="apple-touch-icon" sizes="76x76" href="/favicon/apple-icon-76x76.png" />
+<link rel="apple-touch-icon" sizes="114x114" href="/favicon/apple-icon-114x114.png" />
+<link rel="apple-touch-icon" sizes="120x120" href="/favicon/apple-icon-120x120.png" />
+<link rel="apple-touch-icon" sizes="144x144" href="/favicon/apple-icon-144x144.png" />
+<link rel="apple-touch-icon" sizes="152x152" href="/favicon/apple-icon-152x152.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-icon-180x180.png" />
+<link rel="icon" type="image/png" sizes="192x192"  href="/favicon/android-icon-192x192.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png" />
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon/favicon-96x96.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png" />
+<link rel="manifest" href="/favicon/manifest.json" />
+<meta name="msapplication-TileColor" content="#ffffff" />
+<meta name="msapplication-TileImage" content="/favicon/ms-icon-144x144.png" />
+<meta name="theme-color" content="#ffffff" />
+	<link rel="dns-prefetch" href="https://stackpath.bootstrapcdn.com" />
+<link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
+<link rel="dns-prefetch" href="https://www.facebook.com" />
+<link rel="dns-prefetch" href="https://syndication.twitter.com/" />
+<link rel="dns-prefetch" href="https://www.google-analytics.com/" />
+<link rel="dns-prefetch" href="https://cdn.syndication.twimg.com/" />
+<link rel="dns-prefetch" href="https://pbs.twimg.com" />
+<link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+<link rel="dns-prefetch" href="https://fonts.static.com" />
+<link rel="dns-prefetch" href="https://use.fontawesome.com" />
+<link rel="dns-prefetch" href="https://www.pcworld.pl" />
+<link rel="dns-prefetch" href="https://code.jquery.com" />
+<link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+
+<link rel="alternate" type="application/rss+xml" title="RSS Feed" href="/news?rss" />
+
+<!-- css -->
+<noscript><link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"></noscript>
+<!-- <noscript><link rel="stylesheet" href="/g1/global/webfonts/ss-social-circle.css?v=3.5.714" /></noscript> -->
+<noscript><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous" /></noscript>
+<!-- <noscript><link rel="stylesheet" href="/www/fonts/awesome/font-awesome.min.css?v=3.5.714" /></noscript> -->
+<noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css" /></noscript>
+<noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css" /></noscript>
+
+
+<noscript><link rel="stylesheet" href="/g1/global/_fancybox/2.1.5/source/jquery.fancybox.css" /></noscript>
+
+<style type="text/css" id="idgInlineStyle">*,::after,::before{box-sizing:border-box}html{font-family:sans-serif;line-height:1.15;-webkit-text-size-adjust:100%}figure,nav,section{display:block}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";font-size:1rem;font-weight:400;line-height:1.5;color:#212529;text-align:left;background-color:#fff}ul{margin-top:0;margin-bottom:1rem}ul ul{margin-bottom:0}a{color:#007bff;text-decoration:none;background-color:transparent}code{font-family:SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;font-size:1em}figure{margin:0 0 1rem}img{vertical-align:middle;border-style:none}button{border-radius:0}button,input{margin:0;font-family:inherit;font-size:inherit;line-height:inherit}button,input{overflow:visible}button{text-transform:none}[type=button],button{-webkit-appearance:button}[type=button]::-moz-focus-inner,button::-moz-focus-inner{padding:0;border-style:none}::-webkit-file-upload-button{font:inherit;-webkit-appearance:button}.img-fluid{max-width:100%;height:auto}code{font-size:87.5%;color:#e83e8c;word-break:break-word}.container{width:100%;padding-right:15px;padding-left:15px;margin-right:auto;margin-left:auto}@media (min-width:576px){.container{max-width:540px}}@media (min-width:768px){.container{max-width:720px}}@media (min-width:992px){.container{max-width:960px}}@media (min-width:1200px){.container{max-width:1140px}}.row{display:-ms-flexbox;display:flex;-ms-flex-wrap:wrap;flex-wrap:wrap;margin-right:-15px;margin-left:-15px}.col-12,.col-4,.col-6,.col-8,.col-lg-3,.col-lg-4,.col-lg-6,.col-lg-8,.col-lg-9,.col-md-4,.col-md-6,.col-sm-4,.col-sm-6,.col-sm-8{position:relative;width:100%;padding-right:15px;padding-left:15px}.col-4{-ms-flex:0 0 33.333333%;flex:0 0 33.333333%;max-width:33.333333%}.col-6{-ms-flex:0 0 50%;flex:0 0 50%;max-width:50%}.col-8{-ms-flex:0 0 66.666667%;flex:0 0 66.666667%;max-width:66.666667%}.col-12{-ms-flex:0 0 100%;flex:0 0 100%;max-width:100%}@media (min-width:576px){.col-sm-4{-ms-flex:0 0 33.333333%;flex:0 0 33.333333%;max-width:33.333333%}.col-sm-6{-ms-flex:0 0 50%;flex:0 0 50%;max-width:50%}.col-sm-8{-ms-flex:0 0 66.666667%;flex:0 0 66.666667%;max-width:66.666667%}}@media (min-width:768px){.col-md-3{-ms-flex:0 0 25%;flex:0 0 25%;max-width:25%}.col-md-4{-ms-flex:0 0 33.333333%;flex:0 0 33.333333%;max-width:33.333333%}.col-md-6{-ms-flex:0 0 50%;flex:0 0 50%;max-width:50%}}@media (min-width:992px){.col-lg-3{-ms-flex:0 0 25%;flex:0 0 25%;max-width:25%}.col-lg-4{-ms-flex:0 0 33.333333%;flex:0 0 33.333333%;max-width:33.333333%}.col-lg-6{-ms-flex:0 0 50%;flex:0 0 50%;max-width:50%}.col-lg-8{-ms-flex:0 0 66.666667%;flex:0 0 66.666667%;max-width:66.666667%}.col-lg-9{-ms-flex:0 0 75%;flex:0 0 75%;max-width:75%}}.form-control{display:block;width:100%;height:calc(1.5em + .75rem + 2px);padding:.375rem .75rem;font-size:1rem;font-weight:400;line-height:1.5;color:#495057;background-color:#fff;background-clip:padding-box;border:1px solid #ced4da;border-radius:.25rem}.form-control::-ms-expand{background-color:transparent;border:0}.form-control::-webkit-input-placeholder{color:#6c757d;opacity:1}.form-control::-moz-placeholder{color:#6c757d;opacity:1}.form-control:-ms-input-placeholder{color:#6c757d;opacity:1}.form-control::-ms-input-placeholder{color:#6c757d;opacity:1}.form-inline{display:-ms-flexbox;display:flex;-ms-flex-flow:row wrap;flex-flow:row wrap;-ms-flex-align:center;align-items:center}@media (min-width:576px){.form-inline .form-control{display:inline-block;width:auto;vertical-align:middle}.form-inline .input-group{width:auto}}.fade:not(.show){opacity:0}.collapse:not(.show){display:none}.dropdown{position:relative}.dropdown-toggle{white-space:nowrap}.dropdown-toggle::after{display:inline-block;margin-left:.255em;vertical-align:.255em;content:"";border-top:.3em solid;border-right:.3em solid transparent;border-bottom:0;border-left:.3em solid transparent}.dropdown-menu{position:absolute;top:100%;left:0;z-index:1000;display:none;float:left;min-width:10rem;padding:.5rem 0;margin:.125rem 0 0;font-size:1rem;color:#212529;text-align:left;list-style:none;background-color:#fff;background-clip:padding-box;border:1px solid rgba(0,0,0,.15);border-radius:.25rem}.input-group{position:relative;display:-ms-flexbox;display:flex;-ms-flex-wrap:wrap;flex-wrap:wrap;-ms-flex-align:stretch;align-items:stretch;width:100%}.input-group>.form-control{position:relative;-ms-flex:1 1 auto;flex:1 1 auto;width:1%;margin-bottom:0}.input-group>.form-control:not(:last-child){border-top-right-radius:0;border-bottom-right-radius:0}.input-group>.form-control:not(:first-child){border-top-left-radius:0;border-bottom-left-radius:0}.input-group-prepend{display:-ms-flexbox;display:flex}.input-group-prepend{margin-right:-1px}.input-group-text{display:-ms-flexbox;display:flex;-ms-flex-align:center;align-items:center;padding:.375rem .75rem;margin-bottom:0;font-size:1rem;font-weight:400;line-height:1.5;color:#495057;text-align:center;white-space:nowrap;background-color:#e9ecef;border:1px solid #ced4da;border-radius:.25rem}.input-group>.input-group-prepend>.input-group-text{border-top-right-radius:0;border-bottom-right-radius:0}.nav{display:-ms-flexbox;display:flex;-ms-flex-wrap:wrap;flex-wrap:wrap;padding-left:0;margin-bottom:0;list-style:none}.nav-link{display:block;padding:.5rem 1rem}.navbar{position:relative;display:-ms-flexbox;display:flex;-ms-flex-wrap:wrap;flex-wrap:wrap;-ms-flex-align:center;align-items:center;-ms-flex-pack:justify;justify-content:space-between;padding:.5rem 1rem}.navbar-brand{display:inline-block;padding-top:.3125rem;padding-bottom:.3125rem;margin-right:1rem;font-size:1.25rem;line-height:inherit;white-space:nowrap}.navbar-nav{display:-ms-flexbox;display:flex;-ms-flex-direction:column;flex-direction:column;padding-left:0;margin-bottom:0;list-style:none}.navbar-nav .nav-link{padding-right:0;padding-left:0}.navbar-nav .dropdown-menu{position:static;float:none}.navbar-collapse{-ms-flex-preferred-size:100%;flex-basis:100%;-ms-flex-positive:1;flex-grow:1;-ms-flex-align:center;align-items:center}.navbar-toggler{padding:.25rem .75rem;font-size:1.25rem;line-height:1;background-color:transparent;border:1px solid transparent;border-radius:.25rem}.navbar-toggler-icon{display:inline-block;width:1.5em;height:1.5em;vertical-align:middle;content:"";background:no-repeat center center;background-size:100% 100%}@media (min-width:992px){.navbar-expand-lg{-ms-flex-flow:row nowrap;flex-flow:row nowrap;-ms-flex-pack:start;justify-content:flex-start}.navbar-expand-lg .navbar-nav{-ms-flex-direction:row;flex-direction:row}.navbar-expand-lg .navbar-nav .dropdown-menu{position:absolute}.navbar-expand-lg .navbar-nav .nav-link{padding-right:.5rem;padding-left:.5rem}.navbar-expand-lg .navbar-collapse{display:-ms-flexbox!important;display:flex!important;-ms-flex-preferred-size:auto;flex-basis:auto}.navbar-expand-lg .navbar-toggler{display:none}}.modal{position:fixed;top:0;left:0;z-index:1050;display:none;width:100%;height:100%;overflow:hidden;outline:0}.modal-dialog{position:relative;width:auto;margin:.5rem}.modal.fade .modal-dialog{-webkit-transform:translate(0,0px);transform:translate(0,0px)}.modal-content{position:relative;display:-ms-flexbox;display:flex;-ms-flex-direction:column;flex-direction:column;width:100%;background-color:#fff;background-clip:padding-box;border:1px solid rgba(0,0,0,.2);border-radius:.3rem;outline:0}@media (min-width:576px){.modal-dialog{max-width:90%;margin:1.75rem auto}}.bg-transparent{background-color:transparent!important}.d-none{display:none}@media (min-width:992px){.d-lg-none{display:none!important}.d-lg-block{display:block!important}}.flex-nowrap{-ms-flex-wrap:nowrap!important;flex-wrap:nowrap!important}.float-right{float:right!important}.mr-auto{margin-right:auto!important}@CHARSET "UTF-8";body{font-family:'Lato',sans-serif;font-size:12px;line-height:1.4;color:#555555}.hidden{display:none}.container{background:#fff}a{color:#333}.bilbo_ad{padding:0!important}.lazyload_ad{text-align:center}.lazyload_ad code{display:none}.container-navbar{width:100%}.container-navbar-inside{left:10px;right:10px}nav+nav{clear:both}.container-navbar .navbar-default{opacity:1;height:auto}.nav-link{display:block;padding:.67rem 1rem}.navbar{margin-left:-15px;margin-right:-15px;border-radius:0;border:0;padding-top:0.3rem;padding-bottom:0.3rem}.nav>li{margin-bottom:0}.nav>li.navi-right{border:1px solid #fff;margin:auto 2px}.nav>li.navi-right.navi-black{border:1px solid #000;background-color:#000;color:#ffd700}.nav>li.navi-right.navi-black>a{color:#ffd700}.nav>li.navi-right>a{padding:9px 10px}.navbar-default{background:#fff}.navbar-default2{background:#e90000}.navbar-collapse{position:absolute;left:0;top:50px;width:100%;z-index:10;background:#000;padding:0 10px}.navbar-default2 .navbar-nav>li>a{color:#fff;font-weight:700;font-size:14px}.navbar-default .navbar-collapse,.navbar-default .navbar-form{border-color:transparent}.navbar-default .navbar-form .form-control{border:1px solid #ccc;border-left:0;outline:0;-webkit-box-shadow:none;box-shadow:none;background-color:#fff}.navbar-brand img{margin-top:-5px;width:auto}.dropdown-menu>li>a{font-weight:500}.caret{border:0;width:8px;height:5px;background:url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAFCAYAAAEPlp3DAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAFdJREFUeNpi+P///36AAGIAEgwAAcQIIoCgHyCAYIwEGIMBIIBgjPdAXAhiAAQQSIMBSBCK+0HEfKjgf7BqmAxMFUCAwVS8R9OaANWRwIAkCFMIAg0wcQB/CnJTxBlGoQAAAABJRU5ErkJggg==') center no-repeat}.dropdown-menu{background-color:#000;border:0}.dropdown-menu>li>a{background:#000;color:#fff}figure{background-color:#ddd;margin-bottom:0}.frame-responsive{display:block;position:relative;width:100%;max-width:100%;oveflov:hidden;line-height:0}.frame-responsive-570by378{height:0;padding-bottom:66.31%}.frame-responsive-370by208{height:0;padding-bottom:66.31%}.row-list-item .frame-responsive-370by208{padding-bottom:56.21%}.frame-responsive img{position:absolute;width:100%;min-height:100%;max-width:100%;top:0;left:0;border:1px solid #ccc;z-index:1}.modal-content{border:0}.separator,.img-shadow,.right-side>div:first-child,.left-side>section>div:first-child,.right-side>section>div:first-child{margin-top:10px}.img-shadow{display:inline-block;width:100%;position:relative;z-index:1;overflow:hidden}.img-shadow figure:before{content:"";position:absolute;display:block;z-index:2;top:0;right:0;bottom:0;left:0;background:-moz-linear-gradient(top,rgba(0,0,0,,0) 50%,rgba(0,0,0,1) 100%);background:-o-linear-gradient(top,rgba(0,0,0,0) 50%,rgba(0,0,0,1) 100%);background:-webkit-linear-gradient(top,rgba(0,0,0,0) 50%,rgba(0,0,0,1) 100%);background:-khtlm-linear-gradient(top,rgba(0,0,0,0) 50%,rgba(0,0,0,1) 100%);background:linear-gradient(to bottom,rgba(0,0,0,0) 50%,rgba(0,0,0,1) 100%);filter:progid:DXImageTransform.Microsoft.gradient( startColorstr='#00000000', endColorstr='#000000',GradientType=0 );zoom:1;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=60)";filter:alpha(opacity=60);-moz-opacity:0.6;-o-opacity:0.6;-webkit-opacity:0.6;-khtml-opacity:0.6;opacity:0.6}.img-shadow>a{display:block;position:absolute;z-index:5;width:100%;height:100%;top:0;right:0;bottom:0;left:0}.img-shadow .tag{position:absolute;left:10px;top:10px;z-index:4}.img-shadow .tag.tag-url{z-index:6}.label-img{position:absolute;left:10px;right:10px;bottom:10px;z-index:3;color:#fff}.section-label{background:#D2232A;padding:0 5px;line-height:1.5;color:#fff;text-transform:uppercase}.label-img .title,.label-img .comments{text-shadow:0px 1px 1px rgba(0,0,0,0.75)}.comments:before{content:"";width:21px;height:19px;display:block;background:url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAATCAQAAAGiQL6WAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAglJREFUGBl1wU1IFGEcwOHff+Zdx2Z13W07uBRtZZ0KIy0kyTxFBAVdkoJOdRGEoIunDp06FUFBYOGhj4OdhMJDUF2iD0krjITqYIqBtpvNqLs7sx/zNm5iivU8AtRhQXJqWmtCtVQlEXSIOLQhhMzPVxxHh0go6rf2evnBvtlxHAEMEoDHu9MPz+nQzLTa2Vf8phF0wNtXWrsux7HBphmDVep9Vy9zJ7ENYt6C1sOPc5pleYUFyXlXhwaHrj44cWPW7R2gDQsiNL/5cOsJJ+lkOzFiGFQJFoo1hD9qsDFZUiFHlfQc1itoUkS/XjLV+ff8tQn26FDLRb2CNoMGQr8UaJZVhEP6BbjOnUfKGg3un5GzPIOW7LzWpbLjzs9x9NpltmHARk5VAro5QitJ4tQSEtJ00IiJsIrCQvgPwepJO89LP72Ml/EyXsbLeBk/W5pznpIgohAEEwMDoeHHXnOfiivW8neRZsLAIpWfCArBol4c759OlYR1AoWFobDZUqkTQeB7fT4RibCOMhFQCEoLVe2tx8a6bu5OF2xPUrGe/Y1RGPoyMlb4iEsZkrR7nl7n0zDdF/ryuYF7HGQzNqYQJRVvbjpwvatjh1/uf313ROU2FMvZ0fHFDBVMy69xFlzKoMgz5Szks4n2l1OdtyuTzFCgQhmfIgH4+BpNSFiisIkieOQoovmn3800BuB0n9+lAAAAAElFTkSuQmCC');background-position:center;background-repeat:no-repeat;position:absolute;left:-24px;top:0}.comments:empty:before,.comments:empty{display:none}.img-shadow .section{display:inline-block;font-size:10px;vertical-align:top}.label-img .comments{margin-left:35px;font-size:11px;line-height:1.5;position:relative}.label-img .title{font-size:18px;line-height:1.2;font-weight:700;margin-top:6px}.section-header{margin-top:15px}.section-header{border-bottom:2px solid #000}.section-title{font-size:18px;font-weight:700;color:#fff;background:#000;line-height:1;display:inline-block;padding:3px 5px}.row-list-item .title{display:inline-block;font-weight:700;font-size:14px;color:#222}.row-list-item .description{display:block;margin-top:4px;color:#555}.form-control::-moz-placeholder{color:#999;opacity:1}.form-control:-ms-input-placeholder{color:#999}.form-control::-webkit-input-placeholder{color:#999}.modal-content{border-radius:0px}@media (min-width:576px){.navbar-brand img{margin-top:-5px;width:85%}}@media (min-width:576px){.navbar-brand img{margin-top:-5px;width:85%}}.custom-toggler .navbar-toggler-icon{background-image:url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255,255,255, 0.8)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E")}@media only screen and (min-width:576px) and (max-width:767.98px){.home .row .col-lg-4.col-sm-6:last-child{display:none}}@media (min-width:768px){body{font-size:13px}.container{padding-left:0;padding-right:0}.container-navbar,.container-navbar-inside{width:720px;max-width:720px}.container-navbar-inside{left:auto;right:auto}.navbar-brand img{margin-top:0px;width:100%}.separator,.img-shadow,.right-side>div:first-child,.left-side>section>div:first-child,.right-side>section>div:first-child{margin-top:15px}.right-side a{text-decoration:none;color:#222}.label-img{position:absolute;left:15px;right:15px;bottom:15px;z-index:3;color:#fff}.section-label{padding:0 6px}.img-shadow .section{font-size:11px}.label-img .comments{margin-left:35px;font-size:12px;line-height:1.5}.label-img .title{font-size:26px;margin-top:8px}.section-header{margin-top:17px}.section-title{font-size:20px;font-weight:700;padding:5px 7px}.right-side .section-title{font-size:16px}.row-list-item .title{font-size:16px;font-weight:700}.row-list-item .description{margin-top:5px}}@media (max-width:991.98px){.navbar-nav>li>ul{margin-left:20px}.navbar-nav>li>ul>li{position:relative}.navbar-nav>li>ul>li:before{content:'-';position:absolute;left:-15px;top:7px;color:#fff}}@media (min-width:992px){body{font-size:14px}.container-navbar,.container-navbar-inside{width:960px;max-width:960px}.navbar-collapse{position:relative;width:auto;z-index:10;top:0;background:transparent}.separator,.img-shadow,.right-side>div:first-child,.left-side>section>div:first-child,.right-side>section>div:first-child{margin-top:20px}.frame-responsive-570by378{height:0;padding-bottom:66.31%}.frame-responsive-370by208{height:0;padding-bottom:56.21%}.frame-responsive img{position:absolute;width:100%;height:100%;max-width:100%;top:0;left:0;border:1px solid #ccc}.label-img{left:20px;right:20px;bottom:20px}.section-label,.img-shadow .section{padding:0 7px}.label-img .title{font-size:14px;margin-top:10px}.big-item .label-img .title{font-size:24px}.section-header{margin-top:30px}.section-title{font-size:20px;padding:5px 7px}.right-side .section-title{font-size:18px}.row-list-item .title{display:inline-block;font-size:18px}.row-list-item .description{margin-top:6px}}@media (min-width:1200px){.container-navbar,.container-navbar-inside{width:1140px;max-width:1140px}}.right-side section,.right-side .ad{background-color:#fff;position:relative}.carousel-slick img, #authors img.bylineImage{width:100%!important}.slick-slide img{display:block}.image-idg img{width:100%}.embed-responsive {position:relative;display:block;width:100%;padding:0;overflow:hidden}.embed-responsive-16by9:before{padding-top:56.25%}.embed-responsive .embed-responsive-item{position:absolute;top:0;bottom:0;left:0;width:100%;height:100%;border:0}.shareContainer.articleAsideContainer h4{font-size:18px}.breadcrumb{display:-ms-flexbox;display:flex;-ms-flex-wrap:wrap;flex-wrap:wrap;list-style:none;font-size:13px;background:transparent;padding:8px 0 4px 0;margin-bottom:5px}
+}.breadcrumb-item+.breadcrumb-item:before{color:#888;content:"\00bb ";padding:0 5px;display:inline-block}.text-center{text-align:center}.largeImage{width:100%;}.navbar-nav>li>a.fab{color:#fff;background-color:#000;border-radius:50%;padding:2px;margin:4px 8px 0 0;font-size:21px;line-height:1.1;width:26px;height:26px;text-align:center;display:block}.navbar-nav>li>a.fab:hover {color:#ffcc00!important}
+.frame-responsive-370by334{height:0;padding-bottom:66.31%}@media(min-width:767.98px){.frame-responsive-370by334{height:0;padding-bottom:90.415%}}
+</style>
+<noscript><link rel="stylesheet" href="/www/bootstrap/css/idg_all.min.css?v=3.5.714" /></noscript>
+
+
+<script src="https://ajax.cloudflare.com/cdn-cgi/scripts/7089c43e/cloudflare-static/rocket-loader.min.js" data-cf-settings="2ee252c2e74f2a6f9ae45265-|49"></script><link rel="preload" href="/www/bootstrap/css/fonts.css?v=3.5.714" as="style" onload="this.onload=null;this.rel='stylesheet'" id="idgFontsPreloadLink" />
+<script src="https://ajax.cloudflare.com/cdn-cgi/scripts/7089c43e/cloudflare-static/rocket-loader.min.js" data-cf-settings="2ee252c2e74f2a6f9ae45265-|49"></script><link rel="preload" href="/www/bootstrap/css/custom/9900f3c3b29e6812433ff3cb5052dee6.css?v=3.5.714" crossorigin="anonymous" as="style" onload="this.onload=null;this.rel='stylesheet'" id="bsCustomPreloadLink" />
+<script src="https://ajax.cloudflare.com/cdn-cgi/scripts/7089c43e/cloudflare-static/rocket-loader.min.js" data-cf-settings="2ee252c2e74f2a6f9ae45265-|49"></script><link rel="preload" href="/www/bootstrap/css/idg_all.min.css?v=3.5.714" as="style" onload="this.onload=null;this.rel='stylesheet'" id="idgAllPreloadLink" />
+
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+	<script type="2ee252c2e74f2a6f9ae45265-text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous" id="jQueryScript" async="true"></script>
+<script type="2ee252c2e74f2a6f9ae45265-text/javascript">
+var IDG = IDG || {};
+IDG.global = IDG.global || {};
+IDG.global.version = '3.5.714';
+IDG.global.load = IDG.global.load || {};
+IDG.global.load.script = function(url, id, async) {
+	if (document.getElementById(id)) {
+		return;
+	}
+	var po = document.createElement("script");
+	po.id = id;
+	po.type = "text/javascript";
+	if (!!async) {
+		po.async = 'true';
+	}
+	po.src = url;
+	var s = document.getElementsByTagName("script")[0];
+	s.parentNode.insertBefore(po, s);
+}
+
+var noAds = 0;
+var mainUrl = '';
+var _sf_startpt=(new Date()).getTime();
+</script>
+
+<script type="2ee252c2e74f2a6f9ae45265-text/javascript">
+if (typeof IDG.global.async != 'undefined') {
+	IDG.global.async.unshift(['load', function () {
+		jQuery.noConflict();
+	}]);
+} else {
+	jQuery.noConflict();
+}
+</script>
+	
+	<meta name="description" content="Jeśli masz różne konta e-mail, możesz sprawdzać je wszystkie w Gmailu. Google oferuje kilka możliwości - poznaj je już dzisiaj!" >
+<meta name="keywords" content="Gmail, poczta Gmail, Google, internet, Oprogramowanie, Gmail jako klient poczty, MŚP" >
+<meta name="pubdate" content="2019-10-19 17:03:26" >
+<meta property="fb:admins" content="150058696436" >
+<meta property="fb:app_id" content="242871505749448" >
+<meta property="og:type" content="article" >
+<meta property="og:description" content="Jeśli masz różne konta e-mail, możesz sprawdzać je wszystkie w Gmailu. Google oferuje kilka możliwości - poznaj je już dzisiaj!" >
+<meta property="og:title" content="Gmail jako klient poczty" >
+<meta property="og:url" content="https://pcworld.pl/porada/Gmail-jako-klient-poczty,416005.html" >
+<meta property="og:image" content="https://www.pcworld.pl/g1/news/thumb/3/2/320715" >
+<meta property="og:image" content="https://www.pcworld.pl/g1/news/thumb/3/2/320716" >
+<meta property="og:image" content="https://www.pcworld.pl/g1/news/thumb/3/2/320717" >
+<meta property="twitter:card" content="summary_large_image" >
+<meta property="twitter:description" content="Jeśli masz różne konta e-mail, możesz sprawdzać je wszystkie w Gmailu. Google oferuje kilka możliwości - poznaj je już dzisiaj!" >
+<meta property="twitter:title" content="Gmail jako klient poczty" >
+<meta property="twitter:site" content="@pcworldpl" >
+<meta property="twitter:url" content="https://pcworld.pl/porada/Gmail-jako-klient-poczty,416005.html" >
+<meta property="twitter:image" content="https://www.pcworld.pl/g1/news/thumb/3/2/320715" >
+<meta name="dateModified" content="2019-10-19T17:03:26+02:00" >	
+	
+
+
+
+
+
+
+	<link href="https://www.pcworld.pl/porada/Gmail-jako-klient-poczty,416005.html" rel="canonical" >
+<link href="https://www.pcworld.pl/porada/Gmail-jako-klient-poczty,416005.html?amp=1" rel="amphtml" >	<style type="text/css" media="screen">
+<!--
+  <PageMap>
+     <DataObject type="document">
+        <Attribute name="title">Gmail jako klient poczty</Attribute>
+                <Attribute name="author">Henryk Tur</Attribute>
+                <Attribute name="description">"Je\u015bli masz r\u00f3\u017cne konta e-mail, mo\u017cesz sprawdza\u0107 je wszystkie w Gmailu. Google oferuje kilka mo\u017cliwo\u015bci - poznaj je ju\u017c dzisiaj!"</Attribute>
+                         <Attribute name="last_update">19/10/2019</Attribute>
+             </DataObject>
+          <DataObject type="metatags">
+   		<Attribute name="pubdate" value="20191019"/>
+  		</DataObject> 
+  		     
+     <DataObject type="thumbnail">
+             <Attribute name="src" value="https://www.pcworld.pl/g1/news/thumbnails/3/2/320715_Gmail_PNG_90_adaptiveresize_770x432.PNG" />
+          </DataObject>
+     
+  </PageMap>
+
+-->
+</style>
+<style type="text/css" media="screen">
+<!--
+/* css.css */
+.bilbo_ad {
+	text-align:center;
+	padding-top:10px;
+	padding-bottom:10px;
+}
+
+.ad{
+	text-align:center;
+}
+
+[id^="google_ads_iframe_"] {
+	margin: 0 auto;
+}
+
+#superadunit.hidden {
+	display: none;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+}
+#superadunit.unhidden {
+	display: block;
+	position: fixed;
+	height: 100%;
+	top: 0;
+	left: 0;
+	width: 100%;
+	z-index: 6000000;
+	background-color: rgba(0, 0, 0, 0.85);
+	height: 100%;
+}
+#superadunit .ad {
+	text-align: center;
+	z-index: 6000000;
+	width: 100%;
+	margin: 100px auto;
+}
+#superadunit a, #superadunit img {
+	border: none;
+	z-index: 6000000;
+}
+#superstitial-text {
+	display: block !important;
+	color: #fff;
+	font-weight: bold;
+	font-size: 16px;
+	text-decoration: none;
+	font-family: Arial,Helvetica,sans-serif;
+	padding-bottom: 20px;
+}
+
+#welcome_close_times{
+	position: fixed;
+	font-size: 50px;
+	right: 5px;
+	top: 5px;
+	z-index: 6000001;
+	color: #fff;
+	text-decoration: none;
+	cursor: pointer;
+	line-height: 1;
+}
+
+#welcome_close_times:hover {
+	color: red;
+}
+
+.link-sponsor a{
+	font-weight: bold;
+}
+
+.link-sponsor a span{
+	color: red;
+	font-size: 12px;
+	text-decoration: none;
+}
+
+code.lazy-ad {
+	display: none;
+}
+-->
+</style>	<script type="2ee252c2e74f2a6f9ae45265-text/javascript">
+    //<!--
+    
+var IDG = IDG || {};
+IDG.global = IDG.global || {};
+IDG.global.adsShow = true;
+    //-->
+</script>
+<script type="application/ld+json">
+    //<!--
+    
+{
+	"@context": "http://schema.org"
+	,"@type": "NewsArticle"
+	,"mainEntityOfPage": {
+		"@type": "WebPage"
+		,"@id": "https://google.com/article"
+	}
+	,"headline": "Gmail jako klient poczty"
+	,"image": [
+		"https://www.pcworld.pl/g1/news/thumb/3/2/320715", 
+		"https://www.pcworld.pl/g1/news/thumb/3/2/320716", 
+		"https://www.pcworld.pl/g1/news/thumb/3/2/320717"
+	   ]
+ 	
+		,"datePublished": "2019-10-19T17:03:26+02:00"
+		,"dateModified": "2019-10-19T17:03:26+02:00"
+		
+		,"author": {
+		"@type": "Person",
+		"name": [
+		"Henryk Tur"
+	   ]  
+ 	}
+		,"publisher": {
+		"@type": "Organization",
+		"name": "PCWorld.pl",
+		"logo": {
+			"@type": "ImageObject",
+			"url": "https://www.pcworld.pl/www/image/logo-from-idg-180.png"
+		}
+	}
+	,"description": "Je\u015bli masz r\u00f3\u017cne konta e-mail, mo\u017cesz sprawdza\u0107 je wszystkie w Gmailu. Google oferuje kilka mo\u017cliwo\u015bci - poznaj je ju\u017c dzisiaj!"}
+    //-->
+</script>
+<script type="2ee252c2e74f2a6f9ae45265-text/javascript">
+    //<!--
+    var IDG = IDG || {};
+IDG.global = IDG.global || {};
+
+    //-->
+</script>
+<script type="2ee252c2e74f2a6f9ae45265-text/javascript">
+    //<!--
+    
+!function () { var e = function () { var e, t = "__tcfapiLocator", a = [], n = window; for (; n;) { try { if (n.frames[t]) { e = n; break } } catch (e) { } if (n === window.top) break; n = n.parent } e || (!function e() { var a = n.document, r = !!n.frames[t]; if (!r) if (a.body) { var i = a.createElement("iframe"); i.style.cssText = "display:none", i.name = t, a.body.appendChild(i) } else setTimeout(e, 5); return !r }(), n.__tcfapi = function () { for (var e, t = arguments.length, n = new Array(t), r = 0; r < t; r++)n[r] = arguments[r]; if (!n.length) return a; if ("setGdprApplies" === n[0]) n.length > 3 && 2 === parseInt(n[1], 10) && "boolean" == typeof n[3] && (e = n[3], "function" == typeof n[2] && n[2]("set", !0)); else if ("ping" === n[0]) { var i = { gdprApplies: e, cmpLoaded: !1, cmpStatus: "stub" }; "function" == typeof n[2] && n[2](i) } else a.push(n) }, n.addEventListener("message", (function (e) { var t = "string" == typeof e.data, a = {}; try { a = t ? JSON.parse(e.data) : e.data } catch (e) { } var n = a.__tcfapiCall; n && window.__tcfapi(n.command, n.version, (function (a, r) { var i = { __tcfapiReturn: { returnValue: a, success: r, callId: n.callId } }; t && (i = JSON.stringify(i)), e.source.postMessage(i, "*") }), n.parameter) }), !1)) }; "undefined" != typeof module ? module.exports = e : e() }();
+
+    //-->
+</script>
+<script type="2ee252c2e74f2a6f9ae45265-text/javascript">
+    //<!--
+    
+//Replace YOUR_ACCOUNT_ID with the account ID provided
+//by Sourcepoint
+window._sp_ = { 
+	config: { 
+		accountId: 146, 
+		baseEndpoint: 'https://cmpv2.pcworld.pl',
+		consentLanguage: 'pl'
+	}
+}
+
+    //-->
+</script>
+<script src="https://cmpv2.pcworld.pl/wrapperMessagingWithoutDetection.js" type="2ee252c2e74f2a6f9ae45265-text/javascript"></script>
+<script type="2ee252c2e74f2a6f9ae45265-text/javascript">
+    //<!--
+    if(typeof Promise === 'undefined'){
+	//yuk but IE 11 etc only
+	document.write('<script src="https://www.promisejs.org/polyfills/promise-7.0.4.min.js"></scr'+'ipt>');
+}
+
+var consent = consent || {};
+consent.runCode = true;
+
+var IDG = IDG || {};
+IDG.global = IDG.global || {};
+IDG.CMP = IDG.CMP || {};
+IDG.CMP.bindReshow = true;
+
+IDG.CMP.privacyLink = function(){
+	console.log('IDG.CMP.privacyLink');
+	var LANG = {
+		"pl": {
+			reshowText: 'Ustawienia prywatności',
+			reshowTitle: 'Zmień swoje ustawienia GDPR'
+		},
+		"en": {
+			reshowText: 'Privacy Settings',
+			reshowTitle: 'Edit your GDPR settings'
+		},
+		"fr": {
+			reshowText: 'Param&egrave;tres de confidentialit&eacute;',
+			reshowTitle: 'Modifier vos parametres RGPD'
+		},
+		"es": {
+			reshowText: 'Ajustes de privacidad',
+			reshowTitle: 'Edita tus ajustes de RGPD'
+		},
+		"nl": {
+			reshowText: 'Privacy instellingen',
+			reshowTitle: 'Bewerk uw GDPR-instellingen'
+		}
+	};
+	var siteLang = 'pl';
+	var lang = (siteLang in LANG) ? LANG[siteLang] : LANG['pl'];
+	
+	//update any cmp setting links and show them.
+	var els = document.querySelectorAll('.cmpSettings');
+	for (var i = 0; i < els.length; ++i) {
+		els[i].style = '';
+	}
+	var els = document.querySelectorAll('.cmpReshowLink'); //add child link to this
+	for (var i = 0; i < els.length; ++i) {
+		var el = els[i];
+		var a = document.createElement('a');
+		a.innerHTML = a.innerHTML + lang.reshowText;
+		a.title = lang.reshowTitle;
+		a.style = 'cursor:pointer';
+		el.appendChild(a);
+	}
+};
+
+function bindReshowCmp() {
+	//var url = document.location.pathname;
+	IDG.CMP.privacyLink();
+	jQuery(".cmpSettings").show();
+	jQuery(".cmpReshowLink").on("click", function(e) {
+		e.preventDefault();
+		window._sp_.loadPrivacyManagerModal(165635);
+	});
+}
+
+if (typeof IDG.global.async != 'undefined') {
+	IDG.global.async.push(['load', function () {
+		bindReshowCmp();
+	}]);
+} else {
+	jQuery(window).on('load', function() {
+		bindReshowCmp();
+	});
+}
+    //-->
+</script>
+<script type="2ee252c2e74f2a6f9ae45265-text/javascript">
+    //<!--
+    //includes.js
+var googletag = googletag || {};
+googletag.cmd = googletag.cmd || [];
+
+// Used for answers (runs client side) and used for static itjobs header/footer
+var adUnitIdsMap = {
+	//'cfo': '/8456/IDG.US_E_CFOWorld.com',
+	//'pcw': '/8456/IDG.US_CSMB_PCWorld.com',
+	//'cio': '/8456/IDG.US_E_CIO.com',
+	//'cit': '/8456/IDG.US_E_CITEworld.com',
+	//'cso': '/8456/IDG.US_E_CSOOnline.com',
+	//'grb': '/8456/IDG.US_CSMB_Greenbot.com',
+	//'itn': '/8456/IDG.US_E_ITNews.com',
+	//'jvw': '/8456/IDG.US_E_JavaWorld.com',
+	//'mw' : '/8456/IDG.US_CSMB_Macworld.com',
+	//'nww': '/8456/IDG.US_E_NetworkWorld.com',
+	//'th' : '/8456/IDG.US_CSMB_TechHive.com',
+	//'ans': '/8456/IDG.US_E_IDGAnswers.com',
+	//'ifw': '/8456/IDG.US_E_Infoworld.com',
+	//'itw': '/8456/IDG.US_E_ITworld.com',
+	//'ctw': '/8456/IDG.US_E_Computerworld.com'
+};
+
+//IDGAnswers.com needs this to overwrite the ad unit id
+function getSrcCookie() {
+	var nameEQ = "src=";
+	var ca = document.cookie.split(';');
+	for(var i=0;i < ca.length;i++) {
+		var c = ca[i];
+		while (c.charAt(0)==' ') c = c.substring(1,c.length);
+		if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+	}
+	return null;
+}
+
+(function(){
+	var gads = document.createElement("script");
+	gads.async = true;
+	gads.type = "text/javascript";
+	var useSSL = "https:" == document.location.protocol;
+	gads.src = (useSSL ? "https:" : "http:") + "//www.googletagservices.com/tag/js/gpt.js";
+	var node =document.getElementsByTagName("script")[0];
+	node.parentNode.insertBefore(gads, node);
+})();
+
+function isElementAboveTheFold(el) {
+	console.log('element', el);
+	var rect = el.getBoundingClientRect();
+	return (
+		rect.top <= (window.innerHeight || document.documentElement.clientHeight)
+	);
+}
+
+function isElementVisibility(el) {
+	var $return = true;
+	if (jQuery('#'+el).css('display') == 'none') {
+		return false;
+	}
+	jQuery('#'+el).parents().each(function(index,item){
+		if (jQuery(item).css('display') == 'none') {
+			$return = false;
+		}
+	});
+	return $return;
+}
+
+var IDG = IDG || {};
+IDG.GPT = {
+	unitName: "",
+	runCode: null,
+	akw: false,
+	localIsMoble: false,
+	isSlideshow: false,
+	otherAds:{},
+	addOtherAd: function(key, value) {
+		IDG.GPT.otherAds[key] = value;
+	},
+	getOtherAds: function(delimiter) {
+		return IDG.GPT.getDelimiterData(IDG.GPT.otherAds, delimiter);
+	},
+	extIMUCounter: 1,
+	addExtIMU: function() {
+		IDG.GPT.extIMUCounter = IDG.GPT.extIMUCounter + 1;
+		IDG.GPT.addOtherAd('ad-mpu-' + IDG.GPT.extIMUCounter, true);
+	},
+	trackOmniture: function() {
+		if (typeof(s) != 'undefined') {
+			if (typeof(s.prop41) != 'undefined') {
+				var currentSlotSet = IDG.GPT.getDisplayedAds(',') + ',' + IDG.GPT.getOtherAds(',');
+				if (s.prop41 != currentSlotSet) {
+					s.linkTrackEvents = s.events = "event38";
+					s.linkTrackVars = "prop41,events";
+					s.prop41 = currentSlotSet;
+					s.event38 = currentSlotSet;
+					s.tl(true, 'o', 'Article DRR IMUs:' + IDG.GPT.getOtherAds(','));
+				}
+			}
+		}
+	},
+	IMUCounter: 1,
+	getIMUSlotName: function() {
+		return "ad-mpu-" + IDG.GPT.IMUCounter;
+	},
+	getDelimiterData: function(dataSet, delimiter) {
+		var delimiterData = "";
+		for (var data in dataSet) {
+			delimiterData += data + delimiter;
+		}
+		return delimiterData.slice(0, delimiterData.lastIndexOf(delimiter));
+	},
+	modules:{},
+	addModule: function(key, value) {
+		IDG.GPT.modules[key] = value;
+	},
+	getModules: function(delimiter) {
+		return IDG.GPT.getDelimiterData(IDG.GPT.modules, delimiter);
+	},
+	displayedads:{},
+	addDisplayedAd: function(key, value) {
+		IDG.GPT.displayedads[key] = value;
+	},
+	getDisplayedAds: function(delimiter) {
+		return IDG.GPT.getDelimiterData(IDG.GPT.displayedads, delimiter);
+	},
+	lazyloadedads:{},
+	addLazyloadedAd: function(key, value) {
+		IDG.GPT.lazyloadedads[key] = value;
+	},
+	getLazyloadedAds: function(delimiter) {
+		return IDG.GPT.getDelimiterData(IDG.GPT.lazyloadedads, delimiter);
+	},
+	slots: {},
+	slotsOutOfPage: {},
+	slotDefinitions: {},
+	adsToRefresh: Array(),
+	refreshAd: function(slotName) {
+		if(typeof(slotName) == "undefined") {
+			googletag.pubads().refresh();
+		}
+		else {
+			googletag.pubads().refresh([IDG.GPT.slotDefinitions[slotName]]);
+		}
+	},
+	addSlot: function(key, value) {
+		IDG.GPT.slots[key] = value;
+	},
+	addSlotOutOfPage: function(key, value) {
+		IDG.GPT.addSlot(key, value);
+		IDG.GPT.slotsOutOfPage[key] = value;
+	},
+	targets: {},
+	addTarget: function(key, value) {
+		IDG.GPT.targets[key] = value;
+	},
+	defineGoogleTagSlot: function(slotName, slotAdSize) {
+		if (IDG.GPT.unitName != null && IDG.GPT.unitName != "" && slotName != "") {
+			if (IDG.GPT.slotsOutOfPage[slotName] !== "undefined" && IDG.GPT.slotsOutOfPage[slotName]) {
+				googletag.cmd.push(function() {
+					IDG.GPT.slotDefinitions[slotName] = googletag.defineOutOfPageSlot(IDG.GPT.unitName, slotName).addService(googletag.pubads()).setTargeting("pos", slotName);
+				});
+				IDG.GPT.addDisplayedAd(slotName, "true");
+			}
+			else {
+				googletag.cmd.push(function() {
+					IDG.GPT.slotDefinitions[slotName] = googletag.defineSlot(IDG.GPT.unitName, slotAdSize, slotName).addService(googletag.pubads());
+					IDG.GPT.adsToRefresh.push(IDG.GPT.slotDefinitions[slotName]);
+				});
+				IDG.GPT.addDisplayedAd(slotName, "true");
+			}
+		}
+	},
+	displayGoogleTagSlot: function(slotName) {
+		if (IDG.GPT.unitName != null && IDG.GPT.unitName != "" && slotName != "") {
+			IDG.GPT.defineGoogleTagSlots(slotName);
+			googletag.cmd.push(function() {
+				googletag.display(slotName);
+			});
+		}
+	},
+	defineGoogleTagSlots: function(slot) {
+		if (IDG.GPT.unitName != null && IDG.GPT.unitName != "") {
+			googletag.cmd.push(function() {
+				for (var slotName in IDG.GPT.slots) {
+					if (slot == slotName){
+						if (IDG.GPT.slots[slotName] != null && IDG.GPT.slots[slotName] != "") {
+							if (IDG.GPT.slotsOutOfPage[slotName] !== "undefined" && IDG.GPT.slotsOutOfPage[slotName]) {
+								IDG.GPT.slotDefinitions[slotName] = googletag.defineOutOfPageSlot(IDG.GPT.unitName, slotName).addService(googletag.pubads()).setTargeting("pos", slotName);
+							}
+							else {
+								//console.log('slotName - ' + slotName + ' : ' + IDG.GPT.slots[slotName]);
+								IDG.GPT.slotDefinitions[slotName] = googletag.defineSlot(IDG.GPT.unitName, IDG.GPT.slots[slotName], slotName).addService(googletag.pubads());
+							}
+						}
+					}
+				}
+				for (var i in IDG.GPT.slotDefintions){
+					IDG.GPT.adsToRefresh.push(IDG.GPT.slotDefintions[i]);
+				}
+			});
+		}
+	},
+	defineAllGoogleTagSlots: function() {
+		return false;
+		if (IDG.GPT.unitName != null && IDG.GPT.unitName != "") {
+			googletag.cmd.push(function() {
+				for (var slotName in IDG.GPT.slots) {
+					if (IDG.GPT.slots[slotName] != null && IDG.GPT.slots[slotName] != "") {
+						if (IDG.GPT.slotsOutOfPage[slotName] !== "undefined" && IDG.GPT.slotsOutOfPage[slotName]) {
+							IDG.GPT.slotDefinitions[slotName] = googletag.defineOutOfPageSlot(IDG.GPT.unitName, slotName).addService(googletag.pubads()).setTargeting("pos", slotName);
+						}
+						else {
+							//console.log('slotName - ' + slotName + ' : ' + IDG.GPT.slots[slotName]);
+							IDG.GPT.slotDefinitions[slotName] = googletag.defineSlot(IDG.GPT.unitName, IDG.GPT.slots[slotName], slotName).addService(googletag.pubads());
+						}
+					}
+				}
+				for (var i in IDG.GPT.slotDefintions){
+					IDG.GPT.adsToRefresh.push(IDG.GPT.slotDefintions[i]);
+				}
+			});
+		}
+	},
+	setAllGoogleTagTargetings: function() {
+		googletag.cmd.push(function() {
+			for (var targetName in IDG.GPT.targets) {
+				if (IDG.GPT.targets[targetName] != null && IDG.GPT.targets[targetName] != "") {
+					googletag.pubads().setTargeting(targetName, IDG.GPT.targets[targetName]);
+				}
+			}
+		});
+	},
+	setPermutive: function() {
+		window.googletag.cmd.push(function () {
+			if (window.googletag.pubads().getTargeting('permutive').length === 0) {
+				var kvs = window.localStorage.getItem('_pdfps');
+				window.googletag.pubads().setTargeting('permutive', kvs ? JSON.parse(kvs) : []);
+			}
+		});
+	},
+	initGoogleTagService: function() {
+		googletag.cmd.push(function() {
+			try {
+				if (!consent.personalization) {
+					googletag.pubads().setRequestNonPersonalizedAds(1);
+					console.log("*****GDPR: need to load in non-personalized ad mode")
+				} else {
+					console.log("*****GDPR: load in normal ad mode")
+				}
+			} catch (e) {
+				console.log(e)
+			}
+			//googletag.pubads().enableSingleRequest(); csmb had this ON
+			googletag.pubads().enableAsyncRendering();
+			googletag.pubads().collapseEmptyDivs(); // csmb did not have this
+			//googletag.pubads().disableInitialLoad(); csmb had this ON //defer loading of the ads until after page load
+			googletag.enableServices();
+		});
+	},
+	getParameterValue: function(paramString, paramName) {
+		var paramValue = "";
+		if (paramString && paramString != 'undefined') {
+			var searchChars = "[\\?&]"+paramName+"=([^&#]*)";
+			var regularExp = new RegExp(searchChars);
+			var searchResults = regularExp.exec(paramString);
+			if (searchResults != null && searchResults.length >= 1) 
+				paramValue = searchResults[1];
+		}
+		return paramValue;
+	},
+	getReferrerDomain: function() {
+		var referrerDomain = "";
+		if (document.referrer && document.referrer != 'undefined') {
+			var referrerString = document.referrer;
+			referrerDomain = referrerString.match(/^http[s]?:\/\/[a-zA-Z0-9-_\.]+[\:]?[0-9]*?\//);
+		}
+		return String(referrerDomain);
+	},
+	getSearchEngineQuery: function() {
+		var sQuery = "";
+		var referrerDomain = IDG.GPT.getReferrerDomain();
+		if (referrerDomain != "") {
+			var documentReferrer = document.referrer;
+			if (referrerDomain.indexOf("google.com") != -1) {
+				documentReferrer = documentReferrer.replace("#q=", "?q=");
+				sQuery = IDG.GPT.getParameterValue(documentReferrer, "q");
+			}
+			else if (referrerDomain.indexOf("bing.com") != -1)
+				sQuery = IDG.GPT.getParameterValue(documentReferrer, "q");
+			else if (referrerDomain.indexOf("yahoo.com") != -1)
+				sQuery = IDG.GPT.getParameterValue(documentReferrer, "p");
+			else if (referrerDomain.indexOf("nww.com") != -1) {
+				sQuery = IDG.GPT.getParameterValue(documentReferrer, "hpg1");
+			}
+		}
+		sQuery = sQuery.replace("+", " ");
+		return sQuery;
+	},
+	userAgentValue: function() {
+		var browser = "";
+		if (/(iPad|iPhone)/.test(navigator.userAgent)) {
+			browser = RegExp.$1;
+		}
+		return browser;
+	},
+	setIDGExtraTargetings: function() {
+		try {
+			IDG.GPT.addTarget("referrer", IDG.GPT.getReferrerDomain());
+			IDG.GPT.addTarget("browser", navigator.userAgent);
+			IDG.GPT.addTarget("squery", IDG.GPT.getSearchEngineQuery());
+			IDG.GPT.addTarget("nlsource", IDG.GPT.getParameterValue(window.location.href, "source"));
+
+			if (document.cookie.indexOf("nsdr") > -1)
+				IDG.GPT.addTarget("insiderauth", "yes");
+			else
+				IDG.GPT.addTarget("insiderauth", "no");
+
+			IDG.GPT.addTarget("env", IDG.GPT.getParameterValue(window.location.href, "env"));
+			
+			if (IDG.GPT.akw === false)
+				IDG.GPT.akw = IDG.GPT.getParameterValue(window.location.href, "akw");
+			
+			if (IDG.GPT.akw != '') {
+				IDG.GPT.addTarget("akw", IDG.GPT.akw);
+			}
+			
+			if (typeof(isMobile) != "undefined")
+				IDG.GPT.localIsMoble = isMobile;
+			if (IDG.GPT.localIsMoble) {
+				IDG.GPT.addTarget("mobile", "true");
+			}
+
+			if (typeof(dogfish_type) != "undefined" && dogfish_type != "(none)") {
+				IDG.GPT.addTarget("type", dogfish_type);
+			}
+		} catch(e) {
+			//console.log(e);
+		}
+	},
+	getQsVal: function(name) {
+		if (window.location.search != "") {
+			var qs = window.location.search.substring(1);
+			var pairs = qs.split("&");
+			for (var i=0;i<pairs.length;i++) {
+				var pair = pairs[i].split("=");
+				if (pair[0] == name) {
+					return pair[1];
+					break;
+				}
+			}
+		}
+		return "";
+	},
+	getAdUnitIdBySrc: function(src) {
+		var rtnValue = adUnitIdsMap["ans"];
+		if (src) {
+			var adUnitIdBySrc = adUnitIdsMap[src];
+			if (adUnitIdBySrc) rtnValue = adUnitIdBySrc;
+		}
+		return rtnValue;
+	},
+	isValidSource: function(src) {
+		var rtnValue = false;
+		if (src) {
+			if (adUnitIdsMap[src]) rtnValue = true;	
+		}
+		return rtnValue;
+	}
+};
+
+IDG.GPT.LaD = IDG.GPT.LaD || {};
+// IDG.GPT.dfpAdManager Keeps track of what ad sizes already present on this page
+// seperate counters for Above and Below the Fold
+IDG.GPT.dfpAdManager = {
+	"constructor" : IDG.GPT.dfpAdManager,
+	"init" : function(){
+		this.adsizes = {};
+		this.adsizes.atf = {};
+		this.adsizes.btf = {};
+	},
+	"push" : function(key, fold){ // add to adsizes, increment if already there
+		if(this.has(key, fold))
+		{
+			this.adsizes[fold + ''][key + ''] = this.adsizes[fold + ''][key + ''] + 1;
+		}
+		else
+		{
+			this.adsizes[fold + ''][key + ''] = 1;
+		}
+	},
+	"has" : function(key,fold){
+		if(this.adsizes[fold+''].hasOwnProperty(key))
+		{
+			return true;
+		}
+		return false;
+	},
+	"get" : function(key, fold) {
+		return this.adsizes[fold][key];
+	},
+	"all" : function(fold) {
+		if(fold == 'atf' || fold == 'btf')
+		{
+			return this.adsizes[fold];
+		}
+		return this.adsizes;
+	},
+	"getCounter" : function(sizes, fold){
+		// check how many sizes already there
+		var counter = 1;
+		for(var i in sizes) {
+			if (i != 'unique') {
+				// getWidth() and getHeight() are methods on the object return from the googletag.pubads()
+				var key = sizes[i].getWidth() + "x" + sizes[i].getHeight();
+				// add sizes
+				this.push(key, fold);
+				// try for a count
+				var c = this.get(key, fold);
+				// ads can have multiple sizes, 
+				// irrespective of their order on the page
+				// avoid resetting counter to a lower number
+				if(c > counter){
+					counter = c;
+				}
+			}
+		}
+		return counter;
+	}
+};
+
+/* Responsive ads  */
+
+IDG.GPT.responsiveAd = function(){
+	(function($){
+		$.fn.responsiveAd = function(options) {
+			var opts = $.extend({
+				"screenSize": 'all',
+				"counter" : 1
+			},options);
+			
+			this.placeAds = function(screenSize) {
+				var id = this.attr('id');
+				
+				var placeAd = true;
+				
+				var debugmsg = 'placeAd:' + placeAd + ", screenSize:" + screenSize + ", id:" + id;
+				if (placeAd == true) {
+					var targetElement = document.getElementById(id);
+					if (targetElement) {
+						var fold = 'btf'; // defaults to BelowTheFold
+						if (opts.forceFold != undefined) { // can force a fold by setting opts.forceFold
+							fold = opts.forceFold;
+						}
+						else if (true === isElementAboveTheFold(targetElement) || id == 'ad-specialmobile'){
+							fold = 'atf';
+						}
+						
+						// Grab reference to defined slot inside func scope sent to googletag.cmd.push
+						googletag.cmd.push(function() { 
+							var currentAd = IDG.GPT.slotDefinitions[id]; 
+							if (currentAd != undefined) {
+								//console.log(id);
+								var counter = IDG.GPT.dfpAdManager.getCounter(currentAd.getSizes(),fold);
+								//console.log(id + ' ' + fold + counter);
+								if (id != "gpt-skin" || id != "gpt-overlay") {
+									currentAd.setTargeting("pos", fold + '1');
+									//currentAd.setTargeting("pos", fold + counter);
+									//console.log(id + ' : ' + fold);
+								}
+								googletag.display(id);
+							}
+							else {
+								//console.log("currentAd was undefined so no slot Definition for " + id);
+							}
+						});
+					} else {
+						console.log('Looking for ' + id + ', but no element found');
+					}
+				}
+			}
+			return this.placeAds(opts.screenSize);
+		};
+	})(jQuery);
+};
+
+if (typeof IDG.global.async != 'undefined') {
+	IDG.global.async.push(['load', function () {
+		IDG.GPT.responsiveAd();
+	}]);
+} else {
+	IDG.GPT.responsiveAd();
+}
+
+var resizeTimeOut = false;
+
+window.onresize = function(){
+	if (resizeTimeOut !== false){
+		clearTimeout(resizeTimeOut);
+	}
+	resizeTimeOut = setTimeout(refreshAds, 500);
+};
+
+function refreshAds(){
+	console.log('RefreshAds()!');
+	return;
+	if (typeof IDG.GPT.adsToRefresh != 'undefined' && IDG.GPT.adsToRefresh.length > 0) {
+		googletag.pubads().refresh(IDG.GPT.adsToRefresh);
+	}
+}
+    //-->
+</script>
+<script type="2ee252c2e74f2a6f9ae45265-text/javascript">
+    //<!--
+    // global variables
+var global_ShowSuper = false, global_ShowHero = true;
+
+IDG.GPT.consent = 1;
+IDG.GPT.unitName = "/8456/IDG.PL_CSMB_PCWorld.pl";
+IDG.GPT.unitName = IDG.GPT.unitName + "/" + "small-business_section";
+
+IDG.GPT.initFirst = function(){
+IDG.GPT.addTarget("URL", encodeURIComponent(window.location));
+
+
+IDG.GPT.addTarget("PL_CategoryID", "");
+IDG.GPT.addTarget("PL_ContentID", "");
+IDG.GPT.addTarget("PL_TypeID", "2");
+IDG.GPT.addTarget("PL_Tag", "Gmail,poczta Gmail,Google,internet,Oprogramowanie,Gmail jako klient poczty,MŚP");
+IDG.GPT.addTarget("PL_ArticleID", "416005");
+IDG.GPT.addTarget("PL_CenterID", "57");
+
+if (null != IDG.GPT.getQsVal("env")) {
+	IDG.GPT.addTarget("env", IDG.GPT.getQsVal("env").replace(/\W/g, "") );
+}
+
+IDG.GPT.addTarget("page_type", '');
+};
+
+if (typeof IDG.global.async != 'undefined') {
+	IDG.global.async.push(['load', function () {
+		IDG.GPT.initFirst();
+	}]);
+} else {
+	IDG.GPT.initFirst();
+}
+    //-->
+</script>
+<script type="2ee252c2e74f2a6f9ae45265-text/javascript">
+    //<!--
+    //proximic.js
+var IDG = IDG || {};
+IDG.Proximic = IDG.Proximic || {};
+IDG.Proximic = function() {
+	
+	var dfp_called = false;
+	var timer;
+	var time_out = 200; // Will call dfp if timeout in millisec exceeded
+	timer = window.setTimeout(
+		function(){
+			if (dfp_called == false) {
+				dfp_called = true;
+		        /*Timeout occurred, call DFP without data*/
+		        //console.log("Call to proximic timed out.");
+		        this.addDataValuesToDfpTag();
+		    }
+		}, time_out);
+	
+	gotSegmentData = function(dataViaJsonp) {
+		if (dfp_called == false) {
+			dfp_called = true;
+		    /*
+		      Data has now been received and is now in dataViaJsonp
+		      Sample dataViaJsonp (note: response format can be easily changed):
+		      {"data":["300003","210000","240000","240001","240005","240006","3fy87w"]}		
+		    */
+	        window.clearTimeout(timer); /* kill the timeout timer */
+		    // use the information within the 'data' key, if key isn't there - don't use the data
+		    if ("data" in dataViaJsonp) {
+		      /*call DFP with the data*/
+		    	this.addDataValuesToDfpTag(dataViaJsonp.data);
+		     } else {
+		       /*
+		           Do not send error codes or unknown values to DFP
+		           call DFP without using the data
+		           console.log("error");
+		       */
+		        this.addDataValuesToDfpTag();
+		     }
+		}
+	};
+
+	addDataValuesToDfpTag = function(dataForDFP) {
+		// set key:values to the DFP tag and, if this is the final step, call DFPs
+		//These values need to be passed in custom criteria as below
+		//.setTargeting("proximic", dataForDFP)
+		//console.log(dataForDFP);
+		if (typeof(dataForDFP) !== "undefined") {
+			//call DFP with .setTargeting("proximic", dataForDFP)
+			IDG.GPT.addTarget("proximic", dataForDFP);
+		 } else {
+			 //call DFP without .setTargeting("proximic", dataForDFP)
+		 }
+	};
+};
+
+if (typeof IDG.global.async != 'undefined') {
+	IDG.global.async.push(['load', function(){IDG.Proximic()}]);
+} else {
+	IDG.Proximic();
+}    //-->
+</script>
+<script type="2ee252c2e74f2a6f9ae45265-text/javascript">
+    //<!--
+    window.currentUrl = encodeURIComponent(window.location.href);
+    //-->
+</script>
+<script type="2ee252c2e74f2a6f9ae45265-text/javascript">
+    //<!--
+    //thm_pre.js
+var IDG = IDG || {};
+IDG.Thm = IDG.Thm || {};
+IDG.Thm.init = function(){
+	(function( screen, window, debug ) {
+		var $thm = {
+			_$thm:  window.$thm,
+			_debug: debug,
+			_body: document.getElementsByTagName('body')[0],
+			adRenderQueue:{},
+			deviceBreakpoints:{
+				'smallmobile':320,
+				'smallmobile336':336,
+				'mobile':568,
+				'tablet':750,
+				'desktop':992,
+				'wide':1200,
+				'wide1360':1360,
+				'superwide':1500
+			},
+			localIsMoble: false,
+			deviceClass:'unknown',
+			deviceClassAdSizes:undefined,
+			deviceWidth:function() {
+			/*
+				if (document.body)
+					var div = document.body.children[0];
+				if (document.documentElement)
+					var div = document.documentElement.children[0];
+				var span = document.createElement('span');
+				span.innerHTML = (window.innerWidth > 0 ? window.innerWidth : document.documentElement.clientWidth);
+				div.appendChild(span);
+				//parent.document.body.append(window.innerWidth > 0 ? window.innerWidth : document.documentElement.clientWidth);
+			*/
+				return window.innerWidth > 0 ? window.innerWidth : document.documentElement.clientWidth;
+			},
+			deviceHeight:function() {return window.innerHeight > 0 ? window.innerHeight : document.documentElement.clientHeight;},
+			deviceOrientation: function() {return this.deviceWidth > this.deviceHeight ? 'landscape' : 'portrait';},
+			devicePixelRatio: function() {return window.devicePixelRatio !== undefined ? window.devicePixelRatio : 1;},
+			deviceWidthAtLeast:function(w) {
+				if (window.matchMedia != undefined) {
+					return window.matchMedia("(min-width: " + w + "px)").matches;
+				}
+				else {
+					return this.deviceWidth() >= w;
+				}
+			},
+			deviceWidthLessThan:function(w) {
+				if (window.matchMedia != undefined) {
+					return window.matchMedia("(max-width: " + (w-1) + "px)").matches;
+				}
+				else {
+					return this.deviceWidth() < w;
+				}
+			},
+			isZoomedOut:function() {return this.devicePixelRatio() < 1;},
+			isZoomedIn:function() {return this.devicePixelRatio() > 1;},
+			compareCartId: 0,	
+			premiumAdOptStatus: undefined,
+			debug: function(msg,force) {
+				var doDebug = force || this._debug;
+				if (doDebug && window.console) {
+					typeof msg === 'object' ? window.console.dir(msg) : window.console.log(msg);
+				};
+			},
+			isMSIE: /*@cc_on!@*/false,
+			MSIEVersion: function() {
+				if (isMSIE) {
+					var appVersion = navigator.appVersion.split("MSIE");
+					return appVersion.length >1 ? appVersion[1] : undefined;
+				}
+				return undefined;
+			},
+			noConflict: function() {
+				// jquery style noConflict calls to free namespace/
+				if ( window.$thm === this ) {
+					//replace global $thm with old value
+					window.$thm = _$thm;
+					return this;
+				};
+			},
+			setDeviceClass:function(width) {
+				if (width > this.deviceBreakpoints.superwide) {
+					return "superwide desktop";
+				}
+				else if (width >this.deviceBreakpoints.desktop) {
+					//also tablet landscape
+					return "desktop";
+				}
+				else if (width >this.deviceBreakpoints.mobile) {
+					return "tablet";
+				}
+				else {
+					return "mobile";
+				}
+			},
+			adSlots:"",
+			setDeviceClassAdSizes:function(width) {
+				if (this._debug) {
+					this.debug("adUnitId:"+IDG.GPT.unitName);
+				}
+				
+				//IDG.GPT.addSlotOutOfPage("ad-special", [1,1]);
+				if (width >= this.deviceBreakpoints.superwide) { //1500
+					IDG.GPT.addSlot("ad-bilbo2", [[728,90],[750,100],[750,200],[750,300],[800,30],[800,64],[930,180],[940,100],[950,55],[950,66],[950,98],[950,200],[960,30],[965,48],[970,250],[970,280],[970,30],[970,55],[970,66],[970,90],[970,98],[980,120],[980,90],[985,400],[985,200],[997,123]]);
+					IDG.GPT.addSlot("ad-bilbo", [[728,90],[750,100],[750,200],[750,300]]);
+					IDG.GPT.addSlot("ad-start", [[750,100],[750,200],[300,250],[728,90],[970,250]]);
+					IDG.GPT.addSlot("ad-ticker", [[970,66],[970,55],[970,30],[965,48],[950,66],[950,55],[800,64],[800,30],[960,30]]);
+					/*,[970,250]*/
+					IDG.GPT.addSlot("ad-sky", [[120,600],[160,600],[300,250],[300,600]]);
+					IDG.GPT.addSlot("ad-sky2", [[120,600],[160,600],[300,600]]);
+					IDG.GPT.isSlideshow ? IDG.GPT.addSlot("ad-mpu", [300,250]) : IDG.GPT.addSlot("ad-mpu", [[300,600],[300,250],[160,600],[300,300],[300,1050],[336,280]]);
+					IDG.GPT.addSlot("ad-mpu2", [[300,600],[300,1050]]);
+					IDG.GPT.addSlot("ad-mpu-gallery", [300,250]);
+					IDG.GPT.addSlot("ad-box", [300,150]);
+					IDG.GPT.addSlot("ad-spons", [300,150]);
+					IDG.GPT.addOtherAd("overlayimu", [[640,480],[300,250]]);
+					IDG.GPT.addSlot("ad-special", [2,1]);
+					IDG.GPT.addSlotOutOfPage("gpt-overlay", [1,1]);
+					IDG.GPT.addSlotOutOfPage("gpt-fullad", [1,2]);
+				}
+				else if (width >= this.deviceBreakpoints.wide1360) { //1360
+					IDG.GPT.addSlot("ad-bilbo2", [[728,90],[750,100],[750,200],[750,300],[800,30],[800,64],[930,180],[940,100],[950,55],[950,66],[950,98],[950,200],[960,30],[965,48],[970,250],[970,280],[970,30],[970,55],[970,66],[970,90],[970,98],[980,120],[980,90],[985,400],[985,200],[997,123]]);
+					IDG.GPT.addSlot("ad-bilbo", [[728,90],[750,100],[750,200],[750,300]]);
+					IDG.GPT.addSlot("ad-start", [[750,100],[750,200],[300,250],[728,90],[970,250]]);
+					IDG.GPT.addSlot("ad-ticker", [[970,66],[970,55],[970,30],[965,48],[950,66],[950,55],[800,64],[800,30],[960,30]]);
+					/*,[970,250]*/
+					IDG.GPT.addSlot("ad-sky", [[120,600],[160,600],[300,250],[300,600]]);
+					IDG.GPT.addSlot("ad-sky2", [[120,600],[160,600]]);
+					IDG.GPT.isSlideshow ? IDG.GPT.addSlot("ad-mpu", [300,250]) : IDG.GPT.addSlot("ad-mpu", [[300,600],[300,250],[160,600],[300,300],[300,1050],[336,280]]);
+					IDG.GPT.addSlot("ad-mpu2", [[300,600],[300,1050]]);
+					IDG.GPT.addSlot("ad-mpu-gallery", [300,250]);
+					IDG.GPT.addSlot("ad-box", [300,150]);
+					IDG.GPT.addSlot("ad-spons", [300,150]);
+					IDG.GPT.addOtherAd("overlayimu", [[640,480],[300,250]]);
+					IDG.GPT.addSlot("ad-special", [2,1]);
+					IDG.GPT.addSlotOutOfPage("gpt-overlay", [1,1]);
+					IDG.GPT.addSlotOutOfPage("gpt-fullad", [1,2]);
+				}
+				else if (width >= this.deviceBreakpoints.wide) { //1200
+					IDG.GPT.addSlot("ad-bilbo2", [[728,90],[750,100],[750,200],[750,300],[800,30],[800,64],[930,180],[940,100],[950,55],[950,66],[950,98],[950,200],[960,30],[965,48],[970,250],[970,280],[970,30],[970,55],[970,66],[970,90],[970,98],[980,120],[980,90],[985,400],[985,200],[997,123]]);
+					IDG.GPT.addSlot("ad-bilbo", [[728,90],[750,100],[750,200],[750,300]]);
+					IDG.GPT.addSlot("ad-start", [[750,100],[750,200],[300,250],[728,90],[970,250]]);
+					IDG.GPT.addSlot("ad-ticker", [[970,66],[970,55],[970,30],[965,48],[950,66],[950,55],[800,64],[800,30],[960,30]]);
+					/*,[970,250]*/
+					IDG.GPT.addSlot("ad-sky", [[120,600],[160,600],[300,250],[300,600]]);
+					IDG.GPT.isSlideshow ? IDG.GPT.addSlot("ad-mpu", [300,250]) : IDG.GPT.addSlot("ad-mpu", [[300,600],[300,250],[160,600],[300,300],[300,1050],[336,280]]);
+					IDG.GPT.addSlot("ad-mpu2", [[300,600],[300,250],[120,600],[160,600],[320,100],[300,50],[320,50],[300,300],[300,1050],[336,280],[300,100]]);
+					IDG.GPT.addSlot("ad-mpu-gallery", [300,250]);
+					IDG.GPT.addSlot("ad-box", [300,150]);
+					IDG.GPT.addSlot("ad-spons", [300,150]);
+					IDG.GPT.addOtherAd("overlayimu", [[640,480],[300,250]]);
+					IDG.GPT.addSlot("ad-special", [2,1]);
+					IDG.GPT.addSlotOutOfPage("gpt-overlay", [1,1]);
+					IDG.GPT.addSlotOutOfPage("gpt-fullad", [1,2]);
+				}
+				else if (width >= this.deviceBreakpoints.desktop) { //992
+					IDG.GPT.addSlot("ad-bilbo2", [[728,90],[750,100],[750,200],[750,300],[800,30],[800,64],[930,180],[940,100],[950,55],[950,66],[950,98],[950,200],[960,30],[965,48],[970,250],[970,280],[970,30],[970,55],[970,66],[970,90],[970,98]]);
+					IDG.GPT.addSlot("ad-bilbo", [[468,60]]);
+					IDG.GPT.addSlot("ad-start", [[750,100],[750,200],[300,250],[728,90],[970,250]]);
+					IDG.GPT.addSlot("ad-ticker", [[970,66],[970,55],[970,30],[965,48],[950,66],[950,55],[800,64],[800,30],[960,30]]);
+					/*,[970,250]*/
+					IDG.GPT.addSlot("ad-sky", [[120,600],[160,600],[300,250],[300,600]]);
+					IDG.GPT.isSlideshow ? IDG.GPT.addSlot("ad-mpu", [300,250]) : IDG.GPT.addSlot("ad-mpu", [[300,600],[300,250],[160,600],[300,50],[300,300],[300,1050],[300,100]]);
+					//IDG.GPT.addSlot("ad-mpu2", [[300,600],[300,1050]]);
+					IDG.GPT.addSlot("ad-mpu-gallery", [300,250]);
+					IDG.GPT.addSlot("ad-box", [300,150]);
+					IDG.GPT.addSlot("ad-spons", [300,150]);
+					IDG.GPT.addOtherAd("overlayimu", [[640,480],[300,250]]);
+					IDG.GPT.addSlot("ad-special", [2,1]);
+					IDG.GPT.addSlotOutOfPage("gpt-overlay", [1,1]);
+					IDG.GPT.addSlotOutOfPage("gpt-fullad", [1,2]);
+				}
+				else if (width >= this.deviceBreakpoints.tablet) { //750
+					//TABLET
+					IDG.GPT.addSlot("ad-bilbo2", [[750,100],[750,200],[750,300],[728,90],[468,60]]);
+					IDG.GPT.addSlot("ad-bilbo", [[750,100],[750,200],[750,300],[728,90],[468,60]]);
+					IDG.GPT.isSlideshow ? IDG.GPT.addSlot("ad-mpu", [300,250]) : IDG.GPT.addSlot("ad-mpu", [[320,100],[300,50],[300,75],[300,250],[320,50],[336,280],[300,300],[300,100]]);
+					IDG.GPT.addSlot("ad-box", [300,150]);
+					IDG.GPT.addSlot("ad-mpu-intertext", [[300,600]]);
+					IDG.GPT.addSlot("ad-mpu2-intertext", [[300,250]]);
+					IDG.GPT.addSlotOutOfPage("gpt-overlay", [1,1]);
+					IDG.GPT.addOtherAd("overlayimu", [[640,480],[300,250]]);
+				}
+				else if (width > this.deviceBreakpoints.mobile) { //336
+					//MOBILE
+					IDG.GPT.addSlot("ad-bilbo2", [[320,100],[300,50],[300,75],[300,250],[320,50],[336,280],[300,300],[300,100]]);
+					IDG.GPT.addSlot("ad-bilbo", [[320,100],[300,50],[300,75],[300,250],[320,50],[336,280],[300,300],[300,100]]);
+					IDG.GPT.addSlot("ad-mpu", [[320,100],[300,50],[300,75],[300,250],[320,50],[336,280],[300,300],[300,100]]);
+					IDG.GPT.addSlot("ad-box", [300,150]);
+					IDG.GPT.addSlot("ad-mpu-intertext", [[300,600]]);
+					IDG.GPT.addSlot("ad-mpu2-intertext", [[300,250]]);
+					IDG.GPT.addSlot("mobilewelcomead", [1,1]);
+					IDG.GPT.addOtherAd("overlayimu", [300,250]);
+				}
+				else if (width > this.deviceBreakpoints.smallmobile336) { //320
+					//MOBILE
+					IDG.GPT.addSlot("ad-bilbo2", [[320,100],[300,50],[300,75],[300,250],[320,50],[300,300],[300,100]]);
+					IDG.GPT.addSlot("ad-bilbo", [[320,100],[300,50],[300,75],[300,250],[320,50],[300,300],[300,100]]);
+					IDG.GPT.addSlot("ad-mpu", [[320,100],[300,50],[300,75],[300,250],[320,50],[300,300],[300,100]]);
+					IDG.GPT.addSlot("ad-box", [300,150]);
+					IDG.GPT.addSlot("ad-mpu-intertext", [[300,600]]);
+					IDG.GPT.addSlot("ad-mpu2-intertext", [[300,250]]);
+					IDG.GPT.addSlot("mobilewelcomead", [1,1]);
+					IDG.GPT.addOtherAd("overlayimu", [300,250]);
+				}
+				else {
+					//SMALL MOBILE
+					IDG.GPT.addSlot("ad-bilbo2", [[300,50],[300,75],[300,250],[300,300],[300,100]]);
+					IDG.GPT.addSlot("ad-bilbo", [[300,50],[300,75],[300,250],[300,300],[300,100]]);
+					IDG.GPT.addSlot("ad-mpu", [[300,50],[300,75],[300,250],[300,300],[300,100]]);
+					IDG.GPT.addSlot("ad-box", [300,150]);
+					IDG.GPT.addSlot("ad-mpu-intertext", [[300,600]]);
+					IDG.GPT.addSlot("ad-mpu2-intertext", [[300,250]]);
+					IDG.GPT.addSlot("mobilewelcomead", [1,1]);
+					IDG.GPT.addOtherAd("overlayimu", [300,250]);
+				}
+				//IDG.GPT.addSlot("ad-test", [3,3]);
+				//IDG.GPT.addSlot("ad-test-header", [3,1]);
+				//IDG.GPT.addSlot("ad-test-footer", [3,2]);
+				//IDG.GPT.addSlot("ad-sponsor-link", [5,5]);
+				},
+			ord: null,
+			getOrd: function() {
+				return this.ord;
+			},
+			fpvKey: null,
+			getFpvKey: function() {
+				return this.fpvKey;
+			},
+			setFpvKey:function() {
+				var c = this.readCookie('aiia');
+				if (c == undefined || c == "") {
+					this.fpvKey = ";c=AIIA";
+					var expires = new Date (new Date().getTime()+86400000);//1day
+					this.writeCookie('aiia', 'true', expires, this.cookieDomain);
+				} else {
+					this.fpvKey = "";
+				}
+			},
+			isMobile:function() {
+				return this.deviceClass =='mobile';
+			},
+			readRawCookie: function(name) {
+				var cookies = document.cookies;
+				if (navigator.cookieEnabled&&cookies!='') {
+					var strAll = document.cookie;
+					var i1 = strAll.indexOf(name);
+					if (i1!=-1) {
+						// skip name and '='
+						i1 = i1+name.length+1;
+						i2 = strAll.indexOf(';', i1);
+						if (i2==-1) i2 = strAll.length;
+						return strAll.substring(i1, i2);
+					}
+				}
+				return "";
+			},
+			readCookie:function(name) {
+				return unescape(this.readRawCookie(name));
+			},
+			deleteCookie: function(name) {
+				if(navigator.cookieEnabled){
+					var d = new Date();
+					d.setDate(d.getDate()-30);
+					document.cookie=name+"=;expires="+d.toGMTString()+";domain="+domain+";path=/";
+				}
+			},
+			writeRawCookie: function(name, value, expires, domain) { 
+				if (navigator.cookieEnabled) {
+					var exp = (expires instanceof Date) ?expires.toGMTString():expires;
+					document.cookie = name+"="+value+";expires="+exp+";domain="+domain+";path=/";
+				}
+			},
+			writeCookie: function(name, value, expires, domain) {
+				this.writeRawCookie(name, value, expires, domain);
+			},
+			setDomain:function() {
+				this.cookieDomain = window.location.hostname.match(/\.[a-zA-Z]+\.com/);
+			},
+			writeLastVisit:function() {
+				var midnight = new Date();
+				midnight.setHours(0);
+				midnight.setMinutes(0);
+				midnight.setSeconds(0);
+				var now = new Date();
+				var minutes = (parseInt(now.getMinutes()/15) * 15) % 60;
+				now.setSeconds(0);
+				now.setMinutes(minutes);
+				var time = now.getTime()-midnight.getTime();
+				var expires = new Date ( now.getTime()+ 86400000);//1 Day
+				this.writeCookie('lv', time, expires, this.cookieDomain);
+			},
+			setPremiumAdOptStatus:function() {
+				var c = this.readCookie('nsdr');
+				if (c != undefined && c != "" && typeof c == "string"){
+					c = c.replace(/\"/g,"");
+					return (c.charAt(c.length - 1) != '1');
+				}
+				
+				return false;
+			},
+			qsToObject: function(qs) {
+				// http://techtaunt.wordpress.com/2011/07/02/querystring-to-json/ 
+				var o = {};
+				qs.replace(
+					new RegExp("([^?=&]+)(=([^&]*))?", "g"),
+					function($0, $1, $2, $3) { o[$1] = $3; }
+					);
+				return o;
+			},
+			setIDGTargetings: function() {
+				try {
+					// set targeting to c, referrer, browser, squery, nlsource, insiderauth, device, env and mobile
+					if (this.getFpvKey() != "") {
+						IDG.GPT.addTarget("c", "AIIA");
+					}
+
+					IDG.GPT.addTarget("device", this.deviceClass);
+
+				} catch(e) {
+					//console.log(e);
+				}
+			},
+			logPlEvent: function(data) {
+				if (data.hasOwnProperty("b") && data.hasOwnProperty("t") && data.hasOwnProperty("id") && data.hasOwnProperty("e")) {
+					var qs = [];
+					for (var key in data) {
+						qs.push(key+"="+data[key]);
+					}
+					var pl = new Image(1, 1);
+					pl.onerror = pl.onload = function () {
+					  pl.onerror = pl.onload = null;
+					};
+					pl.src = ["//pixel.staticworld.net/pixel.gif?"+qs.join("&")+"&ts=", (new Date()).getTime()].join('');
+				}
+			},
+			init: function() {
+				this.adUnitId = IDG.GPT.unitName;
+				this.deviceClass=this.setDeviceClass(this.deviceWidth());
+				this.setIDGTargetings();
+				// define slots
+				this.setDeviceClassAdSizes(this.deviceWidth());
+				//this doesn't clean up prior settings, so it proliferates body tags onresize. must be fixed before used
+				//this._body.className = this._body.className +' '+this.deviceClass+' '+this.deviceOrientation();
+				this.setDomain();
+				this.setFpvKey();
+				this.ord = ( new Date() ).getTime(); 
+				var compareCookie = this.readCookie('compareCart');
+				this.compareCartId = compareCookie!=undefined && compareCookie.length>0 ? compareCookie:0;
+				if (this._debug) {
+					this.debug("deviceWidth:"+this.deviceWidth());
+					this.debug("deviceHeight:"+this.deviceHeight());
+					this.debug("deviceClass:"+this.deviceClass);
+					this.debug("devicePixelRatio:"+this.devicePixelRatio());
+					this.debug("deviceOrientation:"+this.deviceOrientation());
+					this.debug("productCompareCartId:"+this.compareCartId);
+				}
+			}
+		};
+
+		window.$thm =$thm;
+		return $thm;
+	})(screen, window, false).init();
+	/* Logon namespace */
+	var Logon = {};
+	Logon.forumUser = $thm.readCookie('forumUser');
+	Logon.uname = $thm.readCookie('uname');
+	Logon.isValid = (Logon.forumUser && Logon.uname) ? true:false;
+	
+	window.Logon = Logon;
+};
+
+if (typeof IDG.global.async != 'undefined') {
+	IDG.global.async.push(['load', function () {
+		IDG.Thm.init();
+	}]);
+} else {
+	IDG.Thm.init();
+}    //-->
+</script>
+<script type="2ee252c2e74f2a6f9ae45265-text/javascript">
+    //<!--
+    IDG.GPT.start = function() {
+	if (typeof consent != 'undefined') {
+		console.log('start :: ', consent.runCode);
+	} else {
+		console.log('start :: no cmp');
+		window.consent = window.consent || {};
+		consent.runCode = true;
+	}
+	if (!IDG.GPT.consent || consent.runCode !== null) {
+		//alert(1);
+		//console.log("personalization :: " + consent.personalization);
+		IDG.GPT.setIDGExtraTargetings();
+		IDG.GPT.setAllGoogleTagTargetings();
+		IDG.GPT.dfpAdManager.init();
+		//IDG.GPT.defineAllGoogleTagSlots();
+		IDG.GPT.setPermutive();
+		IDG.GPT.initGoogleTagService();
+		IDG.GPT.runCode = true;
+	} else {
+		setTimeout(function(){IDG.GPT.start()}, 2000);
+	}
+};
+
+if (typeof IDG.global.async != 'undefined') {
+	IDG.global.async.push(['load', function () {
+		IDG.GPT.start();
+	}]);
+} else {
+	IDG.GPT.start();
+}
+    //-->
+</script><style>
+
+#iab_sky{
+display: none;
+}
+@media (min-width:1360px) {
+	#iab_sky{
+		position: sticky;
+		display: block;
+		right: 10px;
+		top: 10px;
+		z-index: 20;
+		float: right;
+	}
+	
+	.content-table-cell {
+		display: flex;
+		width: 100%;
+	}
+	
+	.content-table-cell .t-cell:first-child {
+		vertical-align: top;
+		padding: 15px 15px 0 15px;
+		justify-self: flex-start;
+		margin-right: auto;
+		margin-left: auto;
+	}
+	
+	.content-table-cell .tr-cell {
+		max-width : 180px;
+		min-width: 0px;
+		padding: 10px 10px 20px 0px;
+		justify-self: flex-end;
+	}
+	
+	.content-table-cell .tr-cell > div {
+		float: right;
+	}
+}
+@media (min-width:1500px) {
+	#iab_sky{
+		position: sticky;
+		display: block;
+		right: 10px;
+		top: 10px;
+		z-index: 20;
+		float: right;
+	}
+	
+	.content-table-cell {
+		display: flex;
+		width: 100%;
+	}
+	
+	.content-table-cell .t-cell:first-child {
+		vertical-align: top;
+		padding: 15px 15px 0 15px;
+		justify-self: flex-start;
+		margin-right: auto;
+		margin-left: auto;
+	}
+	
+	.content-table-cell .tr-cell {
+		max-width : 320px;
+		min-width: 0px;
+		padding: 10px 10px 20px 0px;
+		justify-self: flex-end;
+	}
+	
+	.content-table-cell .tr-cell > div {
+		float: right;
+	}
+}
+</style>
+
+<script type="2ee252c2e74f2a6f9ae45265-text/javascript">
+  window._taboola = window._taboola || [];
+  _taboola.push({article:'auto'});
+
+function _taboolaLoad() {
+	if (typeof consent != 'undefined' && consent.runCode !== undefined && consent.runCode !== null) {
+		  !function (e, f, u, i) {
+		    if (!document.getElementById(i)){
+		      e.async = 1;
+		      e.src = u;
+		      e.id = i;
+		      f.parentNode.insertBefore(e, f);
+		    }
+		  }(document.createElement('script'),
+			  document.getElementsByTagName('script')[0],
+			  '//cdn.taboola.com/libtrc/idg-pcworld1/loader.js',
+			  'tb_loader_script');
+			  if(window.performance && typeof window.performance.mark == 'function')
+			    {window.performance.mark('tbl_ic');}
+	} else {
+		setTimeout(function(){_taboolaLoad()}, 1000);
+	}
+}
+var IDG = IDG || {};
+IDG.global = IDG.global || {};
+if (typeof IDG.global.async != 'undefined') {
+	IDG.global.async.push(['load', function () {
+		_taboolaLoad();
+	}]);
+} else {
+	_taboolaLoad();
+}
+</script>
+					
+<script type="2ee252c2e74f2a6f9ae45265-text/javascript">
+var dataLayer = dataLayer || [];
+
+var dataLayerPermutive = {
+	"propertyCountry":"PL",
+	"datePublished":"2019-10-19T15:03:26+02:00",
+	"metaTitle":"Gmail jako klient poczty",
+	"property":"PCWorld.pl",
+	"dateUpdated":"2019-10-19T15:03:26+02:00",
+	"headline":"Gmail jako klient poczty",
+	"displayType":"article",
+	"contentType":"news",
+	"audience":"consumer",
+	"platform":"Web",
+	"secondaryChannels":"",
+	"primaryChannel":"Mała firma",
+	"isBlog":"false",
+	"productNames":"",
+	"productManufacturers":"",
+	"userId":"",
+	"source":"PC World.pl",
+	"blogName":"",
+	"daysSinceUpdated":"420",
+	"daysSincePublished":"420",
+	"isInsiderContent":"false",
+	"pageNumber":1,
+	"productCategories":"Mała firma",
+	"articleId":"416005",
+	"author":"Henryk Tur",
+	"articleHasVideo":"false",
+	"isAdBlock": ((window.isAdBlock) ? true : false),
+	"isAdEnabled": true
+};
+			
+dataLayer.push(dataLayerPermutive);
+</script>
+<script type="2ee252c2e74f2a6f9ae45265-text/javascript">
+var debugPerm = false;
+
+var getDataLayerForPermutative = function(){
+	//console.log('permutative',window.dynamicDataLayer,window.dataLayerPermutive);
+	if(typeof window.dynamicDataLayer !== 'undefined')return window.dynamicDataLayer;
+	else if(typeof window.dataLayerPermutive !== 'undefined') return dataLayerPermutive;
+	return null;
+};
+
+var numberFromDataLayer = function(property) {
+	var dataLayer = getDataLayerForPermutative();
+	if (dataLayer && typeof dataLayer[property] == "number") {
+		return dataLayer[property];
+	}
+	return null;
+};
+
+var booleanFromDataLayer = function(property) {
+	var dataLayer = getDataLayerForPermutative();
+	if (dataLayer && typeof dataLayer[property] == "boolean") {
+		return dataLayer[property];
+	}
+	return null;
+};
+			
+var stringFromDataLayer = function(property) {
+	var dataLayer = getDataLayerForPermutative();
+	if (dataLayer && typeof dataLayer[property] == "string") {
+		return dataLayer[property];
+	}
+	return "";
+};
+			
+//get page keywords, title and meta desc
+var tags = document.getElementsByTagName("meta");
+var keywords = '', description = '', title='';
+for(var i = 0 ; i < tags.length ; ++i){
+	var tag = tags[i];
+	if(tag.hasAttribute("name") && tag.getAttribute("name")=="keywords")keywords = tag.getAttribute("content").replace(/, /g, ",");
+	if(tag.hasAttribute("name") && tag.getAttribute("name")=="description")description = tag.getAttribute("content");
+}
+//get page title
+tags = document.getElementsByTagName("title");
+if(tags.length>0) {
+	title = tags[0].text;
+	title = title.replace('  ', ' ');
+	title = title.replace(' - PC World - Testy i Ceny sprzętu PC, RTV, Foto, Porady IT, Download, Aktualności','');
+	title = title.replace(' | PC World - Testy i Ceny sprzętu PC, RTV, Foto, Porady IT, Download, Aktualności','');
+	title = title.replace(': PC World - Testy i Ceny sprzętu PC, RTV, Foto, Porady IT, Download, Aktualności','');
+	title = title.replace(' PC World - Testy i Ceny sprzętu PC, RTV, Foto, Porady IT, Download, Aktualności','');
+}
+			
+var isArticle = !!true;
+		
+//page type
+var pageType = isArticle ? 'article' : 'misc';
+var dlDislayType = stringFromDataLayer('displayType');
+var dlContentType = stringFromDataLayer('contentType');
+if(dlDislayType.indexOf('listing')>-1)pageType = 'listing';
+if(dlContentType.indexOf('home page')>-1)pageType = 'home page';
+		
+!function(n,e,o,r,i){if(!e){e=e||{},window.permutive=e,e.q=[],e.config=i||{},e.config.projectId=o,e.config.apiKey=r,e.config.environment=e.config.environment||"production";for(var t=["addon","identify","track","trigger","query","segment","segments","ready","on","once","user","consent"],c=0;c<t.length;c++){var f=t[c];e[f]=function(n){return function(){var o=Array.prototype.slice.call(arguments,0);e.q.push({functionName:n,arguments:o})}}(f)}}}(document,window.permutive,"f5b3be27-f789-4ef1-8867-37c67da5b361","84c7e805-5ce9-41f4-b988-3529488bab1c",{});
+		
+//page level
+var dataPermutive = {
+	page: {
+		 type:pageType
+		,keywords:keywords.split(",")
+		,language: 'pl'
+		//,tags:[]
+		,audience: stringFromDataLayer('audience')
+		,description: description
+		,tax:{
+			 primaryCategories: [stringFromDataLayer('primaryChannel')]
+			,secondaryCategories: stringFromDataLayer('secondaryChannels').split(",")
+		}
+		,ads: {
+			adblocker: booleanFromDataLayer('isAdBlock')
+			,enabled: booleanFromDataLayer('isAdEnabled')
+		}
+	}
+};
+		
+if(isArticle){
+	dataPermutive.page.article = {
+		authors: stringFromDataLayer('author').split(",")
+		,description: description
+		,id: stringFromDataLayer('articleId')
+		,isInsiderContent:false//no restricted content on PL
+		,modifiedAt: stringFromDataLayer('dateUpdated')
+		,publishedAt: stringFromDataLayer('datePublished')
+		,source: stringFromDataLayer('source')
+		,title: stringFromDataLayer('headline')
+		,type:dlContentType
+		//,purchaseIntent: ''//US only
+	}//article
+}
+		
+window.permutive.addon('web', dataPermutive);
+		
+var dataPermutiveProduct = {
+	names: stringFromDataLayer('productNames').split(","),
+	categories: stringFromDataLayer('productCategories').split(","),
+	manufacturers: stringFromDataLayer('productManufacturers').split(","),
+	vendors: []
+};
+		
+//convert to empty array if [""]
+for(var prop in dataPermutiveProduct) {
+	if(dataPermutiveProduct.hasOwnProperty(prop) && dataPermutiveProduct[prop].toString() === '')dataPermutiveProduct[prop]=[];
+}
+if(dataPermutiveProduct.names.length == 0 && dataPermutiveProduct.categories.length == 0 && dataPermutiveProduct.manufacturers.length == 0) ;
+else{
+	if(debugPerm)console.log('permutative.track product data',dataPermutiveProduct);
+	window.permutive.track('Product', dataPermutiveProduct);
+}
+		
+function permutiveUser(data) {
+	var count = Object.keys(data).length;
+	if (count>0) {
+		var dataPermutiveUser = {};
+		jQuery.each(data, function(index, value) {
+			dataPermutiveUser[index] = value;
+		});
+		//console.log(dataPermutiveUser);
+		window.permutive.track('User', dataPermutiveUser);
+	}
+	
+	(function() {
+		var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+		po.src = 'https://cdn.permutive.com/f5b3be27-f789-4ef1-8867-37c67da5b361-web.js';
+		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+	})();
+};
+
+var IDG = IDG || {};
+IDG.global = IDG.global || {};
+IDG.PERMUTIVE = IDG.PERMUTIVE || {};
+IDG.PERMUTIVE.init = function() {
+	if (typeof consent != 'undefined' && consent.runCode !== undefined && consent.runCode !== null) {
+		(function() {
+			var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+			po.src = '/auth/ajax/userdataservice?ajax=1&service=permutive&language=en&callback=permutiveUser';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+		})();
+	} else {
+		setTimeout(function(){IDG.PERMUTIVE.init()}, 1000);
+	}
+};
+
+if (typeof IDG.global.async != 'undefined') {
+	IDG.global.async.push(['load', function () {
+		IDG.PERMUTIVE.init();
+	}]);
+} else {
+	IDG.PERMUTIVE.init();
+}
+</script>
+
+<!-- Adform Tracking Code BEGIN -->
+<script type="2ee252c2e74f2a6f9ae45265-text/javascript">
+    window._adftrack = Array.isArray(window._adftrack) ? window._adftrack : (window._adftrack ? [window._adftrack] : []);
+    window._adftrack.push({
+        pm: 2087578,
+        order : {
+    "sv1": "3",
+    "sv2": "",
+    "sv3": "",
+    "sv4": "2",
+    "sv5": "57",
+    "sv6": "416005"
+}
+    });
+    (function () { var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true; s.src = 'https://track.adform.net/serving/scripts/trackpoint/async/'; var x = document.getElementsByTagName('script')[0]; x.parentNode.insertBefore(s, x); })();
+
+</script>
+<noscript>
+    <img src="https://track.adform.net/Serving/TrackPoint/?pm=2087578" width="1" height="1" alt="" />
+</noscript>
+<!-- Adform Tracking Code END -->
+</head>
+<body id="art-416005"><!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PNXWHN"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+	<div class="content-table-cell">
+		<div class="t-cell">
+			<div id="wsPcWorld"></div>
+			<div class="d-none d-md-block">	<div class="bilbo_ad ad">
+					<div id="ad-bilbo2" class="separator">
+					<script type="2ee252c2e74f2a6f9ae45265-text/javascript">
+								function ad52d9eaf1d563356f9dcdb23714ea03bc() {
+					if (IDG.GPT.runCode !== null) {
+						if (IDG.GPT.slots["ad-bilbo2"] != undefined && isElementVisibility('ad-bilbo2')) {
+							IDG.GPT.defineGoogleTagSlot("ad-bilbo2", IDG.GPT.slots["ad-bilbo2"]);
+							IDG.GPT.addDisplayedAd("ad-bilbo2", "true");
+													jQuery('#ad-bilbo2').responsiveAd({screenSize:'971 1115', scriptTags: []});
+						}
+					} else {
+						setTimeout(function(){ad52d9eaf1d563356f9dcdb23714ea03bc();}, 500);
+					}
+				}
+				ad52d9eaf1d563356f9dcdb23714ea03bc();
+				</script>
+				</div>
+	</div>
+</div>
+			<div class="container">
+				
+<style>
+	a.ms-pcw-logo-xs, a.ms-pcw-logo {
+		display: none;
+	}
+</style>
+
+<div class="container-navbar">
+	<div class="container-navbar-inside">
+		<nav class="navbar navbar-default navbar-expand-lg d-none d-lg-block">
+			<!-- Brand and toggle get grouped for better mobile display -->
+			<div class="navbar-header">
+				<a class="navbar-brand" href="/"><img data-src="/www/image/logo-from-idg-180.png?v=2018" src=" data:image/png;base64,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" loading="lazy" class="no-optimize lazy" /></a>
+				<!-- Collect the nav links, forms, and other content for toggling -->
+				<div class="navbar-collapse float-right">
+					<ul class="nav navbar-nav navbar-right">
+						<li class="nav-item">
+							<form class="navbar-form form-inline" action="/szukaj.html">
+								<div class="input-group flex-nowrap">
+									<span class="input-group-prepend">
+										<div class="input-group-text bg-transparent"><i class="fa fa-search"></i></div>
+									</span>
+									<input type="text" class="form-control" placeholder="Wpisz szukaną frazę" onclick="if (!window.__cfRLUnblockHandlers) return false; this.value=''; return true;" id="search" name="q" data-cf-modified-2ee252c2e74f2a6f9ae45265-="" />
+									<input type="hidden" name="cx" value="005699887672505657667:q9danlvsski" />
+									<input type="hidden" name="cof" value="FORID:11" />
+									<input type="hidden" name="sort" value="metatags-pubdate" />
+								</div>
+							</form>
+						</li>
+						<li class="nav-item">
+							<a href="https://www.facebook.com/pcworldpl" class="fab fa-lg fa-facebook"></a>
+						</li>
+						<li class="nav-item">
+							<a href="https://twitter.com/#!/pcworldpl" class="fab fa-lg fa-twitter"></a>
+						</li> 
+						<li class="nav-item">
+							<a href="https://www.youtube.com/pcworldpl" class="fab fa-lg fa-youtube"></a>
+						</li>
+						<li class="nav-item" id="login"></li>
+					</ul>
+				</div><!-- /.navbar-collapse -->
+			</div>
+		</nav>
+		
+		<nav class="navbar navbar-default navbar-default2 navbar-expand-lg custom-toggler"  style="position:relative">
+			<!-- Collect the nav links, forms, and other content for toggling -->
+			<div class="navbar-header d-lg-none">
+				<a class="navbar-brand" href="/"><img src=" data:image/png;base64,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" data-src="/www/image/logo-white-from-idg.png?v=2017" loading="lazy" class="no-optimize lazy" /></a>
+			</div>
+			<div class="collapse navbar-collapse" id="bs-navbar-collapse-2">
+				<ul class="nav navbar-nav mr-auto">
+					<li class="nav-item"><a href="/porady" class="nav-link">Porady</a></li>
+					<li class="nav-item"><a href="/ranking" class="nav-link">Rankingi</a></li>
+					<li class="nav-item"><a href="/testy" class="nav-link">Produkty</a></li>
+					<li class="nav-item"><a href="/news" class="nav-link">Wiadomości</a></li>	
+					<li class="nav-item"><a href="/artykuly" class="nav-link">Artykuły</a></li>
+					<li class="nav-item"><a href="/ftp/pc.html" class="nav-link">Download</a></li>
+					<li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Tematy</a>
+						<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+																				<a href="/temat/audio" class="dropdown-item">Audio</a>
+														<a href="/temat/drukarki" class="dropdown-item">Drukarki</a>
+														<a href="/temat/fotografia" class="dropdown-item">Fotografia</a>
+														<a href="/temat/gry" class="dropdown-item">Gry</a>
+														<a href="/temat/kamery-sportowe" class="dropdown-item">Kamery sportowe</a>
+														<a href="/temat/laptopy" class="dropdown-item">Laptopy</a>
+														<a href="/temat/projektory" class="dropdown-item">Projektory</a>
+														<a href="/temat/routery" class="dropdown-item">Routery</a>
+														<a href="/temat/smartfony" class="dropdown-item">Smartfony</a>
+														<a href="/temat/serwery-nas" class="dropdown-item">Serwery NAS</a>
+														<a href="/temat/tablety" class="dropdown-item">Tablety</a>
+														<a href="/temat/tv" class="dropdown-item">TV</a>
+														<a href="/temat/wifi" class="dropdown-item">WiFi</a>
+														<a href="/temat/vr" class="dropdown-item">VR</a>
+														<a href="/temat/monitory" class="dropdown-item">Monitory</a>
+														<a href="/temat/hosting" class="dropdown-item">Hosting</a>
+																			</div>
+					</li>
+                    <li class="nav-item"><a href="/temat/bezpieczenstwo" class="nav-link">Bezpieczeństwo</a></li>
+                    <li class="nav-item"><a href="/temat/firma" class="nav-link">Mała Firma</a></li>
+                    <li class="nav-item"><a href="/hp-security" class="nav-link">HP Security</a></li> 
+				</ul>
+				
+			<section class="shareArticle">
+	<div id="socialFocusContainer" class="socialFocusContainer">
+		<div id="socialFocusShareBtns" class="bottom intentShareArticleBtns socialContainer" data-ga="bottom intentShareArticleBtns socialContainer social tools">
+			<div class="socialIcon facebook">
+				<div data-gd-plugin="facebook-share" data-gd-fb-url="https://www.pcworld.pl/porada/Gmail-jako-klient-poczty,416005.html" data-gd-use-network-button="false">
+					<a class="ihq-share-facebook" data-type="facebook" href="#" data-url="https://www.pcworld.pl/porada/Gmail-jako-klient-poczty,416005.html" onclick="if (!window.__cfRLUnblockHandlers) return false; var sTop = window.screen.height/2-(218); var sLeft = window.screen.width/2-(313);window.open('https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.pcworld.pl%2Fporada%2FGmail-jako-klient-poczty%2C416005.html','sharer','toolbar=0,status=0,width=626,height=356,top='+sTop+',left='+sLeft);return false;" data-cf-modified-2ee252c2e74f2a6f9ae45265-=""><div class="socialIconText">Udostępnij</div></a>
+				</div>
+			</div>
+			<div class="socialIcon twitter">
+				<div data-gd-plugin="twitter-share" data-gd-tw-text="Gmail jako klient poczty" data-gd-tw-url="https://www.pcworld.pl/porada/Gmail-jako-klient-poczty,416005.html" data-gd-use-network-button="false">
+					<a class="ihq-share-twitter" data-type="twitter" href="#" data-url="https://www.pcworld.pl/porada/Gmail-jako-klient-poczty,416005.html" onclick="if (!window.__cfRLUnblockHandlers) return false; var sTop = window.screen.height/2-(218); var sLeft = window.screen.width/2-(313);window.open('https://twitter.com/share?text=Gmail+jako+klient+poczty&amp;url=https%3A%2F%2Fwww.pcworld.pl%2Fporada%2FGmail-jako-klient-poczty%2C416005.html','sharer','toolbar=0,status=0,width=626,height=456,top='+sTop+',left='+sLeft);return false;" data-cf-modified-2ee252c2e74f2a6f9ae45265-=""><div class="socialIconText">Tweet</div></a>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<a class="ms-pcw-logo" href="/" title="" target="_blank"></a>
+			</div><!-- /.navbar-collapse -->
+			<!-- Brand and toggle get grouped for better mobile display -->
+			<div class="collapse navbar-collapse" id="bs-navbar-search-2">
+				<form class="navbar-form form-inline" action="/szukaj.html">
+					<div class="input-group flex-nowrap">
+						<span class="input-group-prepend">
+							<div class="input-group-text bg-transparent"><i class="fa fa-search"></i></div>
+						</span>
+						<input type="text" class="form-control" placeholder="Wpisz szukaną frazę" onclick="if (!window.__cfRLUnblockHandlers) return false; this.value=''; return true;" id="search" name="q" data-cf-modified-2ee252c2e74f2a6f9ae45265-="" />
+						<input type="hidden" name="cx" value="005699887672505657667:q9danlvsski" />
+						<input type="hidden" name="cof" value="FORID:11" />
+						<input type="hidden" name="sort" value="metatags-pubdate" />
+					</div>
+				</form>
+			</div>
+			<!-- Brand and toggle get grouped for better mobile display -->
+			<div class="mobile">
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bs-navbar-search-2" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Rozwiń">
+					<span class="navbar-search-icon"><i class="fa fa-search text-white"></i></span>
+				</button>
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bs-navbar-collapse-2" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Rozwiń">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+			</div>
+		</nav>
+	</div>
+</div>
+<div class="hot-topics separator d-none d-md-block">
+	<ul>
+<li>Gorące tematy:</li><li><a href="/porada/Ranking-najlepsze-VPN-w-2019-roku-Czym-jest-VPN-Dlaczego-warto-miec-VPN,411972.html">Najlepszy VPN 2020</a></li><li><a href="/ranking/Najlepszy-antywirus-2019-ranking-top-10-antywirusow,406168.html">Najlepszy antywirus 2020</a></li><li><a href="/news/Android-11-lista-telefonow-do-aktualizacji-04-08-2020,421508.html">Android 11</a></li><li><a href="/news/iPhone-12-data-premiery-cena-specyfikacja-techniczna-04-05-2020,414398.html">iPhone 12</a></li><li><a href="https://www.pcworld.pl/news/Xbox-Series-X-specyfikacja-cena-data-premiery,418758.html" data-status="https://www.pcworld.pl/news/Xbox-Series-X-specyfikacja-cena-data-premiery,418758.html">Xbox Series X</a></li><li><a href="/news/PlayStation-5-data-premiery-cena-specyfikacja-28-01-2020,409183.html">PlayStation 5</a></li><li><a href="/news/Samsung-Galaxy-S21-data-premiery-cena-specyfikacja-techniczna-16-10-2020,423406.html">Samsung Galaxy S21</a></li>	</ul>
+</div>										
+
+
+
+<meta itemprop="url" content="https://pcworld.pl/porada/Gmail-jako-klient-poczty,416005.html" />
+
+
+<div style="margin-top: 10px;">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js" type="2ee252c2e74f2a6f9ae45265-text/javascript"></script>
+<!-- PCW - gorna nawigacja -->
+<ins class="adsbygoogle adsbygoogle-link-unit"
+    style="display:inline-block"
+    data-ad-client="ca-pub-4144788155563610"
+    data-ad-slot="2382148233"
+    data-ad-format="link"></ins>
+<script type="2ee252c2e74f2a6f9ae45265-text/javascript">
+function ad55f034760f2e8b63b18115c38e17975b() {
+	if (IDG.GPT.runCode !== null) {
+		(adsbygoogle = window.adsbygoogle || []).requestNonPersonalizedAds=((!consent.personalization)?1:0);
+		(adsbygoogle = window.adsbygoogle || []).push({});
+	} else {
+		setTimeout(function(){ad55f034760f2e8b63b18115c38e17975b();}, 500);
+	}
+}
+ad55f034760f2e8b63b18115c38e17975b();
+</script>
+</div>
+
+<div class="d-none d-md-block">
+	<ol class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+		<li class="breadcrumb-item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+			<a itemprop="item" href="/"><span itemprop="name">Strona główna</span></a>
+			<meta itemprop="position" content="1" />
+		</li>
+		<li class="breadcrumb-item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+
+			<a href="/porady" title="Porady" itemprop="item"><span itemprop="name">Porady</span></a>
+						<meta itemprop="position" content="2" />
+				</li>
+		<li class="breadcrumb-item active" aria-current="page" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+
+			<span title="Gmail jako klient poczty" itemprop="name">Gmail jako klient poczty</span>
+						<meta itemprop="position" content="3" />
+				</li>
+	</ol>
+</div>
+<div class="row">
+	<div class="col-lg-8 col-12 left-side">
+		<div id="newsmore416005" class="news-more" data-stats="true">
+			<article itemscope itemtype="http://schema.org/NewsArticle">
+				<h1 itemprop="headline name">Gmail jako klient poczty</h1>
+				
+				<div id="container-article-meta">
+					<ul>
+	<li>
+		<figure class="author-image"><img src="https://www.pcworld.pl/g1/global/author/henryk_tur.png" /></figure>
+	</li>
+	<li class="author-name" itemprop="author" itemscope itemtype="http://schema.org/Person"><a class="newsautor" href="#autorLink" data-toggle="modal" data-target="#newsmore416005 #idg-author-6661" itemprop="name">Henryk Tur</a>,</li>
+ 
+						<li itemprop="datePublished" class="date" content="2019-10-19T17:03:26+02:00">
+							19.10.2019, godz. 17:03						</li>
+						<li>
+											<ul class="tags">
+																							<li><a href="/temat/Gmail" class="tag">Gmail</a></li>
+													<li><a href="/temat/poczta%2BGmail" class="tag">poczta Gmail</a></li>
+													<li><a href="/temat/Google" class="tag">Google</a></li>
+													<li><a href="/temat/internet" class="tag">internet</a></li>
+												</ul>
+										</li>
+						
+						
+<li class="socialite-top">
+	<div id="socialFocusContainer" class="socialFocusContainer">
+		<div id="socialFocusShareBtns" class="bottom intentShareArticleBtns socialContainer" data-ga="bottom intentShareArticleBtns socialContainer social tools">
+			<div class="socialIcon facebook">
+				<div data-gd-plugin="facebook-share" data-gd-fb-url="https://www.pcworld.pl/porada/Gmail-jako-klient-poczty,416005.html" data-gd-use-network-button="false">
+					<a class="ihq-share-facebook" data-type="facebook" href="#" data-url="https://www.pcworld.pl/porada/Gmail-jako-klient-poczty,416005.html" onclick="if (!window.__cfRLUnblockHandlers) return false; var sTop = window.screen.height/2-(218); var sLeft = window.screen.width/2-(313);window.open('https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.pcworld.pl%2Fporada%2FGmail-jako-klient-poczty%2C416005.html','sharer','toolbar=0,status=0,width=626,height=356,top='+sTop+',left='+sLeft);return false;" data-cf-modified-2ee252c2e74f2a6f9ae45265-=""><div class="socialIconText">Udostępnij</div></a>
+				</div>
+			</div>
+			<div class="socialIcon twitter">
+				<div data-gd-plugin="twitter-share" data-gd-tw-text="Gmail jako klient poczty" data-gd-tw-url="https://www.pcworld.pl/porada/Gmail-jako-klient-poczty,416005.html" data-gd-use-network-button="false">
+					<a class="ihq-share-twitter" data-type="twitter" href="#" data-url="https://www.pcworld.pl/porada/Gmail-jako-klient-poczty,416005.html" onclick="if (!window.__cfRLUnblockHandlers) return false; var sTop = window.screen.height/2-(218); var sLeft = window.screen.width/2-(313);window.open('https://twitter.com/share?text=Gmail+jako+klient+poczty&amp;url=https%3A%2F%2Fwww.pcworld.pl%2Fporada%2FGmail-jako-klient-poczty%2C416005.html','sharer','toolbar=0,status=0,width=626,height=456,top='+sTop+',left='+sLeft);return false;" data-cf-modified-2ee252c2e74f2a6f9ae45265-=""><div class="socialIconText">Tweet</div></a>
+				</div>
+			</div>
+		</div>
+	</div>
+</li>					</ul>
+				</div>
+				
+				<span itemprop="articleBody description text"  id="tresc">
+									<p><strong>Jeśli masz różne konta e-mail, możesz sprawdzać je wszystkie w Gmailu. Google oferuje kilka możliwości - poznaj je już dzisiaj!</strong></p>
+				
+											<meta itemprop="image" content="https://www.pcworld.pl/g1/news/thumbnails/3/2/320715_Gmail_PNG_90_resize_770x1000.PNG"></meta>
+				<div class="panorama">
+					<figure>
+						<picture>
+														<source srcset="https://www.pcworld.pl/g1/news/thumbnails/3/2/320715_Gmail_PNG_90_resize_320x246.PNG" media="(max-width: 320px)">
+														<source srcset="https://www.pcworld.pl/g1/news/thumbnails/3/2/320715_Gmail_PNG_90_resize_480x370.PNG" media="(max-width: 479px)">
+														<source srcset="https://www.pcworld.pl/g1/news/thumbnails/3/2/320715_Gmail_PNG_90_resize_768x591.PNG" media="(max-width: 767px)">
+														<source srcset="https://www.pcworld.pl/g1/news/thumbnails/3/2/320715_Gmail_PNG_90_resize_991x763.PNG" media="(max-width: 991px)">
+														<source srcset="https://www.pcworld.pl/g1/news/thumbnails/3/2/320715_Gmail_PNG_90_resize_770x593.PNG">
+							<img class="largeImage img-fluid imgId320715" src="https://www.pcworld.pl/g1/news/thumbnails/3/2/320715_Gmail_PNG_90_resize_770x1000.PNG" itemprop="image" title="Gmail jako klient poczty" />
+						</picture>
+											</figure>
+				</div>
+						
+													<div class="storybody">
+						<p><!--srodtytul s:221957 --><a id="sub221957"></a><h2 class="subtytul">Gmail jako klient poczty - 3 różne opcje</h2><!--/srodtytul s:221957 --></p>
+
+<p>Aby <strong>Gmail</strong> pełnił role klienta poczty, możesz ustawić go na jeden z trzech sposobów:</p>
+
+<p><ul><li>Pobieranie wszystkich wiadomości (stare i nowe): wybierz te opcję, jeśli nadal korzystasz z innego adresu pocztowego, w tym z innego adresu Gmaila. Nowe wiadomości mogą być wyświetlane z niewielkim opóźnieniem.</li><li>Pobieranie tylko starych wiadomości: wybierz tę opcję, jeśli zamiast innego konta od niedawna korzystasz z Gmaila.</li><li>Przekazuj dalej tylko nowe wiadomości: wybierz tę opcję, jeśli chcesz od razu widzieć nowe wiadomości.</li></ul></p>
+
+<p><div class="d-lg-none"><div class="adsense-lazyload lazyload_ad" id="ad15ad35aa47b01456b94e124809533b6f">
+	<code type="text/javascript">
+	<!-- 
+		function ad15ad35aa47b01456b94e124809533b6f() {
+			if (IDG.GPT.runCode !== null && isElementVisibility('ad15ad35aa47b01456b94e124809533b6f')) {
+				var element = document.createElement("script");
+				element.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js";
+				document.body.appendChild(element);
+				document.write('<div style="margin-top: 20px;" class="adsense-lazyload-mpu-intertext"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4144788155563610" data-ad-slot="9581779115" data-ad-format="auto"></ins></div>');
+				(adsbygoogle = window.adsbygoogle || []).requestNonPersonalizedAds=((!consent.personalization)?1:0);
+				(adsbygoogle = window.adsbygoogle || []).push({});
+			} else {
+				setTimeout(function(){ad15ad35aa47b01456b94e124809533b6f();}, 500);
+			}
+		}
+		ad15ad35aa47b01456b94e124809533b6f();
+	//-->
+	</code>
+</div>
+</div></p>
+
+<p>Poniższe porady dotyczą wersji Gmail na komputery stacjonarne:</p>
+
+<p><strong>Pobieranie wszystkich wiadomości</strong> - z innego konta pocztowego możesz zaimportować zarówno stare, jak i nowe wiadomości. Pamiętaj, że możesz przenosić wyłącznie wiadomości, nie foldery i etykiety.</p>
+
+<p><em>Krok 1: Zmień ustawienia na swoim drugim koncie</em></p>
+
+<p><ul><li>W innej usłudze pocztowej sprawdź, czy drugie konto pocztowe może korzystać z protokołu POP. Następnie zmień ustawienia Gmaila.</li><li>Na innym koncie Gmail - na komputerze zaloguj się na konto Gmail, z którego chcesz importować wiadomości, u góry po prawej kliknij Ustawienia, a potem Ustawienia. Kliknij kartę Przekazywanie i POP/IMAP. W sekcji „Pobieranie przez POP” wybierz Włącz POP dla całej poczty. Obok opcji „Gdy wiadomości są pobierane przez POP”, wybierz opcję <em>zachowaj kopię z usługi Gmail w folderze Odebrane</em>. Na koniec Kliknij <strong>Zapisz zmiany</strong>.</li></ul></p>
+
+<p><script type="2ee252c2e74f2a6f9ae45265-text/javascript">
+    (function (v,i) {
+        var scp = v.createElement("script"),
+            config = {
+                ChannelID: 'kgaqhvr6t',
+                AdUnitType: '2',
+                PublisherID: '191586779475518',
+                PlacementID: 'plt8La0sLpabV8kPaPH',
+                DivID: '',
+                IAB_Category: 'IAB19',
+                Keywords: '',
+                Language: 'en-us',
+                BG_Color: '',
+                Text_Color: '',
+                Font: '',
+                FontSize: '',
+            };
+        scp.src='https://s.vi-serve.com/tagLoader.js';
+        scp.type = "text/javascript";
+        scp.async = true;
+        scp.onload = function() {
+            i[btoa('video intelligence start')].init(config);
+        };
+        (v.getElementsByTagName('head')[0] || v.documentElement.appendChild(v.createElement('head'))).appendChild(scp);
+    })(document, window);
+</script>
+</p>
+
+<!-- 321300 -->
+<!-- z:320716 -->
+<figure itemprop="image" itemscope itemtype="http://schema.org/ImageObject" class="image-idg frame_src image-idg-center image-idg-notitle" style="width: 1276px; max-width: 100%;" id="image_320716">
+	<a href="https://www.pcworld.pl/g1/news/3/2/320716" class="bigimg" title="" data-width="1276" data-height="568" data-status="https://www.pcworld.pl/g1/news/3/2/320716">
+				<img src="https://www.pcworld.pl/g1/news/thumbnails/3/2/320716_Screenshot_2019_10_19_Ustawienia_henryk_tur_idg_com_pl_International_Data_Group_Poland_S_A_poczta_png_90_adaptiveresize_770x343.png" alt="Gmail jako klient poczty" title="Gmail jako klient poczty" itemprop="contentUrl" loading="lazy" data-srcset="https://www.pcworld.pl/g1/news/thumbnails/3/2/320716_Screenshot_2019_10_19_Ustawienia_henryk_tur_idg_com_pl_International_Data_Group_Poland_S_A_poczta_png_90_adaptiveresize_770x343.png 1x, https://www.pcworld.pl/g1/news/thumbnails/3/2/320716_Screenshot_2019_10_19_Ustawienia_henryk_tur_idg_com_pl_International_Data_Group_Poland_S_A_poczta_png_90_adaptiveresize_320x142.png 320w, https://www.pcworld.pl/g1/news/thumbnails/3/2/320716_Screenshot_2019_10_19_Ustawienia_henryk_tur_idg_com_pl_International_Data_Group_Poland_S_A_poczta_png_90_adaptiveresize_480x214.png 480w, https://www.pcworld.pl/g1/news/thumbnails/3/2/320716_Screenshot_2019_10_19_Ustawienia_henryk_tur_idg_com_pl_International_Data_Group_Poland_S_A_poczta_png_90_adaptiveresize_768x342.png 768w, https://www.pcworld.pl/g1/news/thumbnails/3/2/320716_Screenshot_2019_10_19_Ustawienia_henryk_tur_idg_com_pl_International_Data_Group_Poland_S_A_poczta_png_90_adaptiveresize_991x441.png 991w" />
+	</a>
+</figure>
+<!-- end z:320716 --><p></p>
+
+<p><em>Krok 2: Zmień ustawienia Gmaila</em></p>
+
+<p>Na komputerze zaloguj się na <strong>konto Gmail</strong>, na które chcesz importować wiadomości.</p>
+
+<p>U góry po prawej kliknij Ustawienia, a potem Ustawienia. Kliknij kartę Konta i importowanie.</p>
+
+<p>W sekcji „Sprawdź pocztę na innych kontach” kliknij <strong>Dodaj konto pocztowe</strong>.</p>
+
+<p>Wpisz adres e-mail drugiego konta, a następnie kliknij <strong>Dalej</strong>.</p>
+
+<p>Wybierz jedną z opcji i kliknij <strong>Dalej</strong>.</p>
+
+<p>Wpisz hasło.</p>
+
+<p>Zalecane jest zaznaczenie pól przy opcjach: „Zawsze korzystaj z bezpiecznego połączenia (SSL) podczas pobierania wiadomości”, „przychodzące wiadomości oznaczaj etykietą”.</p>
+
+<p>Kliknij <strong>Dodaj konto</strong>.</p>
+
+<!-- 321301 -->
+<!-- z:320717 -->
+<figure itemprop="image" itemscope itemtype="http://schema.org/ImageObject" class="image-idg frame_src image-idg-center image-idg-notitle" style="width: 1278px; max-width: 100%;" id="image_320717">
+	<a href="https://www.pcworld.pl/g1/news/3/2/320717" class="bigimg" title="" data-width="1278" data-height="714" data-status="https://www.pcworld.pl/g1/news/3/2/320717">
+				<img src="https://www.pcworld.pl/g1/news/thumbnails/3/2/320717_Screenshot_2019_10_19_Ustawienia_henryk_tur_idg_com_pl_International_Data_Group_Poland_S_A_poczta_1_png_90_adaptiveresize_770x430.png" alt="Gmail jako klient poczty" title="Gmail jako klient poczty" itemprop="contentUrl" loading="lazy" data-srcset="https://www.pcworld.pl/g1/news/thumbnails/3/2/320717_Screenshot_2019_10_19_Ustawienia_henryk_tur_idg_com_pl_International_Data_Group_Poland_S_A_poczta_1_png_90_adaptiveresize_770x430.png 1x, https://www.pcworld.pl/g1/news/thumbnails/3/2/320717_Screenshot_2019_10_19_Ustawienia_henryk_tur_idg_com_pl_International_Data_Group_Poland_S_A_poczta_1_png_90_adaptiveresize_320x179.png 320w, https://www.pcworld.pl/g1/news/thumbnails/3/2/320717_Screenshot_2019_10_19_Ustawienia_henryk_tur_idg_com_pl_International_Data_Group_Poland_S_A_poczta_1_png_90_adaptiveresize_480x268.png 480w, https://www.pcworld.pl/g1/news/thumbnails/3/2/320717_Screenshot_2019_10_19_Ustawienia_henryk_tur_idg_com_pl_International_Data_Group_Poland_S_A_poczta_1_png_90_adaptiveresize_768x429.png 768w, https://www.pcworld.pl/g1/news/thumbnails/3/2/320717_Screenshot_2019_10_19_Ustawienia_henryk_tur_idg_com_pl_International_Data_Group_Poland_S_A_poczta_1_png_90_adaptiveresize_991x554.png 991w" />
+	</a>
+</figure>
+<!-- end z:320717 --><p></p>
+
+<p><strong>Pobieranie tylko starych wiadomości</strong> - jeżeli od niedawna używasz Gmaila, możesz przenieść stare e-maile ze swojego poprzedniego konta. Jeśli korzystasz z Gmaila w pracy lub szkole i nie widzisz opcji importowania poczty, być może administrator wyłączył tę funkcję.</p>
+
+<p>	<!--  BOTTOM IMU -->
+	<div class="lazyload_ad ad" id="ad22a79ca203369df8eac1727681c7ddf3">
+					<code type="text/javascript">
+		<!--
+						function adf0471c5f13cfd88b166a2a2edd27bd9c() {
+				if (IDG.GPT.runCode !== null) {
+					IDG.GPT.IMUCounter = IDG.GPT.IMUCounter + 1;
+					document.write('<div id="' + IDG.GPT.getIMUSlotName() + '" class="separator"></div>');
+					if (IDG.GPT.slots["ad-mpu2-intertext"] != undefined && isElementVisibility(IDG.GPT.getIMUSlotName())) {
+						IDG.GPT.defineGoogleTagSlot(IDG.GPT.getIMUSlotName(), IDG.GPT.slots["ad-mpu2-intertext"]);
+						jQuery('#' + IDG.GPT.getIMUSlotName()).responsiveAd({screenSize:'971 1115', scriptTags: []});
+					}
+				} else {
+					setTimeout(function(){adf0471c5f13cfd88b166a2a2edd27bd9c();}, 500);
+				}
+			}
+			adf0471c5f13cfd88b166a2a2edd27bd9c();
+		//-->
+		</code>
+		</div>
+<!--  /BOTTOM IMU -->
+</p>
+
+<p><ul><li>Otwórz <strong>Gmaila</strong> na komputerze.</li><li>U góry po prawej kliknij Ustawienia, a potem Ustawienia.</li><li>Kliknij kartę <strong>Konta i importowanie</strong> lub kartę Konta.</li><li>W drugiej sekcji kliknij Importuj pocztę i kontakty.</li><li>Wykonaj instrukcje wyświetlane na ekranie.</li><li>Kliknij Rozpocznij importowanie.</li></ul></p>
+
+<p>Aby dać Ci czas na poinformowanie znajomych o nowym adresie Gmail, klient będzie przez 30 dni przekazywać dalej wiadomości przesyłane na poprzednie konto.</p>
+
+<p>	<!--  BOTTOM IMU -->
+	<div class="lazyload_ad ad" id="ad9dbf77fc88ffe8977706d18e856ead0f">
+					<code type="text/javascript">
+		<!--
+						function ad141656fbbea3808f77ded5f8dd77d592() {
+				if (IDG.GPT.runCode !== null) {
+					IDG.GPT.IMUCounter = IDG.GPT.IMUCounter + 1;
+					document.write('<div id="' + IDG.GPT.getIMUSlotName() + '" class="separator"></div>');
+					if (IDG.GPT.slots["ad-mpu-intertext"] != undefined && isElementVisibility(IDG.GPT.getIMUSlotName())) {
+						IDG.GPT.defineGoogleTagSlot(IDG.GPT.getIMUSlotName(), IDG.GPT.slots["ad-mpu-intertext"]);
+						jQuery('#' + IDG.GPT.getIMUSlotName()).responsiveAd({screenSize:'971 1115', scriptTags: []});
+					}
+				} else {
+					setTimeout(function(){ad141656fbbea3808f77ded5f8dd77d592();}, 500);
+				}
+			}
+			ad141656fbbea3808f77ded5f8dd77d592();
+		//-->
+		</code>
+		</div>
+<!--  /BOTTOM IMU -->
+</p>					</div>
+				</span>
+															
+								
+				<br />
+<aside class="shareContainer articleAsideContainer">
+	<h4>
+		<span>Podziel się</span>
+	</h4>
+	<div class="bottom intentShareArticleBtns socialContainer" data-ga="bottom intentShareArticleBtns socialContainer social tools">
+		<div class="socialIcon facebook">
+			<div data-gd-plugin="facebook-share" data-gd-fb-url="https://www.pcworld.pl/porada/Gmail-jako-klient-poczty,416005.html" data-gd-use-network-button="false">
+				<a class="ihq-share-facebook" data-type="facebook" href="#" data-url="https://www.pcworld.pl/porada/Gmail-jako-klient-poczty,416005.html" onclick="if (!window.__cfRLUnblockHandlers) return false; var sTop = window.screen.height/2-(218); var sLeft = window.screen.width/2-(313);window.open('https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.pcworld.pl%2Fporada%2FGmail-jako-klient-poczty%2C416005.html','sharer','toolbar=0,status=0,width=626,height=356,top='+sTop+',left='+sLeft);return false;" data-cf-modified-2ee252c2e74f2a6f9ae45265-=""><div class="socialIconText">Udostępnij</div></a>
+			</div>
+		</div>
+		<div class="socialIcon twitter">
+			<div data-gd-plugin="twitter-share" data-gd-tw-text="Gmail jako klient poczty" data-gd-tw-url="https://www.pcworld.pl/porada/Gmail-jako-klient-poczty,416005.html" data-gd-use-network-button="false">
+				<a class="ihq-share-twitter" data-type="twitter" href="#" data-url="https://www.pcworld.pl/porada/Gmail-jako-klient-poczty,416005.html" onclick="if (!window.__cfRLUnblockHandlers) return false; var sTop = window.screen.height/2-(218); var sLeft = window.screen.width/2-(313);window.open('https://twitter.com/share?text=Gmail+jako+klient+poczty&amp;url=https%3A%2F%2Fwww.pcworld.pl%2Fporada%2FGmail-jako-klient-poczty%2C416005.html','sharer','toolbar=0,status=0,width=626,height=456,top='+sTop+',left='+sLeft);return false;" data-cf-modified-2ee252c2e74f2a6f9ae45265-=""><div class="socialIconText">Tweet</div></a>
+			</div>
+		</div>
+	</div>
+</aside>
+
+				
+				<div class="modal fade" id="idg-author-6661" tabindex="-1" role="dialog">
+	<div class="modal-dialog modal-author-info" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="myModalLabel">Autorzy</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			</div>
+			<div class="modal-body">
+				
+				<div class="row">
+					<div class="col-12">
+						<img  class="img-fluid" src="https://www.pcworld.pl/g1/global/author/thumbnails/henryk_tur_png_90_resize_150x150.png" alt="Henryk Tur" />
+	<h3>Henryk Tur<span>PCWorld</span></h3>
+	<p><strong>Współpracownik</strong></p><p>W styczności z komputerami od 1986 roku, w IDG od 2011. Zajmuje się poradami, programami oraz artykułami związanymi z ogólnie pojętą branżą IT.</p><br/><p><strong>Kontakt: <a href="/cdn-cgi/l/email-protection#08406d667a7163575c7d7a48616c6f266b6765267864">Henryk Tur</a></strong></p>					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>				<div itemprop="publisher" itemscope itemtype="http://schema.org/Organization" itemprop="name" content="PCWorld.pl" class="d-none">
+					<meta itemprop="name" content="PCWorld.pl">
+				</div>
+			</article>
+			<div style="clear:both;"></div>
+			
+					<section>
+				<div class="row">
+					<div class="col-12">
+						<div id="taboola-below-article-thumbnails"></div>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script type="2ee252c2e74f2a6f9ae45265-text/javascript">
+  window._taboola = window._taboola || [];
+  _taboola.push({
+    mode: 'alternating-thumbnails-a',
+    container: 'taboola-below-article-thumbnails',
+    placement: 'Below Article Thumbnails',
+    target_type: 'mix'
+  });
+</script>
+					</div>
+				</div>
+			</section>
+		
+										<div style="clear:both;"></div>
+		</div>
+	</div>
+	<div class="col-lg-4 d-none d-lg-flex right-side">
+		<div class="right-side-wraper-top">
+			<div class="wraper-sticky">
+				<div id="newsletter-box"></div>
+					<!--  BOTTOM IMU -->
+	<div class="lazyload_ad ad" id="ad7d02948cdcfed57fb57f300f505af6df">
+					<code type="text/javascript">
+		<!--
+						function adaf3c3cc318da9b1dfeb87ea9f3f63836() {
+				if (IDG.GPT.runCode !== null) {
+					IDG.GPT.IMUCounter = IDG.GPT.IMUCounter + 1;
+					document.write('<div id="' + IDG.GPT.getIMUSlotName() + '" class="separator"></div>');
+					if (IDG.GPT.slots["ad-mpu"] != undefined && isElementVisibility(IDG.GPT.getIMUSlotName())) {
+						IDG.GPT.defineGoogleTagSlot(IDG.GPT.getIMUSlotName(), IDG.GPT.slots["ad-mpu"]);
+						jQuery('#' + IDG.GPT.getIMUSlotName()).responsiveAd({screenSize:'971 1115', scriptTags: []});
+					}
+				} else {
+					setTimeout(function(){adaf3c3cc318da9b1dfeb87ea9f3f63836();}, 500);
+				}
+			}
+			adaf3c3cc318da9b1dfeb87ea9f3f63836();
+		//-->
+		</code>
+		</div>
+<!--  /BOTTOM IMU -->
+																															</div>
+		</div>
+		<div class="right-side-wraper-bottom">
+			<div class="wraper-sticky">
+				<div class="d-none d-lg-block">
+					<div class="adsense-lazyload lazyload_ad" id="ad3b096b5146497daad5b1db7dd0d48c3c">
+	<code type="text/javascript">
+	<!-- 
+		function ad3b096b5146497daad5b1db7dd0d48c3c() {
+			if (IDG.GPT.runCode !== null && isElementVisibility('ad3b096b5146497daad5b1db7dd0d48c3c')) {
+				var element = document.createElement("script");
+				element.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js";
+				document.body.appendChild(element);
+				document.write('<div style="margin-top: 20px;" class="adsense-lazyload-mpu-intertext"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4144788155563610" data-ad-slot="9581779115" data-ad-format="auto"></ins></div>');
+				(adsbygoogle = window.adsbygoogle || []).requestNonPersonalizedAds=((!consent.personalization)?1:0);
+				(adsbygoogle = window.adsbygoogle || []).push({});
+			} else {
+				setTimeout(function(){ad3b096b5146497daad5b1db7dd0d48c3c();}, 500);
+			}
+		}
+		ad3b096b5146497daad5b1db7dd0d48c3c();
+	//-->
+	</code>
+</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="newsmore"></div>
+
+
+
+
+
+
+				
+					<!-- BILBO LAZY -->
+	<div class="bilbo_ad lazyload_ad ad" id="ad085f9f7ee6b8cc7f497e95ba6008e3e5">
+					<code type="text/javascript">
+		<!--
+						function ada50b976bb636268f60e6971f885710c6() {
+				if (IDG.GPT.runCode !== null) {
+					IDG.GPT.IMUCounter = IDG.GPT.IMUCounter + 1;
+					document.write('<div id="' + IDG.GPT.getIMUSlotName() + '" class="separator"></div>');
+					if (IDG.GPT.slots["ad-bilbo2"] != undefined && isElementVisibility(IDG.GPT.getIMUSlotName())) {
+						IDG.GPT.defineGoogleTagSlot(IDG.GPT.getIMUSlotName(), IDG.GPT.slots["ad-bilbo2"]);
+						jQuery('#' + IDG.GPT.getIMUSlotName()).responsiveAd({screenSize:'971 1115', scriptTags: []});
+					}
+				} else {
+					setTimeout(function(){ada50b976bb636268f60e6971f885710c6();}, 500);
+				}
+			}
+			ada50b976bb636268f60e6971f885710c6();
+		//-->
+		</code>
+		</div>
+<!-- /BILBO LAZY -->
+				<div class="row footer bs-docs-footer">
+	<div class="col-12 col-md-6 col-lg-4">
+		<p><a href="/"><img src=" data:image/png;base64,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" data-src="/www/image/logo-white-from-idg.png?v=2017" loading="lazy" class="no-optimize lazy" /></a></p>
+		
+		<p>PC World ułatwia podejmowanie właściwych decyzji zakupowych poprzez liczne testy najnowszego sprzętu i osprzętu, oprogramowania oraz usług internetowych</p>
+		
+		<div class="row">
+			<div class="col-md-6 col-12">
+				<ul class="list-unstyled">
+					<li><a href="/nasza.redakcja" rel="nofollow">Redakcja</a></li>
+					<li><a href="/reklama">Reklama</a></li>
+					<li><a href="https://www.idg.com.pl/uslugi" target="_blank" data-status="https://www.idg.com.pl/uslugi">Usługi marketingowe</a></li>
+					<li><a href="http://www.idg.pl/kiosk/pcworld.html" target="_blank" data-status="http://www.idg.pl/kiosk/pcworld.html">PC World w Kiosku</a></li>
+					<li><a href="/newsletter" rel="nofollow">Newslettery</a></li>
+					<li><a href="/news?rss" rel="nofollow">RSS</a></li>
+				</ul>
+			</div>
+			<div class="col-md-6 col-12">
+				<ul class="list-unstyled">
+					<li><a href="https://www.idg.com.pl/rejestracja/polityka_prywatnosci" rel="nofollow" data-status="https://www.idg.com.pl/rejestracja/polityka_prywatnosci">Polityka prywatności</a> <a href="https://www.idg.com.pl/rejestracja/privacy_policy" rel="nofollow" data-status="https://www.idg.com.pl/rejestracja/privacy_policy"><img src="data:image/gif;base64,R0lGODlhHgASAPcAAAAAQf8AAPGjp1Rxnv9pYiA1cv8zM/ra28GPlD4/eAQPXdyYoOb//4eOs8g9PbS3wuW2u96OluUiH/9SThAkbdrn8ggHVtqgqbehtPG6umaCrV9gkP95eTY2cPSZm5Skwv+xsf/08P+QkLbC20FZkv/c3f9BQQ8RWQAAUGKQwBkrb+O/x/leXdTe6hQWXT5Ykf//+/CVmCE2fEdXieOysq2Mo/8PD+2dnx0eXaOuyrnC1lp0pf8lIPGFhyxBhfvNzlxdjMKywe6zuP+hocPN4AocZPv///+kpQAATRQQXQQHUSc5euHt9v8+N2yCr/9rahksdPrQ0U9pnP9mZgsMVPf//2xsmJKUtP+6tsOSpK2vxd6ttf+CgcbAwO+amv9YVX6GrhobX/9JSVhYh22cyiNAfOPn78ze2wAJTv+ZmfP//7u90AQEUUxejwAASRMVWhgpbi5Hh//X0yUjZhgYXf2Wk/91deeMkOueopabumJ4pv3l5frCwx0wcQoIWBEQXf86Of+Kiumusik/e2Vmlhs1e82PkJuOqu+mpuf2/f9dV/+VlUZikwgIWSg9feSVmv/6+v89PfGhot/r8wQETQcIUv1TUf8oJft9e7bHzhQYWSY7djFFhuuytg0LWOv///9HPyI1e////wIDSBssb/+TkggMVf+fnrqlt//MzO+2uv+mo/umpgQAURgYYmmErxsxeCgpZAcSXf84MWlplYmNr/9NSvvX1xMkaLrG3P9xbubq8GN5q/99fRUVXfWmpig9gu6eoQAARSg9eQgEUf9pZBETWf9BPTFJhm2GrhAMWQILURwobf9AOv9dVe+envOjpf+mpdqiqeaztrCPp6Wwy/+8ullZiSRFff/m4/9hWf9WTxgYWf85NImPtAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAAHAP8ALAAAAAAeABIAAAj/AE2UELUrFoATLt4opAIHQoAAGZZUUqjwBIBBu47ZiKZLjAhRFaxUQuGiJEOHECVSRCLrlTRAYuSIkkJN0TFroogkcGPKxcmHESu5MIXkRRACl1aJyjWGjYIdC0B9ySYqTxg3lVSgjMjGjYoPdXhMgcGEkAU2rv6goACmxywOohLRGlVkKyk0GqY1aSKnSgNfKP748kMYBYpCh1gYULpmxpaHggZgKMajlJEcc4ShsMDZh2fPocqkWPGllyhRUR7+2ONsCqRPTjbJ+Oz5l+3bvx4JACEiTTQuDzmcOgXiiIdH0HDbfsi8ufPn0KNLn/48mKTr2CPEGAJi0SLgAewc3kkTKJqACDewYwfGnj2sArwYQJoy4cCBh3yMGAk0QQgZbFC0x54nnKEgzBzVGFEKDwSgwshjAQjShhaiWBOJJTXEgQQShPmRFgq+eFOFHN00MY0Gy9QFVB8AAMGEKCJ0g8kVsKCgjC9ssEEIEzBMwUMdH6iAVUNALcEGEm/UYkQITzRzhxNFIHFNLqKscgkBQbyARE8/pSQUFW50oIMoqdiyTRZ6iCKHGIBc8IosSJTkE5FeUqSEEhu0IMoRYmjjgQ0SZDLIQW8YYygVuCDwkCF9UGHoo8Lg8MAZXTgQEAA7" data-src="/www/image/en_flag.gif" border="0" title="View English version" loading="lazy" class="no-optimize lazy" style="width:15px;"></a></li>
+					<li><a href="https://www.idg.com.pl/rejestracja/info_cookies" target="_blank" rel="nofollow" data-status="https://www.idg.com.pl/rejestracja/info_cookies">Polityka ciasteczek</a> <a href="https://www.idg.com.pl/rejestracja/cookies_policy" rel="nofollow" data-status="https://www.idg.com.pl/rejestracja/cookies_policy"><img src="data:image/gif;base64,R0lGODlhHgASAPcAAAAAQf8AAPGjp1Rxnv9pYiA1cv8zM/ra28GPlD4/eAQPXdyYoOb//4eOs8g9PbS3wuW2u96OluUiH/9SThAkbdrn8ggHVtqgqbehtPG6umaCrV9gkP95eTY2cPSZm5Skwv+xsf/08P+QkLbC20FZkv/c3f9BQQ8RWQAAUGKQwBkrb+O/x/leXdTe6hQWXT5Ykf//+/CVmCE2fEdXieOysq2Mo/8PD+2dnx0eXaOuyrnC1lp0pf8lIPGFhyxBhfvNzlxdjMKywe6zuP+hocPN4AocZPv///+kpQAATRQQXQQHUSc5euHt9v8+N2yCr/9rahksdPrQ0U9pnP9mZgsMVPf//2xsmJKUtP+6tsOSpK2vxd6ttf+CgcbAwO+amv9YVX6GrhobX/9JSVhYh22cyiNAfOPn78ze2wAJTv+ZmfP//7u90AQEUUxejwAASRMVWhgpbi5Hh//X0yUjZhgYXf2Wk/91deeMkOueopabumJ4pv3l5frCwx0wcQoIWBEQXf86Of+Kiumusik/e2Vmlhs1e82PkJuOqu+mpuf2/f9dV/+VlUZikwgIWSg9feSVmv/6+v89PfGhot/r8wQETQcIUv1TUf8oJft9e7bHzhQYWSY7djFFhuuytg0LWOv///9HPyI1e////wIDSBssb/+TkggMVf+fnrqlt//MzO+2uv+mo/umpgQAURgYYmmErxsxeCgpZAcSXf84MWlplYmNr/9NSvvX1xMkaLrG3P9xbubq8GN5q/99fRUVXfWmpig9gu6eoQAARSg9eQgEUf9pZBETWf9BPTFJhm2GrhAMWQILURwobf9AOv9dVe+envOjpf+mpdqiqeaztrCPp6Wwy/+8ullZiSRFff/m4/9hWf9WTxgYWf85NImPtAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAAHAP8ALAAAAAAeABIAAAj/AE2UELUrFoATLt4opAIHQoAAGZZUUqjwBIBBu47ZiKZLjAhRFaxUQuGiJEOHECVSRCLrlTRAYuSIkkJN0TFroogkcGPKxcmHESu5MIXkRRACl1aJyjWGjYIdC0B9ySYqTxg3lVSgjMjGjYoPdXhMgcGEkAU2rv6goACmxywOohLRGlVkKyk0GqY1aSKnSgNfKP748kMYBYpCh1gYULpmxpaHggZgKMajlJEcc4ShsMDZh2fPocqkWPGllyhRUR7+2ONsCqRPTjbJ+Oz5l+3bvx4JACEiTTQuDzmcOgXiiIdH0HDbfsi8ufPn0KNLn/48mKTr2CPEGAJi0SLgAewc3kkTKJqACDewYwfGnj2sArwYQJoy4cCBh3yMGAk0QQgZbFC0x54nnKEgzBzVGFEKDwSgwshjAQjShhaiWBOJJTXEgQQShPmRFgq+eFOFHN00MY0Gy9QFVB8AAMGEKCJ0g8kVsKCgjC9ssEEIEzBMwUMdH6iAVUNALcEGEm/UYkQITzRzhxNFIHFNLqKscgkBQbyARE8/pSQUFW50oIMoqdiyTRZ6iCKHGIBc8IosSJTkE5FeUqSEEhu0IMoRYmjjgQ0SZDLIQW8YYygVuCDwkCF9UGHoo8Lg8MAZXTgQEAA7" data-src="/www/image/en_flag.gif" border="0" title="View English version" loading="lazy" class="no-optimize lazy" style="width:15px;"></a></li>
+					<li class="cmpSettings cmpReshowLink" style="display:none"><!--injected--></li>
+					<li><a href="/info_asme.html" rel="nofollow">Wytyczne ASME</a></li>
+					<li><a href="/info_regulamin.html" rel="nofollow">Regulamin</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-6 col-lg-4 d-none d-md-block">
+		<div class="navigation">
+			<h4 class="footer-title">Tematy</h4>
+			<div class="row">
+				<div class="col-sm-5 col-12">
+					<ul class="list-unstyled">
+					 
+									<li><a href="/temat/audio">Audio</a></li>
+		 
+									<li><a href="/temat/drukarki">Drukarki</a></li>
+		 
+									<li><a href="/temat/fotografia">Fotografia</a></li>
+		 
+									<li><a href="/temat/gry">Gry</a></li>
+		 
+									<li><a href="/temat/kamery-sportowe">Kamery sportowe</a></li>
+		 
+									<li><a href="/temat/laptopy">Laptopy</a></li>
+		 
+									<li><a href="/temat/projektory">Projektory</a></li>
+		 
+									<li><a href="/temat/routery">Routery</a></li>
+		 
+							</ul>
+				</div>
+				<div class="col-sm-5 col-12">
+					<ul class="list-unstyled">
+									<li><a href="/temat/smartfony">Smartfony</a></li>
+		 
+									<li><a href="/temat/serwery-nas">Serwery NAS</a></li>
+		 
+									<li><a href="/temat/tablety">Tablety</a></li>
+		 
+									<li><a href="/temat/tv">TV</a></li>
+		 
+									<li><a href="/temat/wifi">WiFi</a></li>
+		 
+									<li><a href="/temat/vr">VR</a></li>
+		 
+									<li><a href="/temat/monitory">Monitory</a></li>
+		 
+									<li><a href="/temat/hosting">Hosting</a></li>
+								</ul>
+				</div>
+			</div>
+		</div>
+		<div class="navigation">
+			<h4 class="footer-title">Serwisy IDG</h4>
+			<div class="row">
+				<div class="col-sm-5 col-12">
+					<ul class="list-unstyled">
+						<li><a href="http://www.idg.pl/kiosk" target="_blank" data-status="http://www.idg.pl/kiosk">Kiosk</a></li>
+						<li><a href="http://e-seminaria.pl" target="_blank">E-Seminaria</a></li>
+						<li><a href="http://www.computerworld.pl/konferencje" target="_blank" data-status="http://www.computerworld.pl/konferencje">Konferencje</a></li>
+						<li><a href="http://www.idg.pl/tv" target="_blank" data-status="http://www.idg.pl/tv">IDG TV</a></li>
+						<li><a href="http://www.computerworld.pl/bibliotekait" target="_blank" data-status="http://www.computerworld.pl/bibliotekait">Whitepapers</a></li>
+					</ul>
+				</div>
+				<div class="col-sm-5 col-12">
+					<ul class="list-unstyled">
+						<li><a href="http://www.computerworld.pl" target="_blank" data-status="http://www.computerworld.pl">Business IT</a></li>
+						<li><a href="http://www.computerworld.pl/sieci" target="_blank" data-status="http://www.computerworld.pl/sieci">Sieci</a></li>
+						<li><a href="http://www.internetstandard.pl" target="_blank" data-status="http://www.internetstandard.pl">Marketing &amp; Social Media</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-12 col-md-12 col-lg-4">
+		<h4 class="footer-title footer-social">Znajdź nas
+			<a href="https://www.facebook.com/pcworldpl" class="fab fa-lg fa-facebook"></a>
+			<a href="https://twitter.com/#!/pcworldpl" class="fab fa-lg fa-twitter"></a>
+		</h4>
+		
+		<p>Kopiowanie, reprodukcja, retransmisja lub redystrybucja jakichkolwiek materiałów zamieszczonych w serwisie PC World w całości lub w części, w jakimkolwiek medium lub w jakiejkolwiek formie bez oficjalnej zgody wydawnictwa jest stanowczo zabronione.</p>
+		<div class="o-a">
+			<h4>Zamów reklamę</h4>
+			<h5><i class="fa fa-phone"></i> (+48) 662 287 735 </h5>
+			<a href="/cdn-cgi/l/email-protection#4520293f272c2031241a2e3037313c2e24052c21226b262a286b35297a1630272f202631781f242886f6326537202e29242881dc" class="btn btn-danger write-to-us"><i class="fa fa-check-circle"></i> Napisz do nas</a>
+		</div>
+	</div>
+</div>
+	
+<div class="modal fade" id="clearModal" tabindex="-1" role="dialog" aria-labelledby="clearModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content"></div> <!-- /.modal-content -->
+	</div> <!-- /.modal-dialog -->
+</div>			</div>
+				<div id="superadunit" class="hidden">
+		<div class="ad">
+			<a id="superstitial-text" onclick="if (!window.__cfRLUnblockHandlers) return false; if(typeof unhide=='function'){unhide('superadunit')};return false;" href="#" data-cf-modified-2ee252c2e74f2a6f9ae45265-="">Reklama zamknie się za 15 sekund. Przejdź do serwisu &#187;</a>
+			<div id="gpt-overlay" class="">
+				<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script type="2ee252c2e74f2a6f9ae45265-text/javascript">
+								function ad7c1cfb1ddec00051a763b89fcff82a98() {
+					if (IDG.GPT.runCode !== null) {
+						if (IDG.GPT.slotsOutOfPage["gpt-overlay"] != undefined) {
+							IDG.GPT.defineGoogleTagSlot('gpt-overlay', IDG.GPT.slotsOutOfPage["gpt-overlay"]);
+							IDG.GPT.addDisplayedAd("gpt-overlay", "true");
+							googletag.cmd.push(function() { googletag.display('gpt-overlay'); });
+						}
+					} else {
+						setTimeout(function() { ad7c1cfb1ddec00051a763b89fcff82a98(); }, 500);
+					}
+				}
+				ad7c1cfb1ddec00051a763b89fcff82a98();
+				</script>
+			</div>
+		</div>
+	</div>
+	<div id="mobilewelcomead" class="">
+		<script type="2ee252c2e74f2a6f9ae45265-text/javascript">
+				function ad1c589b9ee74894091c047b75104026f7() {
+			if (IDG.GPT.runCode !== null) {
+				if (IDG.GPT.slotsOutOfPage["mobilewelcomead"] != undefined) {
+					IDG.GPT.defineGoogleTagSlot('mobilewelcomead', IDG.GPT.slotsOutOfPage["mobilewelcomead"]);
+					IDG.GPT.addDisplayedAd("mobilewelcomead", "true");
+					jQuery('#mobilewelcomead').responsiveAd({screenSize:'971 1115', scriptTags: []});
+				}
+			} else {
+				setTimeout(function() { ad1c589b9ee74894091c047b75104026f7(); }, 500);
+			}
+		}
+		ad1c589b9ee74894091c047b75104026f7();
+		</script>
+	</div>
+			
+
+
+<script data-cfasync="false" type="text/javascript">(function(w, d) { var s = d.createElement('script'); s.src = '//delivery.adrecover.com/38221/adRecover.js?ts=1548154852988'; s.type = 'text/javascript'; s.async = true; (d.getElementsByTagName('head')[0] || d.getElementsByTagName('body')[0]).appendChild(s); })(window, document);</script>
+
+<!-- <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous" id="jQueryScript" async="true"></script> -->
+<script type="2ee252c2e74f2a6f9ae45265-text/javascript">
+    //<!--
+    var IDG = IDG || {};
+IDG.newsletter = IDG.newsletter || {};
+IDG.newsletter.news = IDG.newsletter.news || {};
+
+IDG.newsletter.news.init = function() {
+	jQuery.ajax({
+		dataType: "html", 
+		url: "/newsletter/block/newsletternews?ajax=1",
+		success: function(data) {
+			jQuery("#newsletter-box").html(data);
+		}
+	});
+};
+
+if (typeof IDG.global.async != 'undefined') {
+	IDG.global.async.push(['load', function(){
+		IDG.newsletter.news.init();
+	}]);
+} else {
+	IDG.newsletter.news.init();
+}
+    //-->
+</script>
+<script type="2ee252c2e74f2a6f9ae45265-text/javascript">
+    //<!--
+    IDG.news = IDG.news || {};
+    //-->
+</script>
+<script type="2ee252c2e74f2a6f9ae45265-text/javascript">
+    //<!--
+    	var newsMore = 416005;
+	var IDG = IDG || {};
+	IDG.global = IDG.global || {};
+	
+	IDG.scrollRedirect = function () {
+		var offset = 20;
+		if ( jQuery(window).scrollTop() + jQuery(window).height() + offset > jQuery("article").outerHeight() + jQuery("article").offset().top ) {
+			window.location.href = '/swiateczny-poradnik';
+		}
+		return;
+	};
+	
+	IDG.news = IDG.news || {};
+	IDG.news.more = function (){
+	/*
+		jQuery(window).scroll(function(){
+			IDG.scrollRedirect();
+		});
+		return;
+	*/
+		if (typeof IDG.global.uniqueID == 'undefined' || typeof IDG.global.socialite == 'undefined') {
+			setTimeout(function() {IDG.news.more();}, 500);
+			return;
+		}
+		var q = '';
+		jQuery.ajax({
+			type: 'GET',
+			url: '/news/ajax/more/?ajax=1' + q,
+			data: { id: 416005 },
+			cache: true,
+			dataType: 'json'
+		}).done(function(r) {
+			jQuery(".news-more").append(
+				'<input type="hidden" name="title" value="' + jQuery('title:eq(0)').text() + '" />'+
+				'<input type="hidden" name="id" value="416005" />'+
+				'<input type="hidden" name="url" value="/porada/Gmail-jako-klient-poczty,416005.html" />'+
+				'<input type="hidden" name="absolute_url" value="http://pcworld.pl/news/416005.html" />'
+			);
+						jQuery(".news-more").append('<input type="hidden" name="ga[]" data-key="dimension1" value="__" />');
+			jQuery(".news-more").append('<input type="hidden" name="ga[]" data-key="dimension4" value="__" />');
+			jQuery(".news-more").append('<input type="hidden" name="ga[]" data-key="dimension2" value="_Gmail_poczta Gmail_Google_internet_Oprogramowanie_Gmail jako klient poczty_MŚP_" />');
+			
+			jQuery(".news-more").append('<input type="hidden" name="ga[]" data-key="dimension9" value="" />');
+			
+			//console.log(r.results.length);
+			for (var i=0; i < r.results.length; i++) {
+				// dodanie niusa
+				jQuery("#newsmore").append(
+					'<div id="newsmore'+r.results[i].id+'" class="news-more">'+
+						'<input type="hidden" name="title" value="'+escape(r.results[i].title)+'" />'+
+						'<input type="hidden" name="id" value="'+r.results[i].id+'" />'+
+						'<input type="hidden" name="absolute_url" value="'+r.results[i].absolute_url+'" />'+
+						'<input type="hidden" name="url" value="'+r.results[i].url+'" />'+
+						r.results[i].html+
+						'<div style="clear:both;"></div>' +
+					'</div>'
+				);
+				jQuery.each(r.results[i].ga, function(index, item) {
+					jQuery("#newsmore").find('#newsmore'+r.results[i].id).append('<input type="hidden" name="ga[]" data-key="'+index+'" value="'+escape(item)+'" />');
+				});
+			}
+			
+			jQuery('.btn-comments').click(function(){
+				window.location.href = '//' + window.location.host + jQuery(this).attr('href');
+				window.location.reload();
+				return false;
+			});
+			
+			idg_gls_updateLL();
+			
+			IDG.disqus_count();
+			IDG.initPost();
+			jQuery(window).scroll(function(){
+				IDG.scrollPosts();
+			});
+			jQuery(window).trigger('scroll');
+			
+			if (typeof IDG.global.socialite != 'undefined') {
+				IDG.global.socialite();
+			} else {
+				setTimeout(function(){
+					IDG.global.socialite();
+				}, 200);
+			}
+		
+								jQuery('.lazyload-ads-ajax').each(function(index,item) {
+				var uid = IDG.global.uniqueID (10000, 1);
+				var _id = jQuery(item).parents(".news-more").find("input[name=id]").val();
+				
+				jQuery(item).html('<div class="lazyload_ad ad">\n' +
+					'<code type="text/javascript">\n' +
+					'<'+'!-- \n' +
+					'function adf585bba4d18227c51fb2a469dc1185f1'+uid+'() {\n' + 
+					'	if (!IDG.global.adsShow) {\n' +
+					'		return;\n' +
+					'	}\n' +
+					'	if (typeof IDG.GPT[\'initNews'+_id+'\'] == \'function\') {\n' + 
+					'		IDG.GPT[\'initNews'+_id+'\']();\n' + 
+					'	}\n' + 
+					'	if (IDG.GPT.runCode !== null) {\n' + 
+					'		IDG.GPT.IMUCounter = IDG.GPT.IMUCounter + 1;\n' + 
+					'		document.write(\'<div id="\' + IDG.GPT.getIMUSlotName() + \'"></div>\');\n' + 
+					'		if (IDG.GPT.slots["ad-bilbo2"] != undefined && isElementVisibility(IDG.GPT.getIMUSlotName())) {\n' + 
+					'			IDG.GPT.defineGoogleTagSlot(IDG.GPT.getIMUSlotName(), IDG.GPT.slots["ad-bilbo2"]);\n' + 
+					'			jQuery(\'#\' + IDG.GPT.getIMUSlotName()).responsiveAd({screenSize:\'971 1115\', scriptTags: []});\n' + 
+					'		}\n' + 
+					'	} else {\n' + 
+					'		setTimeout(function(){adf585bba4d18227c51fb2a469dc1185f1'+uid+'();}, 500);\n' + 
+					'	}\n' + 
+					'}\n' + 
+					'adf585bba4d18227c51fb2a469dc1185f1'+uid+'();\n' + 
+					'//-->\n' + 
+					'</code>\n' + 
+				'</div>');
+			});
+			
+						jQuery('.lazyload-ads-mpu-ajax').each(function(index,item) {
+				var uid = IDG.global.uniqueID (10000, 1);
+				var _id = jQuery(item).parents(".news-more").find("input[name=id]").val();
+				
+				jQuery(item).html('<div class="lazyload_ad ad">\n' +
+					'<code type="text/javascript">\n' +
+					'<'+'!-- \n' +
+					'function ad52a085e968750085cdcd01cd50dea68d'+uid+'() {\n' + 
+					'	if (!IDG.global.adsShow) {\n' +
+					'		return;\n' +
+					'	}\n' +
+					'	if (typeof IDG.GPT[\'initNews'+_id+'\'] == \'function\') {\n' + 
+					'		IDG.GPT[\'initNews'+_id+'\']();\n' + 
+					'	}\n' + 
+					'	if (IDG.GPT.runCode !== null) {\n' + 
+					'		IDG.GPT.IMUCounter = IDG.GPT.IMUCounter + 1;\n' + 
+					'		document.write(\'<div id="\' + IDG.GPT.getIMUSlotName() + \'"></div>\');\n' + 
+					'		if (IDG.GPT.slots["ad-mpu"] != undefined && isElementVisibility(IDG.GPT.getIMUSlotName())) {\n' + 
+					'			IDG.GPT.defineGoogleTagSlot(IDG.GPT.getIMUSlotName(), IDG.GPT.slots["ad-mpu"]);\n' + 
+					'			jQuery(\'#\' + IDG.GPT.getIMUSlotName()).responsiveAd({screenSize:\'971 1115\', scriptTags: []});\n' + 
+					'		}\n' + 
+					'	} else {\n' + 
+					'		setTimeout(function(){ad52a085e968750085cdcd01cd50dea68d'+uid+'();}, 500);\n' + 
+					'	}\n' + 
+					'}\n' + 
+					'ad52a085e968750085cdcd01cd50dea68d'+uid+'();\n' + 
+					'//-->\n' + 
+					'</code>\n' + 
+				'</div>');
+			});
+			
+						jQuery('.lazyload-ads-halfpage-ajax').each(function(index,item) {
+				var uid = IDG.global.uniqueID (10000, 1);
+				var _id = jQuery(item).parents(".news-more").find("input[name=id]").val();
+				
+				jQuery(item).html('<div class="lazyload_ad ad">\n' +
+					'<code type="text/javascript">\n' +
+					'<'+'!-- \n' +
+					'function ad1c1f349e43d7f55570b47c6acfdac25d'+uid+'() {\n' + 
+					'	if (!IDG.global.adsShow) {\n' +
+					'		return;\n' +
+					'	}\n' +
+					'	if (typeof IDG.GPT[\'initNews'+_id+'\'] == \'function\') {\n' + 
+					'		IDG.GPT[\'initNews'+_id+'\']();\n' + 
+					'	}\n' + 
+					'	if (IDG.GPT.runCode !== null) {\n' + 
+					'		IDG.GPT.IMUCounter = IDG.GPT.IMUCounter + 1;\n' + 
+					'		document.write(\'<div id="\' + IDG.GPT.getIMUSlotName() + \'"></div>\');\n' + 
+					'		if (IDG.GPT.slots["ad-mpu-intertext"] != undefined && isElementVisibility(IDG.GPT.getIMUSlotName())) {\n' + 
+					'			IDG.GPT.defineGoogleTagSlot(IDG.GPT.getIMUSlotName(), IDG.GPT.slots["ad-mpu-intertext"]);\n' + 
+					'			jQuery(\'#\' + IDG.GPT.getIMUSlotName()).responsiveAd({screenSize:\'971 1115\', scriptTags: []});\n' + 
+					'		}\n' + 
+					'	} else {\n' + 
+					'		setTimeout(function(){ad1c1f349e43d7f55570b47c6acfdac25d'+uid+'();}, 500);\n' + 
+					'	}\n' + 
+					'}\n' + 
+					'ad1c1f349e43d7f55570b47c6acfdac25d'+uid+'();\n' + 
+					'//-->\n' + 
+					'</code>\n' + 
+				'</div>');
+			});
+			
+						jQuery('.lazyload-ads-halfpage2-ajax').each(function(index,item) {
+				var uid = IDG.global.uniqueID (10000, 1);
+				var _id = jQuery(item).parents(".news-more").find("input[name=id]").val();
+				
+				jQuery(item).html('<div class="lazyload_ad ad">\n' +
+					'<code type="text/javascript">\n' +
+					'<'+'!-- \n' +
+					'function ad05dc1cfd6a77446daf33b1a756660d60'+uid+'() {\n' + 
+					'	if (!IDG.global.adsShow) {\n' +
+					'		return;\n' +
+					'	}\n' +
+					'	if (typeof IDG.GPT[\'initNews'+_id+'\'] == \'function\') {\n' + 
+					'		IDG.GPT[\'initNews'+_id+'\']();\n' + 
+					'	}\n' + 
+					'	if (IDG.GPT.runCode !== null) {\n' + 
+					'		IDG.GPT.IMUCounter = IDG.GPT.IMUCounter + 1;\n' + 
+					'		document.write(\'<div id="\' + IDG.GPT.getIMUSlotName() + \'"></div>\');\n' + 
+					'		if (IDG.GPT.slots["ad-mpu2-intertext"] != undefined && isElementVisibility(IDG.GPT.getIMUSlotName())) {\n' + 
+					'			IDG.GPT.defineGoogleTagSlot(IDG.GPT.getIMUSlotName(), IDG.GPT.slots["ad-mpu2-intertext"]);\n' + 
+					'			jQuery(\'#\' + IDG.GPT.getIMUSlotName()).responsiveAd({screenSize:\'971 1115\', scriptTags: []});\n' + 
+					'		}\n' + 
+					'	} else {\n' + 
+					'		setTimeout(function(){ad05dc1cfd6a77446daf33b1a756660d60'+uid+'();}, 500);\n' + 
+					'	}\n' + 
+					'}\n' + 
+					'ad05dc1cfd6a77446daf33b1a756660d60'+uid+'();\n' + 
+					'//-->\n' + 
+					'</code>\n' + 
+				'</div>');
+			});
+					
+			IDG.news.lazyLoadAd = function() {
+				console.log('IDG.news.lazyLoadAd - start');
+				if (typeof jQuery.fn.lazyLoadAd == 'undefined') {
+					setTimeout(function() {IDG.news.lazyLoadAd();}, 500);
+				} else {
+					console.log('jQuery.fn.lazyLoadAd', typeof jQuery.fn.lazyLoadAd);
+					console.log('IDG.news.lazyLoadAd - run', jQuery("#newsmore div.adsense-lazyload:visible, #newsmore .lazyload-ads-ajax div.lazyload_ad:visible, #newsmore .lazyload-ads-mpu-ajax div.lazyload_ad:visible"));
+					jQuery("#newsmore div.adsense-lazyload:visible, #newsmore .lazyload-ads-ajax div.lazyload_ad:visible, #newsmore .lazyload-ads-mpu-ajax div.lazyload_ad:visible").lazyLoadAd({
+						threshold    : 100,         // You can set threshold on how close to the edge ad should come before it is loaded. Default is 0 (when it is visible).
+						forceLoad    : false,       // Ad is loaded even if not visible. Default is false.
+						onLoad       : false,       // Callback function on call ad loading
+						onComplete   : false,       // Callback function when load is loaded
+						timeout      : 1500,        // Timeout ad load
+						debug        : false,       // For debug use : draw colors border depends on load status
+						xray         : false        // For debug use : display a complete page view with ad placements
+					});
+				}
+			};
+			IDG.news.lazyLoadAd();
+		});
+		
+		IDG._scrollPosts = [];
+		
+		IDG.initPost = function() {
+			var _posts = jQuery('div.news-more');
+			
+			_posts.each(function(i,j){
+				var _post = jQuery(j);
+				IDG._scrollPosts.push(jQuery(j));
+			});
+		}
+		
+		IDG.scrollPosts = function(){
+			if (IDG._scrollPosts.length > 0) {
+				
+				var topScrollOffset = 100;
+				
+				var windowTopOffset = jQuery(window).scrollTop();
+				var windowBottomOffset = windowTopOffset + jQuery(window).height();
+				
+				var activeElement = false;
+				var activeProgress = 0;
+				
+				if (windowTopOffset > 10) {
+					jQuery.each(IDG._scrollPosts, function(key, postElement) {
+						var postTopOffset = postElement.offset().top;
+						var postBottomOffset = postTopOffset + postElement.height();
+						
+						var windStart = postTopOffset - topScrollOffset;
+						var windStop = postBottomOffset - topScrollOffset;
+						var windRange = windStop - windStart;
+						
+						if (windStart < windowTopOffset && (windStop + topScrollOffset) > windowTopOffset) {
+							
+							var progress = Math.ceil( ((windowTopOffset - windStart) / windRange) * 100 );
+							if (progress > 100) {
+								progress = 100;
+							}
+							if (progress < 0) {
+								progress = 0;
+							}
+							
+							activeElement = postElement;
+							activeProgress = progress;
+							
+							if (progress>5 && progress < 95) {
+								postElement.addClass('post-scroll-active');
+							}
+							else {
+								postElement.removeClass('post-scroll-active');
+							}
+						}
+						else {
+							postElement.removeClass('post-scroll-active');
+						}
+					});
+				}
+				
+				if (activeElement) {
+					var _title = unescape(activeElement.find('input[name=title]').val()); 
+					var _url = activeElement.find('input[name=url]').val();
+					var _id = activeElement.find('input[name=id]').val();
+					
+					if (jQuery('title:eq(0)').html() !== _title) {
+						jQuery('title').html(_title);
+						
+						var $index = 0;
+						jQuery('.news-more').each(function(index,item){
+							if (jQuery(item).find('input[name="id"][value="'+_id+'"]').length) {
+								$index = index;
+							}
+						});
+						
+						var $query_utm = '';
+						if ($index != 0)
+							$query_utm += 'utm_campaign=similar&utm_source=scroll&utm_medium=more&utm_content='+jQuery('.news-more:eq(0) input[name="id"]').val()+'&utm_term=scroll-'+$index;
+						
+						jQuery.each(activeElement.find('input[name="ga[]"]'), function(index,item) {
+							ga('set', jQuery(item).attr('data-key'), unescape(jQuery(item).val()));
+						});
+						if ($query_utm != '')
+							_url += '?' + $query_utm;
+						console.log('_url', _url);
+						
+						history.pushState(null, _title, window.location.protocol + '//' + window.location.host + _url);
+						
+						if (!activeElement.attr('data-stats')) {
+							activeElement.attr('data-stats', 'true');
+							
+							ga('send', 'pageview', _url);
+							if (activeElement.find("[data-key='dimension4']").length) {
+								dataLayer.push({
+									'event': 'pageContent',
+									'pageContentStatus': activeElement.find("[data-key='dimension4']").val()
+								});
+							}
+							
+							var dzial_id = 1;
+							jQuery.get("/default/index/logn/dzial_id/"+""+dzial_id+""+"/tabela_id/"+""+_id+""+"/?ajax=1");
+							// social
+							jQuery('.sharing-tools').hide();
+							if (activeElement.find(".sharing-tools").length) {
+								activeElement.find(".sharing-tools").show();
+							}
+						}
+						jQuery('link[rel="canonical"]').attr('href', _url);
+					}
+				}
+			}
+		}
+		
+		IDG.disqus_count = function(){
+			var disqusPublicKey = 'ark1tAPugGkha4v1bGbBV42OfLuYj84w6xufnwmUgm9FiVSc01TVVwCpCJ1a66Xx';
+			var disqusShortname = 'pcworldpl'; // Replace with your own shortname
+			
+			var urlArray = [];
+			
+			jQuery('a[data-disqus-url]').each(function () {
+				var url = jQuery(this).attr('data-disqus-url');
+				urlArray.push('link:' + url);
+			});
+			jQuery('span[data-disqus-url]').each(function () {
+				var url = jQuery(this).attr('data-disqus-url');
+				urlArray.push('link:' + url);
+			});
+			
+			if (urlArray.length) {
+				jQuery.ajax({
+					type: 'GET',
+					url: 'https://disqus.com/api/3.0/threads/set.jsonp',
+					data: { api_key: disqusPublicKey, forum : disqusShortname, thread : urlArray },
+					cache: false,
+					dataType: 'jsonp',
+					success: function (result) {
+						for (var i in result.response) {
+							//var countText = ' comments';
+							var count = result.response[i].posts;
+							if (count > 0) {
+								if (jQuery('a[data-disqus-url="' + result.response[i].link + '"]').parents("#sharer").length == 0) {
+									jQuery('a[data-disqus-url="' + result.response[i].link + '"]').html('<span>'+count+'</span>');
+									jQuery('span[data-disqus-url="' + result.response[i].link + '"]').html('<span>'+count+'</span>');
+									jQuery('a[data-disqus-url="' + result.response[i].link + '"]').parents('.comment-hide').removeClass("comment-hide");
+									jQuery('a[data-disqus-url="' + result.response[i].link + '"]').removeClass("comment-hide");
+								}
+								else {
+									jQuery('a[data-disqus-url="' + result.response[i].link + '"]').attr("data-comment-count", count);
+									jQuery('a[data-disqus-url="' + result.response[i].link + '"]').removeClass("comment-hide");
+									if (jQuery('#sharer a.comment').length) {
+										jQuery('#sharer a.comment').removeClass("comment-hide");
+									} 
+									jQuery('.firstToComment').remove();
+								}
+							}
+						}
+					}
+				});
+			}
+		};
+	};
+	console.log('IDG.global.async', typeof IDG.global.async);
+	if (typeof IDG.global.async !== 'undefined') {
+		IDG.global.async.push(['load', function (){
+			IDG.news.more();
+		}]);
+	} else {
+		IDG.news.more();
+	}
+	
+IDG.GPT.initNews416005 = function(){
+	IDG.GPT.targetNews416005 = {};
+	IDG.GPT.targetNews416005.URL = encodeURIComponent(window.location);
+
+	IDG.GPT.targetNews416005.site_code = "8456";
+	IDG.GPT.targetNews416005.domain = "IDG.PL_CSMB_PCWorld.pl";
+	IDG.GPT.targetNews416005.PL_CategoryID = "";
+	IDG.GPT.targetNews416005.PL_ContentID = "";
+	IDG.GPT.targetNews416005.PL_TypeID = "2";
+	IDG.GPT.targetNews416005.PL_Tag = "Gmail,poczta Gmail,Google,internet,Oprogramowanie,Gmail jako klient poczty,MŚP";
+	IDG.GPT.targetNews416005.PL_ArticleID = "416005";
+	IDG.GPT.targetNews416005.PL_CenterID = "57";
+	for (var targetName in IDG.GPT.targetNews416005) {
+		console.log('targetName', targetName);
+		if (IDG.GPT.targetNews416005[targetName] != null && IDG.GPT.targetNews416005[targetName] != "") {
+			console.log('googletag.pubads().setTargeting', targetName);
+			googletag.pubads().setTargeting(targetName, IDG.GPT.targetNews416005[targetName]);
+		} else {
+			console.log('googletag.pubads().clearTargeting', targetName);
+			googletag.pubads().clearTargeting(targetName);
+		}
+	}
+};
+    //-->
+</script>
+<script type="2ee252c2e74f2a6f9ae45265-text/javascript">
+    //<!--
+    	IDG.news.author = IDG.news.author || {};
+	IDG.news.author.init = function (){
+		jQuery('#article-meta-target').html(jQuery('#container-article-meta').html());
+		
+		jQuery('.article-author').click(function(){
+			var whichAuthor = jQuery(this).find('a').attr('href');
+			if($(whichAuthor).hasClass('open')){
+				jQuery(whichAuthor).removeClass('open').slideUp('fast',function(){
+					jQuery('.article-meta').removeClass('open');
+				});
+			} else {
+				jQuery('.author-info').hide().removeClass('open');
+				jQuery(whichAuthor).addClass('open').slideDown('fast',function(){
+					jQuery('.article-meta').addClass('open');
+				});
+			}
+			return false;
+		});
+	};
+	if (typeof IDG.global.async !== 'undefined') {
+		IDG.global.async.push(['load', function (){
+			IDG.news.author.init();
+		}]);
+	} else {
+		IDG.news.author.init();
+	}
+    //-->
+</script>
+<script type="2ee252c2e74f2a6f9ae45265-text/javascript">
+    //<!--
+    	IDG.news.content = IDG.news.content || {};
+	IDG.news.content.init = function(){
+		var $hash = location.hash;
+		if ($hash.length > 0 && jQuery($hash).length) {
+			var pos = jQuery($hash).offset().top;
+			if ($hash != '#top')
+				pos -= (jQuery(".navbar-header").height()+30);
+			if (jQuery($hash).next().is('span'))
+				pos -= 30;
+			jQuery('body, html').animate({scrollTop: pos});
+			return false;
+		}
+		
+		jQuery(".spis-tresci a").click(function(){
+			var $hash = jQuery(this).attr('href').split('#');
+			//console.log($hash);
+			if (typeof $hash[1] !== 'undefined' && jQuery("#"+$hash[1]).length) {
+				var pos = jQuery("#"+$hash[1]).offset().top;
+				if ($hash[1] != 'top')
+					pos -= (jQuery(".navbar-header").height()+30);
+				if (jQuery("#"+$hash[1]).next().is('span'))
+					pos -= 30;
+				jQuery('body, html').animate({scrollTop: pos});
+				return false;
+			}
+		});
+		
+		setTimeout(function() {
+			if (jQuery("#list-spis-tresci").attr('aria-expanded') == "true") {
+				jQuery("span.list-group-item").click();
+			}
+		}, 5000);
+	};
+	
+	if (typeof IDG.global.async !== 'undefined') {
+		IDG.global.async.push(['load', function(){
+			IDG.news.content.init();
+		}]);
+	} else {
+		IDG.news.content.init();
+	}
+	
+    //-->
+</script>
+<script type="2ee252c2e74f2a6f9ae45265-text/javascript">
+    //<!--
+    var IDG = IDG || {};
+IDG.wisp = IDG.wisp || {};
+
+IDG.wisp.init = function() {;
+	window.wisp = window.wisp || {};
+	wisp.options = {};
+	(function() {
+		var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+		po.src = '//engine.widespace.com/map/engine/jssdk.js'; po.id="widespaceScript";
+		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+	})();
+	wisp.onload = function(){
+		var newWSAd1483532678949 = new wisp.AdSpace({
+			sid: 'c2fe2a22-3794-4877-9bea-1b685b23663e',
+			containerId: 'wsPcWorld'
+		});
+		newWSAd1483532678949.runAd();
+	};
+	widespaceScript.addEventListener('load', function () {
+		wisp.onload();
+	});
+	(function() {
+		var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+		po.src = '//static.ws-cdn.com/integration/wsiframeResizer/wsiframeResizer.js';
+		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+	})();
+};
+
+if (typeof IDG.global.async != 'undefined') {
+	IDG.global.async.push(['load', function () {
+		IDG.wisp.init();
+	}]);
+} else {
+	IDG.wisp.init();
+}
+    //-->
+</script>
+<script type="2ee252c2e74f2a6f9ae45265-text/javascript">
+    //<!--
+    function getParameterByName(name) {
+	name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+	var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+	results = regex.exec(location.search);
+	return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+}
+
+function loadHeaderLogin() {
+	jQuery("#search").keyup(function(event){
+		if(event.which == 13){
+			document.myform.submit();
+		}
+	});
+	
+	if (getParameterByName('next') == '') {
+		var url = "next=" + window.location.pathname + '&' + window.location.search.substring(1);
+	}
+	else {
+		var url = window.location.search.substring(1);
+	}
+			
+	jQuery.ajax({
+		dataType: "html", 
+		url: "/auth/block/profilenew?ajax=1" + "&" + url,
+		success: function(data) {
+			jQuery("#login").html(data);
+		}
+	});
+}
+
+if (typeof IDG.global.async != 'undefined') {
+	IDG.global.async.push(['load', function(){loadHeaderLogin()}]);
+} else {
+	jQuery(document).ready(function(){
+		loadHeaderLogin();
+	});
+}
+    //-->
+</script>
+<script type="2ee252c2e74f2a6f9ae45265-text/javascript">
+    //<!--
+    !function(a){"use strict";var b=function(b,c,d){function j(a){if(e.body)return a();setTimeout(function(){j(a)})}function l(){f.addEventListener&&f.removeEventListener("load",l),f.media=d||"all"}var g,e=a.document,f=e.createElement("link");if(c)g=c;else{var h=(e.body||e.getElementsByTagName("head")[0]).childNodes;g=h[h.length-1]}var i=e.styleSheets;f.rel="stylesheet",f.href=b,f.media="only x",j(function(){g.parentNode.insertBefore(f,c?g:g.nextSibling)});var k=function(a){for(var b=f.href,c=i.length;c--;)if(i[c].href===b)return a();setTimeout(function(){k(a)})};return f.addEventListener&&f.addEventListener("load",l),f.onloadcssdefined=k,k(l),f};"undefined"!=typeof exports?exports.loadCSS=b:a.loadCSS=b}("undefined"!=typeof global?global:this);
+!function(a){if(a.loadCSS){var b=loadCSS.relpreload={};if(b.support=function(){try{return a.document.createElement("link").relList.supports("preload")}catch(a){return!1}},b.poly=function(){for(var b=a.document.getElementsByTagName("link"),c=0;c<b.length;c++){var d=b[c];"preload"===d.rel&&"style"===d.getAttribute("as")&&(a.loadCSS(d.href,d,d.getAttribute("media")),d.rel=null)}},!b.support()){b.poly();var c=a.setInterval(b.poly,300);a.addEventListener&&a.addEventListener("load",function(){b.poly(),a.clearInterval(c)}),a.attachEvent&&a.attachEvent("onload",function(){a.clearInterval(c)})}}}(this);
+    //-->
+</script>
+<script type="2ee252c2e74f2a6f9ae45265-text/javascript">
+    //<!--
+    
+window.breakpoints = {
+	tabletLandscape: 895,
+	tabletPortrait: 768,
+	phone: 570
+};
+
+function topClick() {
+	jQuery('a[href="#top"]').click(function(e){
+		e.preventDefault();
+		jQuery('body, html').animate({scrollTop: 0});
+	});
+}
+
+// -- Load Lazy Advertisement placement as deferred
+function lazyloadAdIdg() {
+	if (typeof jQuery.fn.lazyLoadAd == 'undefined') {
+		setTimeout(function() {lazyloadAdIdg();}, 500);
+	} else {
+		jQuery("div.lazyload_ad").each(function(index){
+			if (isElementAboveTheFold(document.getElementById(jQuery("div.lazyload_ad:eq("+index+")").attr('id')))) {
+				jQuery("div.lazyload_ad:eq("+index+")").lazyLoadAd({
+					threshold    : 0,         // You can set threshold on how close to the edge ad should come before it is loaded. Default is 0 (when it is visible).
+					forceLoad    : false,       // Ad is loaded even if not visible. Default is false.
+					onLoad       : false,       // Callback function on call ad loading
+					onComplete   : false,       // Callback function when load is loaded
+					timeout      : 0,        // Timeout ad load
+					debug        : false,       // For debug use : draw colors border depends on load status
+					xray         : false        // For debug use : display a complete page view with ad placements
+				});
+			} else {
+				jQuery("div.lazyload_ad:eq("+index+")").lazyLoadAd({
+					threshold    : 200,         // You can set threshold on how close to the edge ad should come before it is loaded. Default is 0 (when it is visible).
+					forceLoad    : false,       // Ad is loaded even if not visible. Default is false.
+					onLoad       : false,       // Callback function on call ad loading
+					onComplete   : false,       // Callback function when load is loaded
+					timeout      : 1000,        // Timeout ad load
+					debug        : false,       // For debug use : draw colors border depends on load status
+					xray         : false        // For debug use : display a complete page view with ad placements
+				});
+			}
+		});
+	}
+}
+
+var IDGads = IDGads || {};
+
+IDGads.lazyload = function() {
+	var po = document.createElement("script");
+	po.id = 'jQueryLazyloadAdScript';
+	po.type = "text/javascript";
+	po.async = 'true';
+	po.src = '/g1/global/a/dfp/jquery.lazyload-ad.js?v=3.5.714';
+	var s = document.getElementsByTagName("script")[0];
+	s.parentNode.insertBefore(po, s);
+}; 
+
+if (typeof IDG.global.async !== 'undefined') {
+	IDG.global.async.push(['load', function() {IDGads.lazyload();}]);
+} else {
+	jQuery(document).ready(function() {
+		IDGads.lazyload();
+	});
+}
+
+IDGads.isElementInViewport = function (e) {
+	if ("undefined" != typeof e) {
+		if (e instanceof jQuery && 0 === e.length) return !1;
+		e instanceof jQuery && (e = e[0]);
+		var t = e.getBoundingClientRect();
+		return t.top > 0 && t.left > 0 && t.bottom <= (window.innerHeight || document.documentElement.clientHeight) && t.right <= (window.innerWidth || document.documentElement.clientWidth)
+	}
+};
+
+IDGads.isElementPartInViewport = function(e) {
+	if ("undefined" != typeof e) {
+		if (e instanceof jQuery && 0 === e.length) return !1;
+		e instanceof jQuery && (e = e[0]);
+		var t = e.getBoundingClientRect();
+		return t.top < (window.innerHeight || document.documentElement.clientHeight) && t.bottom > 0
+	}
+};
+
+IDGads.isElementBeforeViewport = function(e) {
+	if ("undefined" != typeof e) {
+		if (e instanceof jQuery && 0 === e.length) return !1;
+		e instanceof jQuery && (e = e[0]);
+		var t = e.getBoundingClientRect();
+		console.log(t);
+		return t.top < (window.innerHeight || document.documentElement.clientHeight) && t.bottom > 0
+	}
+};
+
+IDGads.stickyBilboE = function (e) {
+	e >= 0 ? jQuery("body").hasClass("stickyHeader") || jQuery("body").addClass("stickyHeader") : jQuery("body").hasClass("stickyHeader") && jQuery("body").removeClass("stickyHeader");
+};
+
+IDGads.stickyBilboT = function t(e) {
+	var t;
+	jQuery(window).width() > window.breakpoints.phone && jQuery(window).width() <= window.breakpoints.tabletPortrait ? t = 30 : jQuery(window).width() > window.breakpoints.tabletPortrait && (t = 120), e > t ? jQuery("#ad-bilbo2").parents(".ad").hasClass("beSticky") || (jQuery("#ad-bilbo2").parents(".ad").not(".noSticky").addClass("beSticky"), IDGads.stickyBilboN()) : e <= t && jQuery("#ad-bilbo2").parents(".ad").hasClass("beSticky") && (jQuery("#ad-bilbo2").parents(".ad").removeClass("beSticky"), IDGads.stickyBilboI());
+};
+
+IDGads.stickyBilboN = function () {
+	jQuery("#ad-bilbo2").parents(".ad").height();
+	IDGads.stickyBilboR();
+};
+
+IDGads.stickyBilboI = function () {
+	jQuery(".right-side-wraper").css("padding-top", "0");
+};
+
+IDGads.stickyBilboR = function () {
+	setTimeout(function() {
+		jQuery("#ad-bilbo2").parents(".ad").addClass("noSticky").removeClass('beSticky');
+	}, 8e3);
+};
+
+IDGads.stickyOther = function () {
+	if (jQuery(".ad:visible").not(".ticker-ad").not("#ad-bilbo2").parents(".beSticky").length || jQuery('.right-side-sticky').length) { return; }
+	jQuery(".ad:visible").not(".ticker-ad").not("#ad-bilbo2").not(".noSticky").each(function(index, item) {
+		//jQuery(item).bind("DOMSubtreeModified", function(){
+			if (IDGads.isElementPartInViewport(item) || IDGads.isElementInViewport(item)) {
+				if (jQuery(item).parents(".right-side-wraper").not(".noSticky").length) {
+					var $top = (jQuery("#ad-bilbo2.beSticky").length && jQuery("#ad-bilbo2.beSticky").is(':visible')) ? jQuery("#ad-bilbo2").height() : 100;
+					//jQuery(".right-side-wraper").each(function(index2,item2){
+						//if (jQuery(item).index() < jQuery(item).parents(".right-side-wraper").index()) {
+							//$top += jQuery(item).height();
+						//}
+					//});
+					jQuery(item).parents(".right-side-wraper").addClass('right-side-sticky').css('top', $top+'px').delay(6000).queue(function(){
+						jQuery(this).removeClass('right-side-sticky').addClass('noSticky').css('top', 0);
+						jQuery(this).dequeue();
+					});
+				} else {
+					jQuery(item).parents(".ad").addClass("beSticky").delay(7000).queue(function(){
+						jQuery(this).removeClass('beSticky').addClass('noSticky').css('top', 0);
+						jQuery(this).dequeue();
+					});
+				}
+			}
+		//});
+	});
+}
+
+IDGads.stickyBilboO = function() {
+	if ($thm.deviceWidth() < 750) {
+		return;
+	}
+	jQuery("#ad-bilbo2").bind("DOMSubtreeModified", function(){
+		IDGads.stickyBilboE(window.pageYOffset);
+		IDGads.stickyBilboT(window.pageYOffset);
+		IDGads.stickyOther();
+		jQuery(window).on("scroll", function() {
+			IDGads.stickyBilboE(window.pageYOffset);
+			IDGads.stickyBilboT(window.pageYOffset);
+			IDGads.stickyOther();
+		});
+	})
+};
+
+
+if (typeof IDG.global.async != 'undefined') {
+	IDG.global.async.push(['load', function () {
+		topClick();
+		IDG.global.load.script('/www/js/global.min.js?v=3.5.714', 'idgGlobalScript', 'true');
+	}]);
+} else {
+	topClick();
+	IDG.global.load.script('/www/js/global.min.js?v=3.5.714', 'idgGlobalScript', 'true');
+}
+
+if (typeof IDG.global.async != 'undefined') {
+	IDG.global.async.push(['load', function () {
+		if (typeof IDGads != 'undefined'){
+			IDGads.stickyBilboO();
+		}
+		if (typeof lazyloadAdIdg != 'undefined'){
+			lazyloadAdIdg();
+		}
+	}]);
+} else {
+	if (typeof IDGads != 'undefined'){
+		IDGads.stickyBilboO();
+	}
+	if (typeof lazyloadAdIdg != 'undefined'){
+		lazyloadAdIdg();
+	}
+}
+
+ 
+    //-->
+</script>		</div>
+		<div class="t-cell tr-cell">
+			<div class="ad" id="iab_sky">
+				<div id="ad-sky2" class="sky">
+					<script type="2ee252c2e74f2a6f9ae45265-text/javascript">
+								function adfed42a0fefb4d9c7d5ee4cc02f7f950e() {
+					if (IDG.GPT.runCode !== null) {
+						if (IDG.GPT.slots["ad-sky2"] != undefined && isElementVisibility('ad-sky2')) {
+							IDG.GPT.defineGoogleTagSlot("ad-sky2", IDG.GPT.slots["ad-sky2"]);
+							IDG.GPT.addDisplayedAd("ad-sky2", "true");
+													jQuery('#ad-sky2').responsiveAd({screenSize:'971 1115', scriptTags: []});
+						}
+					} else {
+						setTimeout(function(){adfed42a0fefb4d9c7d5ee4cc02f7f950e();}, 500);
+					}
+				}
+				adfed42a0fefb4d9c7d5ee4cc02f7f950e();
+				</script>
+				</div>
+</div>
+
+
+		</div>
+	</div>
+		
+				<script type="2ee252c2e74f2a6f9ae45265-text/javascript" async="true">
+					var dzial_id = 1;
+					var tabela_id = 416005;
+				</script>
+				<script type="2ee252c2e74f2a6f9ae45265-text/javascript" src="/default/index/logn/dzial_id/1/tabela_id/416005/?ajax=1" async="true"></script>
+			
+			<script type="2ee252c2e74f2a6f9ae45265-text/javascript">
+				function readCookieHU(name) {
+					var nameEQ = name + "=";
+					var ca = document.cookie.split(";");
+					for(var i=0;i < ca.length;i++) {
+						var c = ca[i];
+						while (c.charAt(0)==" ")
+							c = c.substring(1,c.length);
+						if (c.indexOf(nameEQ) == 0)
+							return c.substring(nameEQ.length,c.length);
+					}
+					return null;
+				}
+				function getQueryStringHU(variable) {
+					var query = window.location.search.substring(1);
+					var vars = query.split("&");
+					for (var i = 0; i < vars.length; i++) {
+						var pair = vars[i].split("=");
+						if (decodeURIComponent(pair[0]) == variable) {
+							return decodeURIComponent(pair[1]);
+						}
+					}
+					return null;
+				}
+				function makeQueryStringHU() {
+					var gs = "";
+					var gsh = readCookieHU("idg_hideuser");
+					if (gsh != null){
+						if (gs != ""){gs+="&";}
+						gs += "hash=" + gsh;
+					}
+					var gsq = getQueryStringHU("hideuser");
+					if (gsq != null){
+						if (gs != ""){gs+="&";}
+						gs += "hideuser=" + gsq;
+					}
+					if (gs != ""){gs+="&";}
+					gs += "callback=?";
+					return gs;
+				}
+				var IDG = IDG || {};
+				IDG.global = IDG.global || {};
+				IDG.user = IDG.user || {};
+				IDG.user.hideuser = IDG.user.hideuser || {};
+				IDG.user.hideuser.init = function()  {
+					jQuery.ajax({
+						url: "https://api.idg.pl/hideuser/ajax/index/?"+makeQueryStringHU(),
+						async: true,
+						dataType: "json",
+						success: function(data) {
+							var date = new Date();
+							date.setTime(date.getTime()+(24*60*60*365*2*1000));
+							document.cookie = "idg_hideuser="+data+"; expires="+date.toGMTString()+"; path=/";
+						}
+					});
+				};
+				
+				if (typeof IDG.global.async != 'undefined') {
+					IDG.global.async.push(['load', function(){
+
+						IDG.user.hideuser.init();
+					}]);
+				} else {
+					IDG.user.hideuser.init();
+				}
+			</script>
+		
+<script type="2ee252c2e74f2a6f9ae45265-text/javascript">
+window._taboola = window._taboola || [];
+_taboola.push({flush: true});
+</script>
+		<script src="/g1/global/lazyload/lazyload.min.js" id="lazyLoadScript" async="true" type="2ee252c2e74f2a6f9ae45265-text/javascript"></script>
+		<script type="2ee252c2e74f2a6f9ae45265-text/javascript">
+		function idg_gls_updateLL() {
+			if (typeof window.ll == 'undefined') {
+				setTimeout(function(){window.ll.update();},50);
+				return;
+			}
+			window.ll.update();
+		}
+		
+		function idg_gls(){
+			if (typeof LazyLoad == "undefined") {
+				setTimeout(function() {idg_gls();}, 50);
+				return;
+			}	
+			function logElementEvent(eventName, element) {
+				/*
+				console.log(
+					Date.now(),
+					eventName,
+					element.getAttribute("data-src")
+				);
+				*/
+			}
+			
+			var callback_enter = function(element) {
+				//logElementEvent("đź”‘ ENTERED", element);
+			};
+			var callback_exit = function(element) {
+				//logElementEvent("đźšŞ EXITED", element);
+			};
+			var callback_reveal = function(element) {
+				//logElementEvent("đź‘ď¸Ź REVEALED", element);
+			};
+			var callback_loaded = function(element) {
+				//logElementEvent("đź‘Ť LOADED", element);
+			};
+			var callback_finish = function() {
+				//logElementEvent("âś”ď¸Ź FINISHED", document.documentElement);
+			};
+			
+			window.ll = new LazyLoad({
+				elements_selector: ".lazy",
+				callback_enter: callback_enter,
+				callback_exit: callback_exit,
+				callback_reveal: callback_reveal,
+				callback_loaded: callback_loaded,
+				callback_finish: callback_finish
+			});
+		}
+		
+		lazyLoadScript.addEventListener('load', function () {
+			idg_gls();
+		});
+		</script><script src="https://ajax.cloudflare.com/cdn-cgi/scripts/7089c43e/cloudflare-static/rocket-loader.min.js" data-cf-settings="2ee252c2e74f2a6f9ae45265-|49" defer=""></script></body>
+</html>

@@ -1,24 +1,23 @@
 <template>
-  <div class = jumbotron>
-  <h1 class="title"> UserManager </h1>
+  <div class="container">
   <navbar></navbar>
-
-  <div v-if="token != null">
-    <h1>Choose a converastions with user:</h1>
-    <b-list-group v-for="user in users_with_messages" :key="user.usermessToUser__id">
-      <b-list-group-item :to="$basePath + '/message/' + user.usermessToUser__id + '/'">
-        <p>{{ user.usermessToUser__username }}</p>
-      </b-list-group-item>
-    </b-list-group>
-  </div>
-
-  
+  <b-jumbotron class="jumbotron jumbotron-home">
+    <div v-if="token != null">
+      <h1>Choose a converastions with user:</h1>
+      <b-list-group v-for="user in users_with_messages" :key="user.usermessToUser__id">
+        <b-list-group-item :to="$basePath + '/message/' + user.usermessToUser__id + '/'">
+          <p>{{ user.usermessToUser__username }}</p>
+        </b-list-group-item>
+      </b-list-group>
+    </div>
 
 
-  <div v-else>
-  <h1>Log in to see messages</h1>
-  </div>
 
+
+    <div v-else>
+    <h1>Log in to see messages</h1>
+    </div>
+  </b-jumbotron>
   </div>
 </template>
 
@@ -66,5 +65,9 @@ import axios from 'axios';
 </script>
 
 <style scoped>
-
+@media (min-width: 100px) {
+    .container{
+        max-width: 1400px;
+    }
+}
 </style>

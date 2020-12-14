@@ -66,7 +66,7 @@ class AuctionSerializer(serializers.ModelSerializer):
         model = Auction
         fields = ['id', 'category', 'image', 'product_name', 'description', 'is_new', 'user_seller', 'user_highest_bid',
                   'date_started', 'date_end', 'starting_price', 'highest_bid', 'minimal_price', 'is_shipping_av',
-                  'is_active']
+                  'is_active', 'auctionShippingCost']
 
 
 class AuctionCreateSerializer(serializers.ModelSerializer):
@@ -130,10 +130,10 @@ class UserMessageSerializer(serializers.ModelSerializer):
         return user_msg
 
 class OpinionSerializer(serializers.ModelSerializer):
-    opinionUserAuthor = serializers.PrimaryKeyRelatedField(default=serializers.CurrentUserDefault(), many=False, queryset=User.objects.all())
+    # opinionUserAuthor = serializers.PrimaryKeyRelatedField(default=serializers.CurrentUserDefault(), many=False, queryset=User.objects.all())
     opinionUserAbout = serializers.PrimaryKeyRelatedField(many=False, queryset=User.objects.all())
 
-    # opinionUserAuthor = UserMiniSerializer()
+    opinionUserAuthor = UserMiniSerializer()
     # opinionUserAbout = UserMiniSerializer()
     class Meta:
         model = UserOpinion
