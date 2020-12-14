@@ -56,7 +56,7 @@
           <b-nav-item-dropdown text="Selling" right>
             <b-dropdown-item v-on:click="$goToAnotherPage('/newauction')">Create new auction</b-dropdown-item>
             <b-dropdown-divider></b-dropdown-divider>
-            <b-dropdown-item>Items I'm selling</b-dropdown-item>
+            <b-dropdown-item v-on:click="$goToAnotherPage('/activeauctions')">Items I'm selling  </b-dropdown-item>
             <b-dropdown-item>Items I've sold</b-dropdown-item>
             <b-dropdown-item>Unsold Items</b-dropdown-item>
           </b-nav-item-dropdown>

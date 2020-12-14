@@ -296,29 +296,32 @@ import axios from 'axios';
 
         console.log('Date string is ' + fulldate_end)
 
-      this.token = TokenService.getToken();
-      const formData = new FormData();
+        this.token = TokenService.getToken();
+        const formData = new FormData();
 
-      formData.append("image", this.image)
-      formData.append("product_name", this.product_name)
-      formData.append("description", this.description)
-      formData.append("is_new", this.is_new)
-      formData.append("category", this.selectedCategory)
-      formData.append("date_started", fulldate_start)
-      formData.append("date_end", fulldate_end)
-      formData.append("starting_price", this.starting_price)
-      formData.append("minimal_price", this.minimal_price)
-      formData.append("is_shipping_av", this.is_shipping_av)
-      formData.append("auctionShippingCost", this.sshipping_cost)
+        formData.append("image", this.image)
+        formData.append("product_name", this.product_name)
+        formData.append("description", this.description)
+        formData.append("is_new", this.is_new)
+        formData.append("category", this.selectedCategory)
+        formData.append("date_started", fulldate_start)
+        formData.append("date_end", fulldate_end)
+        formData.append("starting_price", this.starting_price)
+        formData.append("minimal_price", this.minimal_price)
+        formData.append("is_shipping_av", this.is_shipping_av)
+        formData.append("auctionShippingCost", this.sshipping_cost)
 
-      let axiosConfig = {
-        headers: {
-          'Authorization': 'Token ' + this.token
-        }
-      };
-      axios.post(`http://127.0.0.1:8000/api/auctioncreate/`, formData,axiosConfig)
-      .then(res => console.log(res.data))
-      .catch(err => console.log(err))
+        let axiosConfig = {
+          headers: {
+            'Authorization': 'Token ' + this.token
+          }
+        };
+        axios.post(`http://127.0.0.1:8000/api/auctioncreate/`, formData,axiosConfig)
+        .then(res => console.log(res.data))
+        .catch(err => console.log(err))
+
+        this.$sleep(500); //TODO check it
+        this.$router.back();
       },
     },
     created() {

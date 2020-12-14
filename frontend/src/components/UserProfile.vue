@@ -20,7 +20,7 @@
           </tr>
           <tr><p></p></tr>
           <tr>
-              <b-button block variant="secondary" v-on:click="$goToAnotherPage('/message/' + profileData.profileUser.id + '/')">Add opinion</b-button>
+              <b-button block variant="secondary" v-on:click="$goToAnotherPage('/opinion/' + profileData.profileUser.id + '/')">Add opinion</b-button>
           </tr>
         </table>
       </template>

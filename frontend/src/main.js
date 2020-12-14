@@ -17,6 +17,9 @@ import Profile from './components/UpdateProfile.vue';
 import UserProfile from './components/UserProfile.vue';
 import UserMessage from './components/SendMessage.vue';
 import MessageManager from './components/MessageManager.vue';
+import AddOpinion from './components/AddOpinion.vue';
+import MyActualAuctions from './components/MyActualAuctions.vue';
+import EditAuction from './components/EditAuction.vue';
 // import loader from "vue-ui-preloader";
 
 
@@ -86,6 +89,21 @@ const routes = [
         name: "messages",
         component: MessageManager
     },
+    {
+        path: basePath + "/opinion/:userId",
+        name: "opinion",
+        component: AddOpinion
+    },
+    {
+        path: basePath + "/activeauctions",
+        name: "activeauctions",
+        component: MyActualAuctions
+    },
+    {
+        path: basePath + "/editauction/:auctionId",
+        name: "editauction",
+        component: EditAuction
+    },
 ]
 
 Vue.mixin({
@@ -95,7 +113,7 @@ Vue.mixin({
         },
         $goToMainPage: function() {
           if (this.$route.path !== basePath) this.$router.replace(basePath)
-            // 
+            //
             // console.log(basePath);
             // this.$router.replace(basePath);
         },
@@ -113,6 +131,9 @@ Vue.mixin({
                 .then(res => this.userId = res.data[0].id)
                 .catch(err => console.log(err))
             return userId;
+        },
+        $sleep: function(ms) {
+          return new Promise(resolve => setTimeout(resolve, ms));
         },
     },
 

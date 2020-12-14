@@ -29,7 +29,7 @@ class UserViewSet(viewsets.ModelViewSet):
         return User.objects.filter(id=self.request.user.id)
 
     @action(detail=False, methods=['get'])
-    def gesUsernameById(self, request, **kwargs):
+    def getUsernameById(self, request, **kwargs):
         id = self.request.query_params.get('id', None)
         user = User.objects.get(id=id)
         print(user.username)
@@ -103,6 +103,7 @@ class AuctionViewSet(viewsets.ModelViewSet):
         serializer = AuctionSerializer(auctions, many=True)
         return Response(serializer.data)
 
+    ##TODO to fix
     # params:
     # active - boolean, determine the output to active/ended auctions
     # http://127.0.0.1:8000/api/auctions/getMyAuctions/?active=True&ended=False
@@ -112,7 +113,7 @@ class AuctionViewSet(viewsets.ModelViewSet):
         is_ended = self.request.query_params.get('ended', None)
         user = request.user
         if is_active and not is_ended:
-            Auction.objects.filter(user_seller=user, is_active=is_active, user_highest_bid=None)
+            Auction.objects.filter(user_seller=user, is_active=is_active)
         else:
             myAuctions = Auction.objects.filter(user_seller=user, is_active=is_active)
         serializer = AuctionSerializer(myAuctions, many=True)

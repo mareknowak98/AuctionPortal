@@ -47,7 +47,7 @@
                       <b-row>
                         <b-col sm="12">
                           <b-button block type="submit" variant="secondary" v-on:click="bidAuction">Submit</b-button>
-                          <b-button block type="submit" variant="secondary">Report this auction</b-button>
+                          <b-button block v-b-modal.reportModal variant="secondary">Report violation of the rules</b-button>
 
                           <h1></h1>
                         </b-col>
@@ -70,9 +70,25 @@
        </b-row>
      </b-container>
 
-          <p></p>
-
+        <p></p>
         </b-col>
+        <b-modal id="reportModal" title="File a report" @ok="reportAuction" ok-title="Send">
+
+          <b-form-select v-model="report_category" :options="options" class="mb-3">
+            <!-- This slot appears above the options from 'options' prop -->
+            <template #first>
+              <b-form-select-option :value="null" disabled>-- Please select category --</b-form-select-option>
+            </template>
+          </b-form-select>
+
+          <b-form-textarea
+            id="textarea"
+            v-model="report_content"
+            placeholder="..."
+            rows="3"
+            max-rows="6"
+          ></b-form-textarea>
+        </b-modal>
 
         <b-col sm="12">
         <p> </p>
@@ -123,6 +139,16 @@ import Roller from "vue-roller";
           userProfileId: '',
           time_left: '',
           user_rating: '',
+          report_category: '',
+          report_content: '',
+          selected: null,
+          options: [
+            { value: 'Spam', text: 'Spam' },
+            { value: 'Incorrect category', text: 'Incorrect category' },
+            { value: 'Illegal objects', text: 'Illegal objects' },
+            { value: 'Attempt at fraud', text: 'Attempt at fraud' },
+            { value: 'Other', text: 'Other' },
+          ],
       }
     },
     mounted: function (){
@@ -215,6 +241,23 @@ import Roller from "vue-roller";
     getUserAvgRating(id){
       axios.get(`http://127.0.0.1:8000/api/opinion/getUserAvgRating?user_id=` + this.auction.user_seller.id)
           .then(res => console.log(this.user_rating = parseFloat(res.data)))
+          .catch(err => console.log(err))
+    },
+    //TODO validation
+    reportAuction(){
+      const formData = new FormData();
+      let content = this.report_category + "\n" + this.report_content;
+      console.log("Content" + content)
+      formData.append("reportAuction", this.auctionid)
+      formData.append("reportContent", content)
+
+      let axiosConfig = {
+          headers: {
+              'Authorization': 'Token ' + localStorage.getItem("user-token")
+          }
+      };
+      axios.post(`http://127.0.0.1:8000/api/report/`, formData, axiosConfig)
+          .then(res => console.log(res.data))
           .catch(err => console.log(err))
     },
 
