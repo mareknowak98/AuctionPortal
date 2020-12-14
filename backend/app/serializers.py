@@ -130,10 +130,10 @@ class UserMessageSerializer(serializers.ModelSerializer):
         return user_msg
 
 class OpinionSerializer(serializers.ModelSerializer):
-    opinionUserAuthor = serializers.PrimaryKeyRelatedField(default=serializers.CurrentUserDefault(), many=False, queryset=User.objects.all())
+    # opinionUserAuthor = serializers.PrimaryKeyRelatedField(default=serializers.CurrentUserDefault(), many=False, queryset=User.objects.all())
     opinionUserAbout = serializers.PrimaryKeyRelatedField(many=False, queryset=User.objects.all())
 
-    # opinionUserAuthor = UserMiniSerializer()
+    opinionUserAuthor = UserMiniSerializer()
     # opinionUserAbout = UserMiniSerializer()
     class Meta:
         model = UserOpinion

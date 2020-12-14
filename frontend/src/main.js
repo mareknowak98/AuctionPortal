@@ -91,12 +91,16 @@ const routes = [
 Vue.mixin({
     methods: {
         $goToAnotherPage: function(page) {
-            console.log("going");
-            console.log(page);
             this.$router.push(basePath + page);
         },
+        $goToMainPage: function() {
+          if (this.$route.path !== basePath) this.$router.replace(basePath)
+            // 
+            // console.log(basePath);
+            // this.$router.replace(basePath);
+        },
         $getToken: function() {
-            return localStorage.getItem("token");
+            return localStorage.getItem("user-token");
         },
         $getUserId: function() {
             let axiosConfig = {

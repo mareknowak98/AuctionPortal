@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="token == null">
+    <div v-if="$getToken() == null">
 
       <b-jumbotron class="jumbotron jumbotron-special" header=" ">
         <h1> </h1>
@@ -49,16 +49,16 @@
           </b-nav-form>
           <b-navbar-nav>
           <b-nav-item-dropdown text="Buying" right>
-            <b-dropdown-item>1</b-dropdown-item>
-            <b-dropdown-item>2</b-dropdown-item>
+            <b-dropdown-item>Auctions I've won</b-dropdown-item>
+            <b-dropdown-item>Auctions I'm bidding on</b-dropdown-item>
             <b-dropdown-item>3</b-dropdown-item>
           </b-nav-item-dropdown>
           <b-nav-item-dropdown text="Selling" right>
             <b-dropdown-item v-on:click="$goToAnotherPage('/newauction')">Create new auction</b-dropdown-item>
             <b-dropdown-divider></b-dropdown-divider>
-            <b-dropdown-item>2</b-dropdown-item>
-            <b-dropdown-item>3</b-dropdown-item>
-            <b-dropdown-item>4</b-dropdown-item>
+            <b-dropdown-item>Items I'm selling</b-dropdown-item>
+            <b-dropdown-item>Items I've sold</b-dropdown-item>
+            <b-dropdown-item>Unsold Items</b-dropdown-item>
           </b-nav-item-dropdown>
         </b-navbar-nav>
 
@@ -89,7 +89,7 @@ import axios from 'axios';
       return{
         username: '',
         password: '',
-        token: localStorage.getItem('user-token') || null,
+        // token: localStorage.getItem('user-token') || null,
         userId: null,
         profileData: [],
       }
@@ -120,11 +120,16 @@ import axios from 'axios';
           console.log(err);
           localStorage.removeItem('user-token');
         })
+        // this.$forceUpdate()
+        // this.$router.go();
+        this.$goToMainPage();
       },
 
       logout() {
         localStorage.removeItem('user-token');
         this.token = null;
+        this.$router.go();
+        this.$goToMainPage();
         },
 
       getProfile(id){

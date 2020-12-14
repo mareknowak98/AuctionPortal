@@ -16,7 +16,9 @@
           <div v-if="auction.is_new==true">Condition: New</div>
           <div v-if="auction.is_new==false">Condition: Used</div>
           <p>Auction in term: {{auction.date_started}} - {{auction.date_end}}</p>
-          <p>Time to end: {{time_left}}</p>
+          <p>Time to end: <Roller :text="time_left"/></p>
+
+
           <div v-if="auction.is_shipping_av==true">
           <p>Shipping: <strong>Yes ({{auction.auctionShippingCost}})$ </strong></p></div>
           <div v-if="auction.is_shipping_av==false">
@@ -45,6 +47,8 @@
                       <b-row>
                         <b-col sm="12">
                           <b-button block type="submit" variant="secondary" v-on:click="bidAuction">Submit</b-button>
+                          <b-button block type="submit" variant="secondary">Report this auction</b-button>
+
                           <h1></h1>
                         </b-col>
                       </b-row>
@@ -94,12 +98,14 @@ import Navbar from './Navbar.vue';
 import Footer from './Footer.vue'
 import {TokenService} from '../store/service';
 import axios from 'axios';
+import Roller from "vue-roller";
 
   export default {
     name: "DetailedAuction",
     components:{
         Navbar,
         Footer,
+        Roller,
     },
     computed: {
       nameState() {
@@ -124,11 +130,6 @@ import axios from 'axios';
       recaptchaScript.async = true
       recaptchaScript.setAttribute('src', 'https://unpkg.com/@diracleo/vue-enlargeable-image/dist/vue-enlargeable-image.min.js')
       document.head.appendChild(recaptchaScript)
-
-      // let recaptchaScript2 = document.createElement('script')
-      // recaptchaScript2.async = true
-      // recaptchaScript2.setAttribute('src', 'https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17/vue.js')
-      // document.head.appendChild(recaptchaScript2)
 
       this.token = TokenService.getToken();
       this.auctionid = this.$route.params.auctionId;
@@ -240,6 +241,8 @@ import axios from 'axios';
     }
 }
 #mytext{
+  width: 100%;
+  width: 100vw;
   background-color: white;
   border-radius: 10px;
 

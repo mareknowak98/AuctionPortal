@@ -28,6 +28,14 @@ class UserViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         return User.objects.filter(id=self.request.user.id)
 
+    @action(detail=False, methods=['get'])
+    def gesUsernameById(self, request, **kwargs):
+        id = self.request.query_params.get('id', None)
+        user = User.objects.get(id=id)
+        print(user.username)
+        return Response(user.username)
+
+
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
@@ -302,6 +310,15 @@ class ProfileViewSet(viewsets.ModelViewSet):
         serializer = ProfileSerializer(profile, many=False)
         return Response(serializer.data)
 
+    #endpoint http://127.0.0.1:8000/api/profile/getUserIdByProfile?profile_id=5
+    @action(detail=False, methods=['GET'])
+    def getUserIdByProfile(self, request, **kwargs):
+        profile_id = request.GET.get('profile_id')
+        profile_get = Profile.objects.get(id=profile_id[0])
+        user = User.objects.filter(profile=profile_get).first()
+        return Response(user.id)
+
+
 
 ##############
 class ProfileUserViewSet(viewsets.ModelViewSet):
@@ -323,6 +340,14 @@ class ProfileUserViewSet(viewsets.ModelViewSet):
         profile = Profile.objects.get(profileUser=User.objects.get(id=user_id))
         serializer = Profile2Serializer(profile)
         return Response(serializer.data);
+
+    #endpoint http://127.0.0.1:8000/api/profileUser/getUserImage?user_id=20
+    @action(detail=False, methods=['GET'])
+    def getUserImage(self, request, **kwargs):
+        user_id = request.GET.get('user_id')
+        profile = Profile.objects.get(profileUser=User.objects.get(id=user_id))
+        serializer = Profile2Serializer(profile)
+        return Response(serializer.data['profileAvatar'])
 
 ##############
 class IsOwner(permissions.BasePermission):

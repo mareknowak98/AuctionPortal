@@ -44,7 +44,7 @@ body{
   border-radius: 10px;
   padding-top:2%;
   margin-bottom:0%;
-  margin-top:20px;
+  margin-top:15%;
   /* width:100vw; */
   color:white;
   background-color:	#6c757d;

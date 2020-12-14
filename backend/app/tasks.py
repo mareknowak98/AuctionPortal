@@ -1,4 +1,6 @@
+# from __future__ import absolute_import, unicode_literals
 from celery import shared_task
+
 import app.models as mod
 
 #end auction when date_end expire
