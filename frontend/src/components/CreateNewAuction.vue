@@ -273,7 +273,6 @@ import axios from 'axios';
         axios.get("http://127.0.0.1:8000/api/categories/")
           .then(res => {
           this.categories = res.data
-          console.log(this.data)
           })
           .catch(err => console.log(err));
       },

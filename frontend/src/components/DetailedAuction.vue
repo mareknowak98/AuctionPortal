@@ -16,8 +16,12 @@
           <div v-if="auction.is_new==true">Condition: New</div>
           <div v-if="auction.is_new==false">Condition: Used</div>
           <p>Auction in term: {{auction.date_started}} - {{auction.date_end}}</p>
-          <p>Time to end: <Roller :text="time_left"/></p>
-
+          <div v-if="auction.is_active == true">
+            <p>Time to end: <Roller :text="time_left"/></p>
+          </div>
+          <div v-else>
+            <p>Time to end: <strong>ended</strong></p>
+          </div>
 
           <div v-if="auction.is_shipping_av==true">
           <p>Shipping: <strong>Yes ({{auction.auctionShippingCost}})$ </strong></p></div>
@@ -30,7 +34,7 @@
           <b-container class="bv-example-row">
             <b-row>
               <b-col sm="10">
-                <div v-if="token != null">
+                <div v-if="$getToken() != null && auction.is_active == true">
                     <div role="group">
                         <label for="input-live">Your bid($):</label>
                         <b-form-input
@@ -94,8 +98,19 @@
         <p> </p>
         <h2>Description:</h2>
         <td id="mytext" v-html="auction.description">
-
         </td>
+        <h1>  </h1>
+        <grid
+        :cols="cols"
+        :rows="rows"
+        :pagination="{
+            limit: 5
+        }"
+        :sort="Time"
+
+        ></grid>
+
+
       </b-col>
       <b-col sm="0">
       </b-col>
@@ -115,6 +130,7 @@ import Footer from './Footer.vue'
 import {TokenService} from '../store/service';
 import axios from 'axios';
 import Roller from "vue-roller";
+import Grid from 'gridjs-vue'
 
   export default {
     name: "DetailedAuction",
@@ -122,6 +138,7 @@ import Roller from "vue-roller";
         Navbar,
         Footer,
         Roller,
+        Grid,
     },
     computed: {
       nameState() {
@@ -149,6 +166,11 @@ import Roller from "vue-roller";
             { value: 'Attempt at fraud', text: 'Attempt at fraud' },
             { value: 'Other', text: 'Other' },
           ],
+          bids: [],
+          cols: ['User', 'Bid', 'Time'],
+          rows: [],
+
+
       }
     },
     mounted: function (){
@@ -161,10 +183,10 @@ import Roller from "vue-roller";
       this.auctionid = this.$route.params.auctionId;
       this.getAuction(this.auctionid)
       this.getUserProfileId();
+      this.getBids();
       window.setInterval(() => {
         this.getTimeToEnd()
       }, 1000)
-
 
     },
 
@@ -261,6 +283,26 @@ import Roller from "vue-roller";
           .catch(err => console.log(err))
     },
 
+    getBids(){
+      let axiosConfig = {
+          headers: {
+              'Authorization': 'Token ' + localStorage.getItem("user-token")
+          }
+      };
+      axios.get(`http://127.0.0.1:8000/api/bids/getAuctionBids/?auction_id=` + this.$route.params.auctionId, axiosConfig)
+          .then(res => this.bids = res.data)
+          .then(res =>{
+            this.rows = [];
+            for (var i in this.bids){
+              let dat = new Date(this.bids[i].bidDate);
+
+              console.log(dat)
+              let tmp = [this.bids[i].bidUserBuyer.username, this.bids[i].bidPrice, dat.toISOString().split('T')[0]+ " "+ dat.toISOString().split('T')[1].split('Z')[0]]
+              this.rows.push(tmp)
+            }
+          })
+          .catch(err => console.log(err))
+    },
     },
 
     created() {

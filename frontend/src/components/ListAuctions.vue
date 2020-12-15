@@ -2,8 +2,7 @@
   <div class="">
     <b-button block type="submit" variant="secondary" v-on:click="getTimeToEnd">Submit</b-button>
 
-    <b-list-group v-for="auction in auctions" :key="auction.id">
-
+    <b-list-group v-for="(auction, i) in auctions" :key="auction.id">
       <b-list-group-item :to="$basePath + '/auctions/' + auction.id" class="auctionListItem">
 
         <b-card no-body class="overflow-hidden">
@@ -12,7 +11,6 @@
               <td width="300px">
                 <b-card-img :src="'http://localhost:8000' + auction.image"  fluid alt="Responsive image"></b-card-img>
             </td>
-
             </tr>
             <b-col>
               <b-card-body :title="auction.product_name">
@@ -23,7 +21,7 @@
                 </b-card-text>
                 <p>Highest offer: <strong>{{auction.highest_bid}}$</strong></p>
                 <p>Time to end:{{auction.time_to_end}}</p>
-                <Roller :text="auction.time_to_end"/>
+                <Roller :text="times_to_end[i]"/>
 
               </b-card-body>
             </b-col>
@@ -38,8 +36,6 @@
       </b-list-group-item>
     </b-list-group>
 
-    <!-- <b-pagination @input="updateSearch()" align="center" class="mt-2" v-model="currentPage" :total-rows="numberOfAuctions"
-                  :per-page="itemsPerPage" :limit="10"/> -->
     <p></p>
   </div>
 </template>
@@ -60,26 +56,31 @@ export default {
   data() {
     return {
       auctions: [],
+      times_to_end: [],
     }
   },
   mounted(){
     this.getAuctions()
+    window.setInterval(() => {
+      this.getTimeToEnd()
+    }, 1000)
+
   },
   methods: {
     getAuctions(){
       axios.get("http://localhost:8000/api/auctions/")
         .then(res => (this.auctions = res.data))
+        .then(res =>{
+          this.getTimeToEnd();
+        })
         .catch(err => console.log(err));
     },
 
     getTimeToEnd() {
-      console.log("es")
-      for (var i=0; i< this.auctions.length; i++){
-        console.log("es2")
-
-        try {
-
-          var ending_date = new Date(this.auction[i]);
+      this.times_to_end = []
+      try {
+        for (var i in this.auctions){
+          var ending_date = new Date(this.auctions[i].date_end);
           var now_date = new Date();
           var time_between = ending_date - now_date;
           var days = parseInt((time_between)/(24*3600*1000));
@@ -90,19 +91,17 @@ export default {
           time_between -= minutes*(60*1000);
           var seconds = parseInt((time_between)/(1000));
           var res = "" + days + "d" + hours +":" + minutes + ":" + seconds + "";
-          var res_dict = {"time_to_end" : this.res}
-          console.log(res_dict)
-          // this.time_left = res_dict
-          // this.auctions[i].push(res_dict)
+          this.times_to_end.push(res)
+          }
         }
         catch (error){
-          // this.auctions[i].push("")
+          this.times_to_end = []
         }
-      }
-    },
+      },
+
 
   }
-};
+}
 </script>
 <style lang="scss" scoped>
 #entity-list {

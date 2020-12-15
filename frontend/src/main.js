@@ -20,8 +20,11 @@ import MessageManager from './components/MessageManager.vue';
 import AddOpinion from './components/AddOpinion.vue';
 import MyActualAuctions from './components/MyActualAuctions.vue';
 import EditAuction from './components/EditAuction.vue';
+import EndedAuctions from './components/EndedAuctions.vue';
+import WonAuctions from './components/WonAuctions.vue';
 // import loader from "vue-ui-preloader";
 
+import plugin from '@serializedowen/vue-img-watermark'
 
 window.axios = require('axios');
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
@@ -103,6 +106,16 @@ const routes = [
         path: basePath + "/editauction/:auctionId",
         name: "editauction",
         component: EditAuction
+    },
+    {
+        path: basePath + "/endedauctions",
+        name: "endedauctions",
+        component: EndedAuctions
+    },
+    {
+        path: basePath + "/wonauctions",
+        name: "wonauctions",
+        component: WonAuctions
     },
 ]
 

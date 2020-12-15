@@ -81,7 +81,7 @@ class AuctionCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Auction
         fields = ['id', 'category', 'image', 'product_name', 'description', 'is_new', 'user_seller', 'user_highest_bid',
-                  'date_started', 'date_end', 'starting_price', 'highest_bid', 'minimal_price', 'is_shipping_av']
+                  'date_started', 'date_end', 'starting_price', 'highest_bid', 'minimal_price', 'is_shipping_av', 'auctionShippingCost']
 
 
 class BidSerializer(serializers.ModelSerializer):
@@ -94,8 +94,9 @@ class BidSerializer(serializers.ModelSerializer):
 
 
 class BidCreateSerializer(serializers.ModelSerializer):
-    bidUserBuyer = serializers.PrimaryKeyRelatedField(default=serializers.CurrentUserDefault(),
-                                                      queryset=User.objects.all())
+    # bidUserBuyer = serializers.PrimaryKeyRelatedField(default=serializers.CurrentUserDefault(),
+    #                                                   queryset=User.objects.all())
+    bidUserBuyer = UserMiniSerializer()
     bidAuction = serializers.PrimaryKeyRelatedField(many=False, queryset=Auction.objects.all())
 
     class Meta:

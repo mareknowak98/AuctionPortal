@@ -49,7 +49,7 @@
           </b-nav-form>
           <b-navbar-nav>
           <b-nav-item-dropdown text="Buying" right>
-            <b-dropdown-item>Auctions I've won</b-dropdown-item>
+            <b-dropdown-item v-on:click="$goToAnotherPage('/wonauctions')">Auctions I've won</b-dropdown-item>
             <b-dropdown-item>Auctions I'm bidding on</b-dropdown-item>
             <b-dropdown-item>3</b-dropdown-item>
           </b-nav-item-dropdown>
@@ -57,8 +57,7 @@
             <b-dropdown-item v-on:click="$goToAnotherPage('/newauction')">Create new auction</b-dropdown-item>
             <b-dropdown-divider></b-dropdown-divider>
             <b-dropdown-item v-on:click="$goToAnotherPage('/activeauctions')">Items I'm selling  </b-dropdown-item>
-            <b-dropdown-item>Items I've sold</b-dropdown-item>
-            <b-dropdown-item>Unsold Items</b-dropdown-item>
+            <b-dropdown-item v-on:click="$goToAnotherPage('/register/')">Ended auctions</b-dropdown-item>
           </b-nav-item-dropdown>
         </b-navbar-nav>
 
@@ -94,8 +93,10 @@ import axios from 'axios';
         profileData: [],
       }
     },
+    //TODO to fix
     mounted: function (){
       this.userId = this.$getUserId()
+      this.getProfile(this.$getUserId())
     },
     methods: {
       goToUserPage: function () {
