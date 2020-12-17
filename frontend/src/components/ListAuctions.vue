@@ -1,7 +1,7 @@
 <template>
   <div class="">
-    <b-button block type="submit" variant="secondary" v-on:click="getTimeToEnd">Submit</b-button>
 
+    <!-- <b-button size="sm" variant="success" @click="$isStaff"/> -->
     <b-list-group v-for="(auction, i) in auctions" :key="auction.id">
       <b-list-group-item :to="$basePath + '/auctions/' + auction.id" class="auctionListItem">
 

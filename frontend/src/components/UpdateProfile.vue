@@ -7,6 +7,7 @@
         <b-col col lg="8">
         <div v-if="$getToken() != null">
             <b-list-group v-for="profile in profileData" :key="profile.id">
+            <b>{{profile.profileUser.username}}</b>
             <b>Your current avatar:</b>
             <b-row class="justify-content-md-center">
             <div>

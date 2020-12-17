@@ -7,7 +7,7 @@ from django.http import HttpResponseNotAllowed, JsonResponse
 from rest_framework import viewsets, mixins
 from app.serializers import UserSerializer, AuctionSerializer, CategorySerializer, AuctionCreateSerializer, \
     BidSerializer, BidCreateSerializer, ProfileSerializer, UserMessageSerializer, Profile2Serializer, MessageSerializer, \
-    OpinionSerializer, ReportSerializer
+    OpinionSerializer, ReportSerializer, UserStaffSerializer
 from .models import Auction, Category, Bid, Profile, UserMessage, Message, UserOpinion, AuctionReport
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
@@ -35,6 +35,11 @@ class UserViewSet(viewsets.ModelViewSet):
         print(user.username)
         return Response(user.username)
 
+    @action(detail=False, methods=['get'])
+    def getUsers(self, request, **kwargs):
+        users = User.objects.all()
+        serializer = UserStaffSerializer(users, many=True)
+        return Response(serializer.data)
 
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
@@ -647,18 +652,24 @@ class StaffViewSet(viewsets.ModelViewSet):
         else:
             return HttpResponseNotAllowed("Allowed only for staff members!")
 
-    # endpoint: http://127.0.0.1:8000/api/staff/deleteUser/
+    # endpoint: http://127.0.0.1:8000/api/staff/setActivateUser/
     @action(detail=False, methods=['post'])
-    def deleteUser(self, request, *args, **kwargs):
+    def setActivateUser(self, request, *args, **kwargs):
         data = request.data
         user_request = request.user
+        ban_unban = data.get('ban')
+        ban = ban_unban == 'True'
+        print(type(ban))
+        print(ban)
         user_id = data.get('user_id')
         if user_request.is_staff or user_request.is_superuser:
             try:
                 user_to_delete = User.objects.get(id=user_id)
                 if user_to_delete.is_staff or user_to_delete.is_superuser:
                     return HttpResponseNotAllowed("Not allowed")
-                user_to_delete.delete()
+                user_to_delete.is_active = not ban
+                user_to_delete.save()
+                return Response("ok")
             except User.DoesNotExist:
                 return Response("No such user")
             except Exception as e:
