@@ -110,8 +110,8 @@ class Auction(models.Model):
                 self.auctionShippingCost = 20.0
 
         super(Auction, self).save(*args, **kwargs)
-        if create_task:
-            app.tasks.set_inactive.apply_async(args=[self.id], eta=datetime.strptime(self.date_end[:-1], "%Y-%m-%dT%H:%M:%S") +dt.timedelta(hours=-1))
+        # if create_task:
+            # app.tasks.set_inactive.apply_async(args=[self.id], eta=datetime.strptime(self.date_end[:-1], "%Y-%m-%dT%H:%M:%S") +dt.timedelta(hours=-1))
 
     def __str__(self):
         return "{0} - Auction".format(self.product_name)
