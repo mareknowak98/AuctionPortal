@@ -3,26 +3,21 @@
   <navbar></navbar>
 
   <b-jumbotron class="jumbotron jumbotron-home">
-    <b-modal id="deleteModal" title="Are you sure?" >
-      <label class="mb-2">Confirm auction removal</label>
-      <template #modal-footer="{ cancel }">
-        <!--   -->
-        <b-button size="sm" variant="danger" @click="cancel(); deleteAuction(auction_to_del)">
-          Delete
-        </b-button>
-        <b-button size="sm" variant="success" @click="cancel()">
-          Cancel
-        </b-button>
-      </template>
-    </b-modal>
-    <!-- {{this.my_auctions}} -->
+    <div>
+    <b-form-select v-on:change="getMyParticipatedAuctions()" v-model="selected" class="mb-3">
+      <b-form-select-option value="1">Current</b-form-select-option>
+      <b-form-select-option value="2">Ended</b-form-select-option>
+
+    </b-form-select>
+    </div>
+
     <b-list-group v-for="auction in my_auctions" :key="auction.id">
       <!-- {{auction}} -->
 
       <b-container class="bv-example-row bv-example-row-flex-cols">
 
         <b-row align-v="center">
-          <b-col sm="10">
+          <!-- <b-col sm="10"> -->
           <b-list-group-item :to="$basePath + '/auctions/' + auction.id" class="auctionListItem">
             <b-card no-body class="overflow-hidden">
               <b-row no-gutters>
@@ -45,16 +40,8 @@
               </b-row>
             </b-card>
           </b-list-group-item>
-          </b-col>
-          <b-col sm="2">
-            <b-row>
-              <b-button block v-on:click="$goToAnotherPage('/editauction/' + auction.id)" variant="secondary">Edit</b-button>
-            </b-row>
-            <b-row>
-              <!-- v-b-modal.deleteModal -->
-              <b-button block v-on:click="setDelAuction(auction.id)" v-b-modal.deleteModal variant="danger">Delete</b-button>
-            </b-row>
-          </b-col>
+          <!-- </b-col> -->
+
 
         </b-row>
 
@@ -71,10 +58,11 @@
 <script>
 import Navbar from './Navbar.vue'
 import Footer from './Footer.vue'
-import axios from 'axios';
 
+
+import axios from 'axios';
   export default {
-    name: "MyActualAuctions",
+    name: "EndedAuctions",
     components:{
         Navbar,
         Footer,
@@ -82,45 +70,35 @@ import axios from 'axios';
 
     data() {
       return {
+        selected: 1,
         my_auctions: [],
-        auction_to_del: '',
+
       }
     },
 
     mounted: function () {
-      this.getMyActiveAuctions()
+      this.getMyParticipatedAuctions()
     },
 
 
     methods:{
-      getMyActiveAuctions(){
+      getMyParticipatedAuctions(){
         let axiosConfig = {
           headers: {
             'Authorization': 'Token ' + this.$getToken()
           }
         };
-        axios.get(`http://127.0.0.1:8000/api/auctions/getMyAuctions/?active=True&ended=False`, axiosConfig)
+        let query = "http://127.0.0.1:8000/api/auctions/getMyParticipatedAuctions/?active="
+        if (this.selected == 1)
+          query += "" + "True"
+        if (this.selected == 2)
+          query += "" + "False"
+        console.log(query)
+        axios.get(query, axiosConfig)
         .then(res => this.my_auctions = res.data)
         .catch(err => console.log(err))
-      },
-      deleteAuction(id){
-        console.log(`http://127.0.0.1:8000/api/auctioncreate/` + id +'/')
-        let axiosConfig = {
-          headers: {
-            'Authorization': 'Token ' + this.$getToken()
-          }
-        };
-        axios.delete(`http://127.0.0.1:8000/api/auctioncreate/` + id +'/', axiosConfig)
-        .then(res => console.log(res.data))
-        .then(res => this.getMyActiveAuctions())
-        .catch(err => console.log(err))
-      },
-      setDelAuction(id){
-        this.auction_to_del = id;
-      },
-
+      }
     },
-
 
 
   }

@@ -7,7 +7,7 @@ from django.http import HttpResponseNotAllowed, JsonResponse
 from rest_framework import viewsets, mixins
 from app.serializers import UserSerializer, AuctionSerializer, CategorySerializer, AuctionCreateSerializer, \
     BidSerializer, BidCreateSerializer, ProfileSerializer, UserMessageSerializer, Profile2Serializer, MessageSerializer, \
-    OpinionSerializer, ReportSerializer
+    OpinionSerializer, ReportSerializer, UserStaffSerializer
 from .models import Auction, Category, Bid, Profile, UserMessage, Message, UserOpinion, AuctionReport
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
@@ -35,8 +35,11 @@ class UserViewSet(viewsets.ModelViewSet):
         print(user.username)
         return Response(user.username)
 
-
-
+    @action(detail=False, methods=['get'])
+    def getUsers(self, request, **kwargs):
+        users = User.objects.all()
+        serializer = UserStaffSerializer(users, many=True)
+        return Response(serializer.data)
 
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
@@ -51,6 +54,7 @@ class AuctionViewSet(viewsets.ModelViewSet):
     serializer_class = AuctionSerializer
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticatedOrReadOnly,)
+
     # search_fields = ('product_name', 'description')
 
     def list(self, request, *args, **kwargs):
@@ -58,21 +62,24 @@ class AuctionViewSet(viewsets.ModelViewSet):
         print(list(params.values()))
         auctions = Auction.objects.all().filter(is_active=True)
         title = self.request.query_params.get('title', None)
-        desc = self.request.query_params.get('desc', None) #description
-        cat = self.request.query_params.get('cat', None) #category (id)
-        min = self.request.query_params.get('min', None) #min price
-        max = self.request.query_params.get('max', None) #min price
-        time_left = self.request.query_params.get('time_left', None) #1 ascending(shortest time), 2 descending(longest time), none without sorting
+        desc = self.request.query_params.get('desc', None)  # description
+        cat = self.request.query_params.get('cat', None)  # category (id)
+        min = self.request.query_params.get('min', None)  # min price
+        max = self.request.query_params.get('max', None)  # min price
+        time_left = self.request.query_params.get('time_left',
+                                                  None)  # 1 ascending(shortest time), 2 descending(longest time), none without sorting
         new = self.request.query_params.get('new', None)
-        ship = self.request.query_params.get('ship', None) #shipping
-        price = self.request.query_params.get('price', None) #1 ascending(min price -> max price), 2 descending, none without sorting
+        ship = self.request.query_params.get('ship', None)  # shipping
+        price = self.request.query_params.get('price',
+                                              None)  # 1 ascending(min price -> max price), 2 descending, none without sorting
         ##TODO remove prints and reparin price ordering
         if title:
             print(1)
             auctions = auctions.filter(product_name__icontains=title)
         if desc:
             print(2)
-            auctions = Auction.objects.all().filter(product_name__icontains=title) | Auction.objects.all().filter(description__icontains=desc, is_active=True)
+            auctions = Auction.objects.all().filter(product_name__icontains=title) | Auction.objects.all().filter(
+                description__icontains=desc, is_active=True)
         if cat:
             print(3)
             auctions = auctions.filter(category=Category.objects.get(id=cat))
@@ -111,11 +118,21 @@ class AuctionViewSet(viewsets.ModelViewSet):
     def getMyAuctions(self, request, **kwargs):
         is_active = self.request.query_params.get('active', None)
         is_ended = self.request.query_params.get('ended', None)
+        print(self.request.query_params)
+        print(type(is_active))
+        print(is_ended)
         user = request.user
-        if is_active and not is_ended:
-            Auction.objects.filter(user_seller=user, is_active=is_active)
-        else:
+        if is_active == 'True':
             myAuctions = Auction.objects.filter(user_seller=user, is_active=is_active)
+        if is_active == 'False' and is_ended == 'True':
+            print(1)
+            myAuctions = Auction.objects.filter(user_seller=user, is_active=is_active, user_highest_bid__isnull=False)
+        if is_active == 'False' and is_ended == 'False':
+            print(2)
+            myAuctions = Auction.objects.filter(user_seller=user, is_active=is_active, user_highest_bid__isnull=True)
+        if is_active == 'False' and is_ended == None:
+            myAuctions = Auction.objects.filter(user_seller=user, is_active=is_active)
+
         serializer = AuctionSerializer(myAuctions, many=True)
         return Response(serializer.data)
 
@@ -132,7 +149,7 @@ class AuctionViewSet(viewsets.ModelViewSet):
         serializer = AuctionSerializer(auctions_queryset, many=True)
         return Response(serializer.data)
 
-    # endpoint: http://127.0.0.1:8000/api/auctions/getMyWinAuctions
+    # endpoint: http://127.0.0.1:8000/api/auctions/getMyWonAuctions
     @action(detail=False, methods=['get'])
     def getMyWonAuctions(self, request, **kwargs):
         user = request.user
@@ -192,14 +209,23 @@ class AuctionCreate(viewsets.ModelViewSet):
     # endpoint: (patch) http://127.0.0.1:8000/api/auctioncreate/88/
     def partial_update(self, request, *args, **kwargs):
         data = request.data
+        print(data)
         auction_obj = self.get_object()
+        print(auction_obj)
+
+        flag1 = True if data.get('is_new', auction_obj.is_new) == 'true' else False
+        flag2 = True if data.get('is_shipping_av', auction_obj.is_shipping_av) == 'true' else False
+
         auction_obj.image = data.get('image', auction_obj.image)
         auction_obj.category = Category.objects.get(id=data.get('category', auction_obj.category.id))
         auction_obj.product_name = data.get('product_name', auction_obj.product_name)
         auction_obj.description = data.get('description', auction_obj.description)
-        auction_obj.is_new = data.get('auction_obj', auction_obj.is_new)
-        auction_obj.is_shipping_av = data.get('is_shipping_av', auction_obj.is_shipping_av)
+        auction_obj.is_new = flag1
+        auction_obj.is_shipping_av = flag2
+        auction_obj.auctionShippingCost = data.get('auctionShippingCost', auction_obj.auctionShippingCost)
 
+        if data.get('is_shipping_av') is None and data.get('auctionShippingCost') is not None:
+            return HttpResponseNotAllowed("Not allowed")
         if data.get('date_end'):
             return HttpResponseNotAllowed("You cannot change end date of auction")
         if data.get('starting_price') or data.get('minimal_price'):
@@ -253,6 +279,14 @@ class BidViewSet(viewsets.ModelViewSet):
         Auction.objects.filter(id=data['bidAuction']).update(user_highest_bid=userbuyerID.id)
 
         serializer = BidCreateSerializer(newBid, many=False)
+        return Response(serializer.data)
+
+    @action(detail=False, methods=['get'])
+    def getAuctionBids(self, request, **kwargs):
+        auction_id = self.request.query_params.get('auction_id', None)
+        print(auction_id)
+        bids = reversed(Bid.objects.filter(bidAuction=auction_id))
+        serializer = BidCreateSerializer(bids, many=True)
         return Response(serializer.data)
 
 
@@ -311,14 +345,13 @@ class ProfileViewSet(viewsets.ModelViewSet):
         serializer = ProfileSerializer(profile, many=False)
         return Response(serializer.data)
 
-    #endpoint http://127.0.0.1:8000/api/profile/getUserIdByProfile?profile_id=5
+    # endpoint http://127.0.0.1:8000/api/profile/getUserIdByProfile?profile_id=5
     @action(detail=False, methods=['GET'])
     def getUserIdByProfile(self, request, **kwargs):
         profile_id = request.GET.get('profile_id')
         profile_get = Profile.objects.get(id=profile_id[0])
         user = User.objects.filter(profile=profile_get).first()
         return Response(user.id)
-
 
 
 ##############
@@ -333,7 +366,7 @@ class ProfileUserViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
 
-    #endpoint http://127.0.0.1:8000/api/profileUser/getProfileByUserId?id=2
+    # endpoint http://127.0.0.1:8000/api/profileUser/getProfileByUserId?id=2
     @action(detail=False, methods=['GET'])
     def getProfileByUserId(self, request, **kwargs):
         user_id = request.GET.get('id')
@@ -342,13 +375,14 @@ class ProfileUserViewSet(viewsets.ModelViewSet):
         serializer = Profile2Serializer(profile)
         return Response(serializer.data);
 
-    #endpoint http://127.0.0.1:8000/api/profileUser/getUserImage?user_id=20
+    # endpoint http://127.0.0.1:8000/api/profileUser/getUserImage?user_id=20
     @action(detail=False, methods=['GET'])
     def getUserImage(self, request, **kwargs):
         user_id = request.GET.get('user_id')
         profile = Profile.objects.get(profileUser=User.objects.get(id=user_id))
         serializer = Profile2Serializer(profile)
         return Response(serializer.data['profileAvatar'])
+
 
 ##############
 class IsOwner(permissions.BasePermission):
@@ -618,18 +652,24 @@ class StaffViewSet(viewsets.ModelViewSet):
         else:
             return HttpResponseNotAllowed("Allowed only for staff members!")
 
-    # endpoint: http://127.0.0.1:8000/api/staff/deleteUser/
+    # endpoint: http://127.0.0.1:8000/api/staff/setActivateUser/
     @action(detail=False, methods=['post'])
-    def deleteUser(self, request, *args, **kwargs):
+    def setActivateUser(self, request, *args, **kwargs):
         data = request.data
         user_request = request.user
+        ban_unban = data.get('ban')
+        ban = ban_unban == 'True'
+        print(type(ban))
+        print(ban)
         user_id = data.get('user_id')
         if user_request.is_staff or user_request.is_superuser:
             try:
                 user_to_delete = User.objects.get(id=user_id)
                 if user_to_delete.is_staff or user_to_delete.is_superuser:
                     return HttpResponseNotAllowed("Not allowed")
-                user_to_delete.delete()
+                user_to_delete.is_active = not ban
+                user_to_delete.save()
+                return Response("ok")
             except User.DoesNotExist:
                 return Response("No such user")
             except Exception as e:

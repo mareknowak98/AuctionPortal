@@ -20,7 +20,17 @@ import MessageManager from './components/MessageManager.vue';
 import AddOpinion from './components/AddOpinion.vue';
 import MyActualAuctions from './components/MyActualAuctions.vue';
 import EditAuction from './components/EditAuction.vue';
+import EndedAuctions from './components/EndedAuctions.vue';
+import WonAuctions from './components/WonAuctions.vue';
+import ParticipatedAuctions from './components/ParticipatedAuctions.vue';
+import StaffPanel from './components/StaffPanel.vue';
+import Playground from './components/Playground.vue';
 // import loader from "vue-ui-preloader";
+
+import plugin from '@serializedowen/vue-img-watermark'
+
+
+// Vue.use(Vuetable);
 
 
 window.axios = require('axios');
@@ -104,6 +114,32 @@ const routes = [
         name: "editauction",
         component: EditAuction
     },
+    {
+        path: basePath + "/endedauctions",
+        name: "endedauctions",
+        component: EndedAuctions
+    },
+    {
+        path: basePath + "/wonauctions",
+        name: "wonauctions",
+        component: WonAuctions
+    },
+    {
+        path: basePath + "/participatedauctions",
+        name: "participatedauctions",
+        component: ParticipatedAuctions
+    },
+    {
+        path: basePath + "/staffpanel",
+        name: "staffpanel",
+        component: StaffPanel
+    },
+    {
+        path: basePath + "/playground",
+        name: "playground",
+        component: Playground
+    },
+
 ]
 
 Vue.mixin({
@@ -135,6 +171,7 @@ Vue.mixin({
         $sleep: function(ms) {
           return new Promise(resolve => setTimeout(resolve, ms));
         },
+
     },
 
 })

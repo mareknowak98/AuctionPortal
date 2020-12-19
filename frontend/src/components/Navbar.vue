@@ -43,23 +43,29 @@
          <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
          <b-collapse id="nav-collapse" is-nav>
+
           <b-nav-form>
             <b-form-input size="sm" class="mr-sm-2" placeholder="Search auctions..."></b-form-input>
             <b-button size="sm" class="my-2 my-sm-0">Search</b-button>
           </b-nav-form>
           <b-navbar-nav>
           <b-nav-item-dropdown text="Buying" right>
-            <b-dropdown-item>Auctions I've won</b-dropdown-item>
-            <b-dropdown-item>Auctions I'm bidding on</b-dropdown-item>
-            <b-dropdown-item>3</b-dropdown-item>
+            <b-dropdown-item v-on:click="$goToAnotherPage('/wonauctions')">Auctions I've won</b-dropdown-item>
+            <b-dropdown-item v-on:click="$goToAnotherPage('/participatedauctions')">Participated auctions</b-dropdown-item>
           </b-nav-item-dropdown>
           <b-nav-item-dropdown text="Selling" right>
             <b-dropdown-item v-on:click="$goToAnotherPage('/newauction')">Create new auction</b-dropdown-item>
             <b-dropdown-divider></b-dropdown-divider>
             <b-dropdown-item v-on:click="$goToAnotherPage('/activeauctions')">Items I'm selling  </b-dropdown-item>
-            <b-dropdown-item>Items I've sold</b-dropdown-item>
-            <b-dropdown-item>Unsold Items</b-dropdown-item>
+            <b-dropdown-item v-on:click="$goToAnotherPage('/endedauctions')">Ended auctions</b-dropdown-item>
           </b-nav-item-dropdown>
+
+          <div v-if="is_staff == 'True'">
+            <b-navbar-nav>
+              <b-nav-item v-on:click="$goToAnotherPage('/staffpanel')">Admin Panel</b-nav-item>
+            </b-navbar-nav>
+          </div>
+
         </b-navbar-nav>
 
           <!-- Right aligned nav items -->
@@ -92,10 +98,15 @@ import axios from 'axios';
         // token: localStorage.getItem('user-token') || null,
         userId: null,
         profileData: [],
+        is_staff: '',
       }
     },
+    //TODO to fix
     mounted: function (){
       this.userId = this.$getUserId()
+      this.getProfile(this.$getUserId())
+      console.log("----------" + this.$isStaff())
+      this.isStaff()
     },
     methods: {
       goToUserPage: function () {
@@ -112,16 +123,17 @@ import axios from 'axios';
         this.username = '';
         this.password = '';
         })
-        .then(resp =>{
+        .then(resp => {
           console.log(this.userId)
           this.getProfile(this.userId)
+        })
+        .then(resp => {
+          this.isStaff()
         })
         .catch(err => {
           console.log(err);
           localStorage.removeItem('user-token');
         })
-        // this.$forceUpdate()
-        // this.$router.go();
         this.$goToMainPage();
       },
 
@@ -130,6 +142,7 @@ import axios from 'axios';
         this.token = null;
         this.$router.go();
         this.$goToMainPage();
+        this.is_staff = "False";
         },
 
       getProfile(id){
@@ -143,7 +156,25 @@ import axios from 'axios';
         .then(res => this.profileData = res.data)
         .catch(err => console.log(err))
       },
+      isStaff(){
+        let axiosConfig = {
+          headers: {
+            'Authorization': 'Token ' + localStorage.getItem("user-token")
+          }
+        };
+        var userId
+        axios.get(`http://127.0.0.1:8000/api/user-id`, axiosConfig)
+            .then(res => console.log(userId = res.data[0].id))
+            .then(res =>{
+            axios.get(`http://127.0.0.1:8000/api/staff/isStaffUser?user_id=` + userId, axiosConfig)
+                  .then(res => {
+                    this.is_staff = res.data
+                  })
+                  .catch(err => console.log(err))
+            })
+            .catch(err => console.log(err))
 
+      },
     }
   }
 </script>
