@@ -9,9 +9,11 @@ https://docs.djangoproject.com/en/3.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
-
 from pathlib import Path
 import os
+
+import django_on_heroku
+
 # import djcelery
 # djcelery.setup_loader()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -161,8 +163,5 @@ REST_FRAMEWORK = {
 }
 MEDIA_URL = '/media/'
 
-# EMAIL_USE_TLS = True
-# EMAIL_HOST = 'smtp.gmail.com'
-# EMAIL_PORT = 587
-# EMAIL_HOST_USER = 'auctionportalsupp@gmail.com'
-# EMAIL_HOST_PASSWORD = 'reebok1vol'
+
+django_on_heroku.settings(locals())
