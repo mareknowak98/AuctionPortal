@@ -50,7 +50,7 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 
 
-const basePath = process.env.BASE_PATH || '/auctions';
+const basePath = process.env.BASE_PATH || '/';
 console.log(basePath)
 const routes = [
     {
