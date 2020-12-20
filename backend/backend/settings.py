@@ -143,6 +143,8 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:8080",
     "http://localhost:8081",
     "http://localhost:8082",
+    "http://auctionportalfrontend.herokuapp.com",
+    "http://auctionportalbackend.herokuapp.com",
 ]
 
 
