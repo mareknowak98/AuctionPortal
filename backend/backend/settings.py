@@ -13,6 +13,9 @@ from pathlib import Path
 import os
 
 import django_on_heroku
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 
 # import djcelery
 # djcelery.setup_loader()
@@ -47,6 +50,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     # 'djcelery',
+    'cloudinary_storage',
 ]
 
 MIDDLEWARE = [
@@ -137,19 +141,21 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-CORS_ALLOW_HEADERS = ['*',]
+CORS_ALLOW_HEADERS = ['*']
 #example ports
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:8080",
-    "http://localhost:8081",
-    "http://localhost:8082",
-    "http://auctionportalfrontend.herokuapp.com",
-    "http://auctionportalbackend.herokuapp.com",
-]
-
+# CORS_ALLOWED_ORIGINS = [
+#     "http://localhost:8080",
+#     "http://localhost:8081",
+#     "http://localhost:8082",
+#     "http://auctionportalfrontend.herokuapp.com:8080",
+#     "http://auctionportalbackend.herokuapp.com:8080",
+# ]
+CORS_ORIGIN_ALLOW_ALL = True # If this is used then `CORS_ORIGIN_WHITELIST` will not have any effect
+CORS_ALLOW_CREDENTIALS = True
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+DEFAULT_FILE_STORAGE='cloudinary_storage.storage.MediaCloudinaryStorage'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
@@ -163,7 +169,10 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
 }
-MEDIA_URL = '/media/'
 
-
+CLOUDINARY_STORAGE = {
+             'CLOUD_NAME': 'dm2tx6lhe',
+             'API_KEY': '863671644492483',
+             'API_SECRET': 'z80XPfXZyxm-thbxlkWxyfqMjpA'
+            }
 django_on_heroku.settings(locals())

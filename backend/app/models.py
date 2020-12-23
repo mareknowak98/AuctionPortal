@@ -22,23 +22,23 @@ class Profile(models.Model):
     profileUserName = models.CharField(blank=True, null=True, max_length=50)
     profileUserSurname = models.CharField(blank=True, null=True, max_length=50)
     profileUser = models.OneToOneField(User, on_delete=models.CASCADE)
-    profileAvatar = models.ImageField(default='../media/default.jpg', blank=True, null=True)
+    profileAvatar = models.ImageField(default='../media/default.jpg', upload_to='images/', blank=True, null=True)
     profileBankAccountNr = models.CharField(max_length=30, blank=True, null=True)  # TODO set to real max len
     profileTelephoneNumber = models.CharField(max_length=15, blank=True, null=True)
 
     def __str__(self):
         return "{0} Profile".format(self.profileUser.username)
 
-    def save(self):
-        super().save()
-
-    def save(self, *args, **kwargs):
-        super(Profile, self).save(*args, **kwargs)
-        img = Image.open(self.profileAvatar.path)
-        if img.height > 300 or img.width > 300:
-            output_size = (300, 300)
-            img.thumbnail(output_size)
-            img.save(self.profileAvatar.path)
+    # def save(self):
+    #     super().save()
+    #
+    # def save(self, *args, **kwargs):
+    #     super(Profile, self).save(*args, **kwargs)
+    #     img = Image.open(self.profileAvatar.path)
+    #     if img.height > 300 or img.width > 300:
+    #         output_size = (300, 300)
+    #         img.thumbnail(output_size)
+    #         img.save(self.profileAvatar.path)
 
 
 # class to form custom Integer Field
@@ -86,7 +86,7 @@ class Category(models.Model):
 
 class Auction(models.Model):
     user_seller = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_seller')
-    image = models.ImageField(default='../media/default_auction.jpg', blank=True, null=True)
+    image = models.ImageField(default='../media/default_auction.jpg', upload_to='images/', blank=True, null=True)
     category = models.ForeignKey(Category, on_delete=models.PROTECT, related_name='category', default=4)
     product_name = models.CharField(max_length=50, default='')
     description = models.TextField(blank=True, null=True)
@@ -110,8 +110,8 @@ class Auction(models.Model):
                 self.auctionShippingCost = 20.0
 
         super(Auction, self).save(*args, **kwargs)
-        # if create_task:
-            # app.tasks.set_inactive.apply_async(args=[self.id], eta=datetime.strptime(self.date_end[:-1], "%Y-%m-%dT%H:%M:%S") +dt.timedelta(hours=-1))
+        if create_task:
+            app.tasks.set_inactive.apply_async(args=[self.id], eta=datetime.strptime(self.date_end[:-1], "%Y-%m-%dT%H:%M:%S") +dt.timedelta(hours=-1))
 
     def __str__(self):
         return "{0} - Auction".format(self.product_name)

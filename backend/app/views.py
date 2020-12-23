@@ -23,7 +23,7 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all().order_by('-date_joined')
     serializer_class = UserSerializer
 
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.AllowAny]
 
     def get_queryset(self):
         return User.objects.filter(id=self.request.user.id)
@@ -72,40 +72,28 @@ class AuctionViewSet(viewsets.ModelViewSet):
         ship = self.request.query_params.get('ship', None)  # shipping
         price = self.request.query_params.get('price',
                                               None)  # 1 ascending(min price -> max price), 2 descending, none without sorting
-        ##TODO remove prints and reparin price ordering
         if title:
-            print(1)
             auctions = auctions.filter(product_name__icontains=title)
         if desc:
-            print(2)
             auctions = Auction.objects.all().filter(product_name__icontains=title) | Auction.objects.all().filter(
                 description__icontains=desc, is_active=True)
         if cat:
-            print(3)
             auctions = auctions.filter(category=Category.objects.get(id=cat))
         if min:
-            print(4)
             auctions = auctions.filter(highest_bid__gte=min)
         if max:
-            print(5)
             auctions = auctions.filter(highest_bid__lte=max)
         if new:
-            print(6)
             auctions = auctions.filter(is_new=new)
         if ship:
-            print(7)
             auctions = auctions.filter(is_shipping_av=ship)
         if time_left and int(time_left) == 1:
-            print(8)
             auctions = auctions.order_by('date_end')
         if time_left and int(time_left) == 2:
-            print(9)
             auctions = auctions.order_by('-date_end')
         if price and int(price) == 1:
-            print(10)
             auctions = auctions.order_by('highest_bid')
         if price and int(price) == 2:
-            print(11)
             auctions = auctions.order_by('-highest_bid')
         serializer = AuctionSerializer(auctions, many=True)
         return Response(serializer.data)
@@ -381,7 +369,7 @@ class ProfileUserViewSet(viewsets.ModelViewSet):
         user_id = request.GET.get('user_id')
         profile = Profile.objects.get(profileUser=User.objects.get(id=user_id))
         serializer = Profile2Serializer(profile)
-        return Response(serializer.data['profileAvatar'])
+        return Response(serializer.data)
 
 
 ##############
