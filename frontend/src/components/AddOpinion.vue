@@ -57,7 +57,7 @@ import axios from 'axios';
     methods:{
       getUsername(){
         var username;
-        axios.get("http://127.0.0.1:8000/api/users/getUsernameById?id=" + this.$route.params.userId)
+        axios.get("https://auctionportalbackend.herokuapp.com/api/users/getUsernameById?id=" + this.$route.params.userId)
           .then(res => this.user_about = res.data)
           .catch(err => console.log(err));
         return this.username;
@@ -72,7 +72,7 @@ import axios from 'axios';
             'Authorization': 'Token ' + this.$getToken()
           }
         };
-        axios.post(`http://127.0.0.1:8000/api/opinion/`, formData, axiosConfig)
+        axios.post(`https://auctionportalbackend.herokuapp.com/api/opinion/`, formData, axiosConfig)
         .then(res => console.log(res.data))
         .catch(err => console.log(err))
         this.$sleep(500);

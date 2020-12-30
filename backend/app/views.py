@@ -23,7 +23,7 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all().order_by('-date_joined')
     serializer_class = UserSerializer
 
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.AllowAny]
 
     def get_queryset(self):
         return User.objects.filter(id=self.request.user.id)
@@ -55,14 +55,14 @@ class AuctionViewSet(viewsets.ModelViewSet):
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticatedOrReadOnly,)
 
-    # search_fields = ('product_name', 'description')
+    # search_fields = ('auctionProductName', 'auctionDescription')
 
     def list(self, request, *args, **kwargs):
         params = request.GET
         print(list(params.values()))
-        auctions = Auction.objects.all().filter(is_active=True)
+        auctions = Auction.objects.all().filter(auctionIsActive=True)
         title = self.request.query_params.get('title', None)
-        desc = self.request.query_params.get('desc', None)  # description
+        desc = self.request.query_params.get('desc', None)  # auctionDescription
         cat = self.request.query_params.get('cat', None)  # category (id)
         min = self.request.query_params.get('min', None)  # min price
         max = self.request.query_params.get('max', None)  # min price
@@ -72,41 +72,29 @@ class AuctionViewSet(viewsets.ModelViewSet):
         ship = self.request.query_params.get('ship', None)  # shipping
         price = self.request.query_params.get('price',
                                               None)  # 1 ascending(min price -> max price), 2 descending, none without sorting
-        ##TODO remove prints and reparin price ordering
         if title:
-            print(1)
-            auctions = auctions.filter(product_name__icontains=title)
+            auctions = auctions.filter(auctionProductName__icontains=title)
         if desc:
-            print(2)
-            auctions = Auction.objects.all().filter(product_name__icontains=title) | Auction.objects.all().filter(
-                description__icontains=desc, is_active=True)
+            auctions = Auction.objects.all().filter(auctionProductName__icontains=title) | Auction.objects.all().filter(
+                auctionDescription__icontains=desc, auctionIsActive=True)
         if cat:
-            print(3)
-            auctions = auctions.filter(category=Category.objects.get(id=cat))
+            auctions = auctions.filter(auctionCategory=Category.objects.get(id=cat))
         if min:
-            print(4)
-            auctions = auctions.filter(highest_bid__gte=min)
+            auctions = auctions.filter(auctionHighestBid__gte=min)
         if max:
-            print(5)
-            auctions = auctions.filter(highest_bid__lte=max)
+            auctions = auctions.filter(auctionHighestBid__lte=max)
         if new:
-            print(6)
-            auctions = auctions.filter(is_new=new)
+            auctions = auctions.filter(auctionIsNew=new)
         if ship:
-            print(7)
-            auctions = auctions.filter(is_shipping_av=ship)
+            auctions = auctions.filter(auctionIsShippingAv=ship)
         if time_left and int(time_left) == 1:
-            print(8)
-            auctions = auctions.order_by('date_end')
+            auctions = auctions.order_by('auctionDateEnd')
         if time_left and int(time_left) == 2:
-            print(9)
-            auctions = auctions.order_by('-date_end')
+            auctions = auctions.order_by('-auctionDateEnd')
         if price and int(price) == 1:
-            print(10)
-            auctions = auctions.order_by('highest_bid')
+            auctions = auctions.order_by('auctionHighestBid')
         if price and int(price) == 2:
-            print(11)
-            auctions = auctions.order_by('-highest_bid')
+            auctions = auctions.order_by('-auctionHighestBid')
         serializer = AuctionSerializer(auctions, many=True)
         return Response(serializer.data)
 
@@ -116,22 +104,22 @@ class AuctionViewSet(viewsets.ModelViewSet):
     # http://127.0.0.1:8000/api/auctions/getMyAuctions/?active=True&ended=False
     @action(detail=False, methods=['get'])
     def getMyAuctions(self, request, **kwargs):
-        is_active = self.request.query_params.get('active', None)
+        auctionIsActive = self.request.query_params.get('active', None)
         is_ended = self.request.query_params.get('ended', None)
         print(self.request.query_params)
-        print(type(is_active))
+        print(type(auctionIsActive))
         print(is_ended)
         user = request.user
-        if is_active == 'True':
-            myAuctions = Auction.objects.filter(user_seller=user, is_active=is_active)
-        if is_active == 'False' and is_ended == 'True':
+        if auctionIsActive == 'True':
+            myAuctions = Auction.objects.filter(auctionUserSeller=user, auctionIsActive=auctionIsActive)
+        if auctionIsActive == 'False' and is_ended == 'True':
             print(1)
-            myAuctions = Auction.objects.filter(user_seller=user, is_active=is_active, user_highest_bid__isnull=False)
-        if is_active == 'False' and is_ended == 'False':
+            myAuctions = Auction.objects.filter(auctionUserSeller=user, auctionIsActive=auctionIsActive, auctionUserHighestBid__isnull=False)
+        if auctionIsActive == 'False' and is_ended == 'False':
             print(2)
-            myAuctions = Auction.objects.filter(user_seller=user, is_active=is_active, user_highest_bid__isnull=True)
-        if is_active == 'False' and is_ended == None:
-            myAuctions = Auction.objects.filter(user_seller=user, is_active=is_active)
+            myAuctions = Auction.objects.filter(auctionUserSeller=user, auctionIsActive=auctionIsActive, auctionUserHighestBid__isnull=True)
+        if auctionIsActive == 'False' and is_ended == None:
+            myAuctions = Auction.objects.filter(auctionUserSeller=user, auctionIsActive=auctionIsActive)
 
         serializer = AuctionSerializer(myAuctions, many=True)
         return Response(serializer.data)
@@ -141,11 +129,11 @@ class AuctionViewSet(viewsets.ModelViewSet):
     # endpoint: http://127.0.0.1:8000/api/auctions/getMyParticipatedAuctions/?active=True
     @action(detail=False, methods=['get'])
     def getMyParticipatedAuctions(self, request, **kwargs):
-        is_active = self.request.query_params.get('active', None)
+        auctionIsActive = self.request.query_params.get('active', None)
         user = request.user
         bids = Bid.objects.filter(bidUserBuyer=user)
         auctions_queryset = Auction.objects.filter(id__in=bids.values_list('bidAuction', flat=False),
-                                                   is_active=is_active)
+                                                   auctionIsActive=auctionIsActive)
         serializer = AuctionSerializer(auctions_queryset, many=True)
         return Response(serializer.data)
 
@@ -154,7 +142,7 @@ class AuctionViewSet(viewsets.ModelViewSet):
     def getMyWonAuctions(self, request, **kwargs):
         user = request.user
         print(user)
-        auctions_queryset = Auction.objects.filter(user_highest_bid=user.id, is_active=False)
+        auctions_queryset = Auction.objects.filter(auctionUserHighestBid=user.id, auctionIsActive=False)
         serializer = AuctionSerializer(auctions_queryset, many=True)
         return Response(serializer.data)
 
@@ -174,34 +162,34 @@ class AuctionCreate(viewsets.ModelViewSet):
         user = request.user
         data = request.data
         # print(data)
-        flag1 = True if data['is_new'] == 'true' else False
-        flag2 = True if data['is_shipping_av'] == 'true' else False
-        if data['image'] != 'null':
-            image = data['image']
+        flag1 = True if data['auctionIsNew'] == 'true' else False
+        flag2 = True if data['auctionIsShippingAv'] == 'true' else False
+        if data['auctionImage'] != 'null':
+            auctionImage = data['auctionImage']
         else:
-            image = '/default_auction.jpg'
+            auctionImage = '/default_auction.jpg'
 
-        if data['date_started'] > data['date_end']:
+        if data['auctionDateStarted'] > data['auctionDateEnd']:
             HttpResponseNotAllowed("You cannot set ending date in the past")
-        if data['minimal_price'] != "" and data['starting_price'] > data['minimal_price']:
+        if data['auctionMinimalPrice'] != "" and data['auctionStartingPrice'] > data['auctionMinimalPrice']:
             HttpResponseNotAllowed("Starting Price must be higher than minimal price")
-        if data['minimal_price'] == "":
-            min_price = data['starting_price']
+        if data['auctionMinimalPrice'] == "":
+            min_price = data['auctionStartingPrice']
         else:
-            min_price = data['minimal_price']
+            min_price = data['auctionMinimalPrice']
 
         newAuction = Auction.objects.create(
-            user_seller=user,
-            image=image,
-            category=Category.objects.get(id=data['category']),
-            product_name=data['product_name'],
-            description=data['description'],
-            is_new=flag1,
-            date_started=data['date_started'],
-            date_end=data['date_end'],
-            starting_price=data['starting_price'],
-            minimal_price=min_price,
-            is_shipping_av=flag2,
+            auctionUserSeller=user,
+            auctionImage=auctionImage,
+            auctionCategory=Category.objects.get(id=data['auctionCategory']),
+            auctionProductName=data['auctionProductName'],
+            auctionDescription=data['auctionDescription'],
+            auctionIsNew=flag1,
+            auctionDateStarted=data['auctionDateStarted'],
+            auctionDateEnd=data['auctionDateEnd'],
+            auctionStartingPrice=data['auctionStartingPrice'],
+            auctionMinimalPrice=min_price,
+            auctionIsShippingAv=flag2,
         )
         serializer = AuctionCreateSerializer(newAuction, many=False)
         return Response(serializer.data)
@@ -213,25 +201,25 @@ class AuctionCreate(viewsets.ModelViewSet):
         auction_obj = self.get_object()
         print(auction_obj)
 
-        flag1 = True if data.get('is_new', auction_obj.is_new) == 'true' else False
-        flag2 = True if data.get('is_shipping_av', auction_obj.is_shipping_av) == 'true' else False
+        flag1 = True if data.get('auctionIsNew', auction_obj.auctionIsNew) == 'true' else False
+        flag2 = True if data.get('auctionIsShippingAv', auction_obj.auctionIsShippingAv) == 'true' else False
 
-        auction_obj.image = data.get('image', auction_obj.image)
-        auction_obj.category = Category.objects.get(id=data.get('category', auction_obj.category.id))
-        auction_obj.product_name = data.get('product_name', auction_obj.product_name)
-        auction_obj.description = data.get('description', auction_obj.description)
-        auction_obj.is_new = flag1
-        auction_obj.is_shipping_av = flag2
+        auction_obj.auctionImage = data.get('auctionImage', auction_obj.auctionImage)
+        auction_obj.auctionCategory = Category.objects.get(id=data.get('auctionCategory', auction_obj.auctionCategory.id))
+        auction_obj.auctionProductName = data.get('auctionProductName', auction_obj.auctionProductName)
+        auction_obj.auctionDescription = data.get('auctionDescription', auction_obj.auctionDescription)
+        auction_obj.auctionIsNew = flag1
+        auction_obj.auctionIsShippingAv = flag2
         auction_obj.auctionShippingCost = data.get('auctionShippingCost', auction_obj.auctionShippingCost)
 
-        if data.get('is_shipping_av') is None and data.get('auctionShippingCost') is not None:
+        if data.get('auctionIsShippingAv') is None and data.get('auctionShippingCost') is not None:
             return HttpResponseNotAllowed("Not allowed")
-        if data.get('date_end'):
+        if data.get('auctionDateEnd'):
             return HttpResponseNotAllowed("You cannot change end date of auction")
-        if data.get('starting_price') or data.get('minimal_price'):
+        if data.get('auctionStartingPrice') or data.get('auctionMinimalPrice'):
             return HttpResponseNotAllowed("You cannot this")
-        if data.get('highest_bid') or data.get('user_highest_bid') or data.get('date_started') or data.get(
-                'user_seller') or data.get('is_active'):
+        if data.get('auctionHighestBid') or data.get('auctionUserHighestBid') or data.get('auctionDateStarted') or data.get(
+                'auctionUserSeller') or data.get('auctionIsActive'):
             return HttpResponseNotAllowed("You are not alleowed to change this params")
 
         auction_obj.save()
@@ -241,7 +229,7 @@ class AuctionCreate(viewsets.ModelViewSet):
     def destroy(self, request, *args, **kwargs):
         user = request.user
         auction_obj = self.get_object()
-        if user == auction_obj.user_seller:
+        if user == auction_obj.auctionUserSeller:
             return super(AuctionCreate, self).destroy(request, *args, **kwargs)
         else:
             return HttpResponseNotAllowed("You are not alleowed to delete not your auctions")
@@ -265,18 +253,18 @@ class BidViewSet(viewsets.ModelViewSet):
         if not request.user.is_authenticated:
             return HttpResponseNotAllowed("You must be logged!")
 
-        if int(userbuyerID.id) == auctionID.user_seller.id:
+        if int(userbuyerID.id) == auctionID.auctionUserSeller.id:
             return HttpResponseNotAllowed("You cannot bid your own auction!")
 
-        if str(auctionID.date_end) < str(datetime.now().strftime("%Y-%m-%d %H:%M")):
+        if str(auctionID.auctionDateEnd) < str(datetime.now().strftime("%Y-%m-%d %H:%M")):
             return HttpResponseNotAllowed("This auction is overdue!")
 
-        if auctionID.user_highest_bid is not None and auctionID.highest_bid is not None:
-            if float(auctionID.highest_bid) >= float(data['bidPrice']):
+        if auctionID.auctionUserHighestBid is not None and auctionID.auctionHighestBid is not None:
+            if float(auctionID.auctionHighestBid) >= float(data['bidPrice']):
                 return HttpResponseNotAllowed("Bid offer have to be higher than current highest bid!")
 
-        Auction.objects.filter(id=data['bidAuction']).update(highest_bid=data['bidPrice'])
-        Auction.objects.filter(id=data['bidAuction']).update(user_highest_bid=userbuyerID.id)
+        Auction.objects.filter(id=data['bidAuction']).update(auctionHighestBid=data['bidPrice'])
+        Auction.objects.filter(id=data['bidAuction']).update(auctionUserHighestBid=userbuyerID.id)
 
         serializer = BidCreateSerializer(newBid, many=False)
         return Response(serializer.data)
@@ -366,6 +354,13 @@ class ProfileUserViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
 
+    @action(detail=False, methods=['GET'])
+    def getMyProfile(self, request, **kwargs):
+        user = request.user
+        profile = Profile.objects.get(profileUser=user)
+        serializer = Profile2Serializer(profile)
+        return Response(serializer.data);
+
     # endpoint http://127.0.0.1:8000/api/profileUser/getProfileByUserId?id=2
     @action(detail=False, methods=['GET'])
     def getProfileByUserId(self, request, **kwargs):
@@ -381,7 +376,7 @@ class ProfileUserViewSet(viewsets.ModelViewSet):
         user_id = request.GET.get('user_id')
         profile = Profile.objects.get(profileUser=User.objects.get(id=user_id))
         serializer = Profile2Serializer(profile)
-        return Response(serializer.data['profileAvatar'])
+        return Response(serializer.data)
 
 
 ##############
@@ -454,7 +449,7 @@ def get_user_profile_by_auction_id(request):
     if request.method == 'POST':
         auctionId = request.POST.get('id')
         auction = Auction.objects.get(id=auctionId)
-        userID = User.objects.get(id=auction.user_seller.id)
+        userID = User.objects.get(id=auction.auctionUserSeller.id)
         userProfileID = Profile.objects.get(profileUser=userID)
         return response_created({userProfileID.id})
 
@@ -483,7 +478,6 @@ class MessageViewset(viewsets.ModelViewSet):
     userToID - user to check messages with
     endpoint: http://127.0.0.1:8000/api/messages/getMessagesWithUser/
     '''
-
     @action(detail=False, methods=['post'])
     def getMessagesWithUser(self, request, **kwargs):
         user = request.user

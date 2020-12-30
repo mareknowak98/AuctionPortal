@@ -60,40 +60,42 @@ class CategorySerializer(serializers.ModelSerializer):
 
 
 class AuctionMiniSerializer(serializers.ModelSerializer):
-    user_seller = UserMiniSerializer(many=False)
-    category = CategorySerializer(many=False)
+    auctionUserSeller = UserMiniSerializer(many=False)
+    auctionCategory = CategorySerializer(many=False)
     class Meta:
         model = Auction
-        fields = ['id', 'category', 'product_name', 'description', 'user_seller', 'date_started', 'date_end', 'is_active']
-
-class AuctionSerializer(serializers.ModelSerializer):
-    user_seller = UserMiniSerializer(many=False)
-    category = CategorySerializer(many=False)
-    image = serializers.ImageField(
-        max_length=None,
-        use_url=True
-    )
-
-    class Meta:
-        model = Auction
-        fields = ['id', 'category', 'image', 'product_name', 'description', 'is_new', 'user_seller', 'user_highest_bid',
-                  'date_started', 'date_end', 'starting_price', 'highest_bid', 'minimal_price', 'is_shipping_av',
-                  'is_active', 'auctionShippingCost']
+        fields = ['id', 'auctionCategory', 'auctionProductName', 'auctionDescription', 'auctionUserSeller', 'auctionDateStarted', 'auctionDateEnd', 'auctionIsActive']
 
 
 class AuctionCreateSerializer(serializers.ModelSerializer):
-    user_seller = serializers.PrimaryKeyRelatedField(default=serializers.CurrentUserDefault(),
+    auctionUserSeller = serializers.PrimaryKeyRelatedField(default=serializers.CurrentUserDefault(),
                                                      queryset=User.objects.all())
-    category = serializers.PrimaryKeyRelatedField(many=False, queryset=Category.objects.all())
-    image = serializers.ImageField(
+    auctionCategory = serializers.PrimaryKeyRelatedField(many=False, queryset=Category.objects.all())
+    auctionImage = serializers.ImageField(
         max_length=None,
         use_url=True
     )
 
     class Meta:
         model = Auction
-        fields = ['id', 'category', 'image', 'product_name', 'description', 'is_new', 'user_seller', 'user_highest_bid',
-                  'date_started', 'date_end', 'starting_price', 'highest_bid', 'minimal_price', 'is_shipping_av', 'auctionShippingCost']
+        fields = ['id', 'auctionCategory', 'auctionImage', 'auctionProductName', 'auctionDescription', 'auctionIsNew', 'auctionUserSeller', 'auctionUserHighestBid',
+                  'auctionDateStarted', 'auctionDateEnd', 'auctionStartingPrice', 'auctionHighestBid', 'auctionMinimalPrice', 'auctionIsShippingAv', 'auctionShippingCost']
+
+
+class AuctionSerializer(serializers.ModelSerializer):
+    auctionUserSeller = UserMiniSerializer(many=False)
+    auctionCategory = CategorySerializer(many=False)
+    auctionImage = serializers.ImageField(
+        max_length=None,
+        use_url=True
+    )
+
+    class Meta:
+        model = Auction
+        fields = ['id', 'auctionCategory', 'auctionImage', 'auctionProductName', 'auctionDescription', 'auctionIsNew', 'auctionUserSeller', 'auctionUserHighestBid',
+                  'auctionDateStarted', 'auctionDateEnd', 'auctionStartingPrice', 'auctionHighestBid', 'auctionMinimalPrice', 'auctionIsShippingAv',
+                  'auctionIsActive', 'auctionShippingCost']
+
 
 
 class BidSerializer(serializers.ModelSerializer):

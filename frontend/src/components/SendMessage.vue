@@ -2,48 +2,51 @@
   <div class="container">
   <navbar></navbar>
   <b-jumbotron class="jumbotron jumbotron-home">
-
     <div v-if="token != null">
-      <h1>---</h1>
-      <b-list-group v-for="message in messages" :key="message.id">
-        <b-list-group-item class="auctionListItem">
-          <div v-if="message.dest == 'to'">
-            <p>From: {{message.text}}</p>
-          </div>
-          <div v-else>
-            <p>To: {{message.text}}</p>
-          </div>
-          <p>Date: {{message.date}}</p>
+      <b-list-group-item id="userto">
+      <b-avatar button v-on:click="$goToAnotherPage('/profile/' + profileData.id)" :src="profileData.profileAvatar" size="5rem" variant="primary" text="FF"></b-avatar>
+        {{profileData.profileUser.username}}
+      </b-list-group-item>
+    <section ref="chatArea" class="chat-area">
+      <b-col>
+        <div>
+            <p v-for="message in messagesProcessed" class="message" :key="message.text" :class="{ 'message-out': message.dest === 'from', 'message-in': message.dest !== 'from' }">
+              {{ message.text }}
+            </p>
 
-        </b-list-group-item>
-      </b-list-group>
+        </div>
+      </b-col>
+      <b-container id="texttable" class="bv-example-row">
+        <b-row>
+          <b-col cols="10">
+            <b-form-textarea
+            id="textarea"
+            v-model="messageText"
+            placeholder="Enter message..."
+          ></b-form-textarea>
+          </b-col>
+          <b-col cols="2">
+              <b-button id="sendbutton" block variant="outline-primary" v-on:click="sendMessage()">Send</b-button>
+          </b-col>
+        </b-row>
+      </b-container>
+    </section>
+    
 
-      <b-form-textarea
-        id="textarea"
-        v-model="messageText"
-        placeholder="Enter message..."
-        rows="3"
-        max-rows="6"
-      ></b-form-textarea>
 
-
-
-      <b-button variant="outline-primary" v-on:click="sendMessage()">Send</b-button>
 
     </div>
-
-
-
-
     <div v-else>
-    <h1>Log in to send messages</h1>
+      <h1>Log in to send messages</h1>
     </div>
+    <Footer></Footer>
   </b-jumbotron>
   </div>
 </template>
 
 <script>
 import Navbar from './Navbar.vue';
+import Footer from './Footer.vue'
 import {TokenService} from '../store/service';
 import axios from 'axios';
 
@@ -51,6 +54,7 @@ import axios from 'axios';
     name: "UserMessage",
     components:{
         Navbar,
+        Footer,
     },
     computed: {
 
@@ -60,12 +64,16 @@ import axios from 'axios';
         userToId: '',
         messageText: '',
         messages: [],
+        messagesProcessed: [],
+        profileData: [],
+
       }
     },
 
     mounted: function () {
       this.userToId = this.$route.params.userId;
       this.getMessages()
+      this.getProfileData()
 
     },
 
@@ -80,8 +88,11 @@ import axios from 'axios';
                   'Authorization': 'Token ' + localStorage.getItem("user-token")
               }
           };
-          axios.post(`http://127.0.0.1:8000/api/messaging/send/`, formData, axiosConfig)
+          axios.post(`https://auctionportalbackend.herokuapp.com/api/messaging/send/`, formData, axiosConfig)
               .then(res => console.log(res.data))
+              .then(res => {
+                this.getMessages()
+              })
               .catch(err => console.log(err))
           console.log("test" + this.profileId)
       },
@@ -94,14 +105,12 @@ import axios from 'axios';
                   'Authorization': 'Token ' + localStorage.getItem("user-token")
               }
           };
-          axios.post(`http://127.0.0.1:8000/api/messages/getMessagesWithUser/`, formData, axiosConfig)
+          axios.post(`https://auctionportalbackend.herokuapp.com/api/messages/getMessagesWithUser/`, formData, axiosConfig)
               .then(res => this.messages = res.data)
               .then(res =>{
                 this.processMessages()
               })
               .catch(err => console.log(err))
-
-          // this.processMessages()
       },
 
       convertToJSON(array) {
@@ -113,14 +122,12 @@ import axios from 'axios';
             objArray[i - 1][key] = array[i][k]
           }
         }
-
         return objArray;
       },
 
       processMessages(){
         let messageList = []
-        console.log(this.messages['to'][0].id)
-        for (let msg in this.messages['to']){
+        for (let msg=0; msg < this.messages['to'].length; msg++){
           let tmp = []
           tmp.push(this.messages['to'][parseInt(msg)].id)
           tmp.push("to")
@@ -128,7 +135,7 @@ import axios from 'axios';
           tmp.push(this.messages['to'][parseInt(msg)].messageCreatedAt)
           messageList.push(tmp)
         }
-        for (let msg in this.messages['from']){
+        for (let msg=0; msg < this.messages['from'].length; msg++){
           let tmp = []
           tmp.push(this.messages['from'][parseInt(msg)].id)
           tmp.push("from")
@@ -140,9 +147,19 @@ import axios from 'axios';
           return a[0] - b[0];
         });
         messageList.unshift(['id', 'dest', 'text', 'date'])
-        this.messages = this.convertToJSON(messageList)
-
+        this.messagesProcessed = this.convertToJSON(messageList)
       },
+      getProfileData(){
+        let axiosConfig = {
+            headers: {
+                'Authorization': 'Token ' + localStorage.getItem("user-token")
+            }
+        };
+        axios.get(`https://auctionportalbackend.herokuapp.com/api/profileUser/getUserImage?user_id=` + this.$route.params.userId, axiosConfig)
+            .then(res => this.profileData = res.data)
+            .catch(err => console.log(err))
+      },
+
     },
     created() {
       let token;
@@ -158,4 +175,76 @@ import axios from 'axios';
         max-width: 1400px;
     }
 }
+
+body, html {
+  font-family: sans-serif;
+  font-weight: 100;
+  background: #7b4397;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #dc2430, #7b4397);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #dc2430, #7b4397); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.headline {
+  text-align: center;
+  font-weight: 100;
+  color: white;
+}
+.chat-area {
+  background: white;
+  border-radius: 10px;
+  height: 100%;
+  max-height: 300px;
+  padding: 1em;
+  padding-bottom: 0%;
+  overflow: auto;
+  max-width: 80%;
+  margin: 0 auto 2em auto;
+  margin-bottom: 0%;
+  box-shadow: 2px 2px 5px 2px rgba(0, 0, 0, 0.3)
+}
+.message {
+  width: 45%;
+  height: 10%;
+  border-radius: 10px;
+  padding: .5em;
+/*   margin-bottom: .5em; */
+  font-size: .8em;
+}
+.message-out {
+  background: #407FFF;
+  color: white;
+  margin-left: 55.5%;
+}
+.message-in {
+  background: #F1F0F0;
+  color: black;
+}
+
+#texttable{
+  position: relative;
+  bottom: 0;
+  margin-top: 50px;
+  padding-bottom:1%;
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+#textarea{
+  height: 80px;
+}
+
+#sendbutton{
+  height: 80px;
+}
+
+#userto{
+  padding-bottom: 0%;
+  overflow: auto;
+  max-width: 80%;
+  margin: 0 auto 2em auto;
+  margin-bottom: 1%;
+  background-color: transparent;
+  border-color: transparent;
+}
+
 </style>

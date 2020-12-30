@@ -10,8 +10,8 @@
             <b>{{profile.profileUser.username}}</b>
             <b>Your current avatar:</b>
             <b-row class="justify-content-md-center">
-            <div>
-              <enlargeable-image :src=profile.profileAvatar  :src_large=profile.profileAvatar  />
+            <div class="imagecontainer">
+              <enlargeable-image :src=profile.profileAvatar :src_large=profile.profileAvatar  />
             </div>
             </b-row>
 
@@ -120,7 +120,7 @@ import axios from 'axios';
           'Authorization': 'Token ' + this.$getToken()
           }
       };
-      axios.get(`http://127.0.0.1:8000/api/profile/`, axiosConfig)
+      axios.get(`https://auctionportalbackend.herokuapp.com/api/profile/`, axiosConfig)
       .then(res => this.profileData = res.data)
       .catch(err => console.log(err))
       },
@@ -140,7 +140,7 @@ import axios from 'axios';
             'Authorization': 'Token ' + this.$getToken()
           }
         };
-        axios.put(`http://127.0.0.1:8000/api/profile/` + this.profileData[0].id + '/', formData, axiosConfig)
+        axios.put(`https://auctionportalbackend.herokuapp.com/api/profile/` + this.profileData[0].id + '/', formData, axiosConfig)
         .then(res => console.log(res.data))
         .catch(err => console.log(err))
 
@@ -164,4 +164,66 @@ import axios from 'axios';
         max-width: 1400px;
     }
 }
+
+
+@media (min-width: 100px) {
+    .imagecontainer{
+        max-width: 200px;
+    }
+}
+.enlargeable-image .enlargeable-image-slot {
+  display:inline-block;
+}
+.enlargeable-image .enlargeable-image-slot > img {
+  max-width:100%;
+}
+.enlargeable-image > .enlargeable-image-slot {
+  max-width:100%;
+  max-height:100%;
+  cursor:zoom-in;
+}
+.enlargeable-image > .enlargeable-image-slot.active {
+  opacity:0.3;
+  filter:grayscale(100%);
+}
+.enlargeable-image .enlargeable-image-full {
+  cursor:zoom-out;
+  background-color:transparent;
+  align-items:center;
+  justify-content:center;
+  background-position: center center;
+  background-repeat:no-repeat;
+  background-size:contain;
+  z-index:2000;
+  display:none;
+}
+.enlargeable-image .enlargeable-image-full > img {
+  object-fit:contain;
+  width:100%;
+  height:100%;
+}
+.enlargeable-image .enlargeable-image-full.enlarging {
+  display:flex;
+  position:fixed;
+  left:0px;
+  top:0px;
+  width:100%;
+  height:100%;
+  background-color:transparent;
+  cursor:zoom-out;
+}
+.enlargeable-image .enlargeable-image-full.delarging {
+  display:flex;
+  position:fixed;
+  left:0px;
+  top:0px;
+  width:100%;
+  height:100%;
+  background-color:transparent;
+  cursor:zoom-in;
+}
+.enlargeable-image .enlargeable-image-full.enlarged {
+  display:flex;
+}
+
 </style>

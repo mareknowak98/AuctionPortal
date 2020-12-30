@@ -99,7 +99,7 @@
                           <li>Description: {{row.item.reportAuction.description}}</li>
                           <li>Started: {{parseDate(row.item.reportAuction.date_started)}}</li>
                           <li>Planned ending: {{parseDate(row.item.reportAuction.date_end)}}</li>
-                          <li>Is now active: {{row.item.reportAuction.is_active}}</li>
+                          <li>Is now active: {{row.item.reportAuction.auctionIsActive}}</li>
                         </ul>
                       <p><strong>Reporting user</strong></p>
                         <ul class='b'>
@@ -393,7 +393,7 @@ import Footer from './Footer.vue'
 
 import axios from 'axios';
   export default {
-    name: "AddOpinion",
+    name: "StaffPanel",
     components:{
         Navbar,
         Footer,
@@ -406,165 +406,175 @@ import axios from 'axios';
         users: [],
         users_table: [],
 
-     fields: [
-       { key: 'id', label: 'User id', sortable: true, sortDirection: 'desc' },
-       { key: 'username', label: 'User username', sortable: true, class: 'desc' },
-       { key: 'email', label: 'User email', sortable: true, sortDirection: 'desc' },
-       {
-         key: 'is_active',
-         label: 'Is Active',
-         formatter: (value, key, item) => {
-           return value ? 'Yes' : 'No'
-         },
-         sortable: true,
-         sortByFormatted: true,
-         filterByFormatted: true
-       },
-      { key: 'actions', label: 'Actions' }
-     ],
-
-      fields_staff: [
-        { key: 'id', label: 'User id', sortable: true, sortDirection: 'desc' },
-        { key: 'username', label: 'User username', sortable: true, class: 'desc' },
-        { key: 'email', label: 'User email', sortable: true, sortDirection: 'desc' },
-        {
-          key: 'is_staff',
-          label: 'Is staff member',
-          formatter: (value, key, item) => {
-            return value ? 'Yes' : 'No'
+        fields: [
+          { key: 'id', label: 'User id', sortable: true, sortDirection: 'desc' },
+          { key: 'username', label: 'User username', sortable: true, class: 'desc' },
+          { key: 'email', label: 'User email', sortable: true, sortDirection: 'desc' },
+          {
+            key: 'is_active',
+            label: 'Is Active',
+            formatter: (value, key, item) => {
+              return value ? 'Yes' : 'No'
+            },
+            sortable: true,
+            sortByFormatted: true,
+            filterByFormatted: true
           },
-          sortable: true,
-          sortByFormatted: true,
-          filterByFormatted: true
-        },
-       { key: 'actions', label: 'Actions' }
-      ],
+          { key: 'actions', label: 'Actions' }
+        ],
 
-      fields_auctions: [
-        { key: 'id', label: 'Report id', sortable: true, sortDirection: 'desc' },
-        { key: 'reportAuction.product_name', label: 'Auction name', sortable: true, class: 'desc' },
-        { key: 'reportAuction.description', label: 'Auction description', formatter: 'shortenAuction', sortable: true, sortDirection: 'desc', thStyle: {width: '350px'}},
-        { key: 'reportUser.username', label: 'Report by:', sortable: true, sortDirection: 'desc' },
-        { key: 'reportContent', label: 'Report:', sortable: true, formatter: 'shortenAuction', sortDirection: 'desc',  thStyle: {width: '350px'}},
+        fields_staff: [
+          { key: 'id', label: 'User id', sortable: true, sortDirection: 'desc' },
+          { key: 'username', label: 'User username', sortable: true, class: 'desc' },
+          { key: 'email', label: 'User email', sortable: true, sortDirection: 'desc' },
+          {
+            key: 'is_staff',
+            label: 'Is staff member',
+            formatter: (value, key, item) => {
+              return value ? 'Yes' : 'No'
+            },
+            sortable: true,
+            sortByFormatted: true,
+            filterByFormatted: true
+          },
         { key: 'actions', label: 'Actions' }
+        ],
 
-      ],
+        fields_auctions: [
+          { key: 'id', label: 'Report id', sortable: true, sortDirection: 'desc' },
+          { key: 'reportAuction.product_name', label: 'Auction name', sortable: true, class: 'desc' },
+          { key: 'reportAuction.description', label: 'Auction description', formatter: 'shortenAuction', sortable: true, sortDirection: 'desc', thStyle: {width: '350px'}},
+          { key: 'reportUser.username', label: 'Report by:', sortable: true, sortDirection: 'desc' },
+          { key: 'reportContent', label: 'Report:', sortable: true, formatter: 'shortenAuction', sortDirection: 'desc',  thStyle: {width: '350px'}},
+          { key: 'actions', label: 'Actions' }
 
-     totalRows: 1,
-     totalRowsAuctions: 1,
-     currentPage: 1,
-     perPage: 5,
-     pageOptions: [2, 5, 10, 15, { value: 100, text: "Show a lot" }],
-     sortBy: '',
-     sortDesc: false,
-     sortDirection: 'asc',
-     filter: null,
-     filterOn: [],
-     banModal: {
-       id: 'ban-modal',
-       title: '',
-       content: ''
-     },
-     unbanModal: {
-       id: 'unban-modal',
-       title: '',
-       content: ''
-     },
-     grantStaffModal: {
-       id: 'grant-modal',
-       title: '',
-       content: ''
-     },
-     revokeStaffModal: {
-       id: 'revoke-modal',
-       title: '',
-       content: ''
-     },
-     removeAuctionModal: {
-       id: 'revoke-modal',
-       title: '',
-       content: ''
-     },
-    }
+        ],
+
+        totalRows: 1,
+        totalRowsAuctions: 1,
+        currentPage: 1,
+        perPage: 5,
+        pageOptions: [2, 5, 10, 15, { value: 100, text: "Show a lot" }],
+        sortBy: '',
+        sortDesc: false,
+        sortDirection: 'asc',
+        filter: null,
+        filterOn: [],
+        banModal: {
+          id: 'ban-modal',
+          title: '',
+          content: ''
+        },
+        unbanModal: {
+          id: 'unban-modal',
+          title: '',
+          content: ''
+        },
+        grantStaffModal: {
+          id: 'grant-modal',
+          title: '',
+          content: ''
+        },
+        revokeStaffModal: {
+          id: 'revoke-modal',
+          title: '',
+          content: ''
+        },
+        removeAuctionModal: {
+          id: 'revoke-modal',
+          title: '',
+          content: ''
+        },
+      }
     },
-
     mounted: function () {
       this.getReports()
 
     },
-    computed: {
-       },
-
     methods:{
       inforemoveAuction(item, index, button) {
         this.removeAuctionModal.title = `Delete: ${item.reportAuction.product_name}`
         this.removeAuctionModal.content = JSON.stringify(item, null, 2)
         this.$root.$emit('bv::show::modal', this.removeAuctionModal.id, this.removeAuction)
       },
+
       info1(item, index, button) {
         this.banModal.title = `Confirm user ban: ${item.username}`
         this.banModal.content = JSON.stringify(item, null, 2)
         this.$root.$emit('bv::show::modal', this.banModal.id, this.deactivateUser)
       },
+
       info2(item, index, button) {
         this.unbanModal.title = `Confirm user unban: ${index}`
         this.unbanModal.content = JSON.stringify(item, null, 2)
         this.$root.$emit('bv::show::modal', this.unbanModal.id, this.activateUser)
       },
+
       info1_staff(item, index, button) {
         this.grantStaffModal.title = `Confirm adding to staff: ${item.username}`
         this.grantStaffModal.content = JSON.stringify(item, null, 2)
         this.$root.$emit('bv::show::modal', this.grantStaffModal.id, this.grantStaffPrivillege)
      },
+
       info2_staff(item, index, button) {
         this.revokeStaffModal.title = `Confirm removal from staff: ${item.username}`
         this.revokeStaffModal.content = JSON.stringify(item, null, 2)
         this.$root.$emit('bv::show::modal', this.revokeStaffModal.id, this.revokeStaffPrivilege)
       },
+
       resetInfoModal1() {
         this.banModal.title = ''
         this.banModal.content = ''
       },
+
       resetInfoModal2() {
         this.unbanModal.title = ''
         this.unbanModal.content = ''
       },
+
       resetInfoModal3() {
         this.grantStaffModal.title = ''
         this.grantStaffModal.content = ''
       },
+
       resetInfoModal4() {
         this.revokeStaffModal.title = ''
         this.revokeStaffModal.content = ''
       },
+
      onFiltered(filteredItems) {
        this.totalRows = filteredItems.length
        this.currentPage = 1
-     },
-     onFiltered2(filteredItems) {
-       this.totalRowsAuctions = filteredItems.length
-       this.currentPage = 1
-     },
+      },
+
+      onFiltered2(filteredItems) {
+        this.totalRowsAuctions = filteredItems.length
+        this.currentPage = 1
+      },
+
       getReports(){
         let axiosConfig = {
           headers: {
             'Authorization': 'Token ' + this.$getToken()
           }
         };
-        axios.get(`http://127.0.0.1:8000/api/report/getReports` , axiosConfig)
+
+        axios.get(`https://auctionportalbackend.herokuapp.com/api/report/getReports` , axiosConfig)
         .then(res => this.reports = res.data)
         .then(res=>{
           this.totalRowsAuctions = this.reports.length
         })
         .catch(err => console.log(err))
       },
+
       getUsers(){
         let axiosConfig = {
           headers: {
             'Authorization': 'Token ' + this.$getToken()
           }
         };
-        axios.get(`http://127.0.0.1:8000/api/users/getUsers` , axiosConfig)
+
+        axios.get(`https://auctionportalbackend.herokuapp.com/api/users/getUsers` , axiosConfig)
         .then(res => this.users = res.data)
         .then(res=>{
           this.users_table = []
@@ -574,11 +584,10 @@ import axios from 'axios';
             this.users_table.push(tmp)
           }
           this.totalRows = this.users_table.length
-
         })
         .catch(err => console.log(err))
-
       },
+
       deactivateUser(user){
         var user_json = JSON.parse(user)
         const formData = new FormData();
@@ -590,86 +599,93 @@ import axios from 'axios';
             'Authorization': 'Token ' + localStorage.getItem("user-token")
           }
         };
-        axios.post(`http://127.0.0.1:8000/api/staff/setActivateUser/`, formData,axiosConfig)
+
+        axios.post(`https://auctionportalbackend.herokuapp.com/api/staff/setActivateUser/`, formData,axiosConfig)
         .then(res => console.log(res.data))
         .then(res =>{
           this.getUsers()
         })
         .catch(err => console.log(err))
       },
+
       activateUser(user){
         var user_json = JSON.parse(user)
         const formData = new FormData();
         formData.append("user_id", user_json.id)
         formData.append("ban", "False")
-
         let axiosConfig = {
           headers: {
             'Authorization': 'Token ' + localStorage.getItem("user-token")
           }
         };
-        axios.post(`http://127.0.0.1:8000/api/staff/setActivateUser/`, formData,axiosConfig)
+
+        axios.post(`https://auctionportalbackend.herokuapp.com/api/staff/setActivateUser/`, formData,axiosConfig)
         .then(res => console.log(res.data))
         .then(res =>{
           this.getUsers()
         })
         .catch(err => console.log(err))
       },
+
       grantStaffPrivillege(user){
         let axiosConfig = {
           headers: {
             'Authorization': 'Token ' + localStorage.getItem("user-token")
           }
         };
+
         var user_json = JSON.parse(user)
         const formData = new FormData();
         formData.append("user_id", user_json.id)
-        axios.post(`http://127.0.0.1:8000/api/staff/grantStaffStatus/`, formData, axiosConfig)
-          .then(res => console.log(res.data))
+
+        axios.post(`https://auctionportalbackend.herokuapp.com/api/staff/grantStaffStatus/`, formData, axiosConfig)
+          .then(res => res.data)
           .then(res =>{
             this.getUsers()
           })
           .catch(err => console.log(err))
-
       },
+
       revokeStaffPrivilege(user){
         let axiosConfig = {
           headers: {
             'Authorization': 'Token ' + localStorage.getItem("user-token")
           }
         };
+
         var user_json = JSON.parse(user)
         const formData = new FormData();
         formData.append("user_id", user_json.id)
-        console.log(user_json)
-        axios.post(`http://127.0.0.1:8000/api/staff/revokeStaffStatus/`, formData, axiosConfig)
-          .then(res => console.log(res.data))
+
+        axios.post(`https://auctionportalbackend.herokuapp.com/api/staff/revokeStaffStatus/`, formData, axiosConfig)
+          .then(res => res.data)
           .then(res =>{
             this.getUsers()
           })
           .catch(err => console.log(err))
       },
+
       goToAuction(auction){
         this.$goToAnotherPage('/auctions/' + auction.reportAuction.id)
       },
+
       removeAuction(auction){
-        console.log("removeauction")
         let axiosConfig = {
           headers: {
             'Authorization': 'Token ' + localStorage.getItem("user-token")
           }
         };
+
         var auction_json = JSON.parse(auction)
-        console.log(auction_json)
         const formData = new FormData();
         formData.append("auction_id", auction_json.reportAuction.id)
-        axios.post(`http://127.0.0.1:8000/api/staff/deleteAuction/`, formData, axiosConfig)
+
+        axios.post(`https://auctionportalbackend.herokuapp.com/api/staff/deleteAuction/`, formData, axiosConfig)
           .then(res => console.log(res.data))
           .then(res =>{
             this.getReports()
           })
           .catch(err => console.log(err))
-
       },
       reportStringify(report){
         return JSON.stringify(report, null, 2);

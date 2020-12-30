@@ -14,6 +14,7 @@
           <tr>
             <b-img :src="profileData.profileAvatar" fluid width="144" alt="placeholder"></b-img>
           </tr>
+          <div v-if="userId != profileData.profileUser.id">
           <tr><p></p></tr>
           <tr>
               <b-button block variant="secondary" v-on:click="$goToAnotherPage('/message/' + profileData.profileUser.id + '/')">Write message</b-button>
@@ -22,6 +23,7 @@
           <tr>
               <b-button block variant="secondary" v-on:click="$goToAnotherPage('/opinion/' + profileData.profileUser.id + '/')">Add opinion</b-button>
           </tr>
+          </div>
         </table>
       </template>
 
@@ -142,7 +144,7 @@ import Footer from './Footer.vue'
             'Authorization': 'Token ' + localStorage.getItem("user-token")
             }
         };
-        axios.get(`http://127.0.0.1:8000/api/profileUser/` + parseInt(id) + '/', axiosConfig)
+        axios.get(`https://auctionportalbackend.herokuapp.com/api/profileUser/` + parseInt(id) + '/', axiosConfig)
         .then(res => this.profileData = res.data)
         .catch(err => console.log(err))
         // this.getUserOpinions();
@@ -161,13 +163,13 @@ import Footer from './Footer.vue'
             }
         };
         var tmp
-        axios.get(`http://127.0.0.1:8000/api/profile/getUserIdByProfile?profile_id=` + this.$route.params.profileId + '/', axiosConfig)
+        axios.get(`https://auctionportalbackend.herokuapp.com/api/profile/getUserIdByProfile?profile_id=` + this.$route.params.profileId + '/', axiosConfig)
         .then(res => this.tmp = res.data)
         .catch(err => console.log(err))
         console.log(tmp)
 
 
-        axios.get(`http://127.0.0.1:8000/api/opinion/getUserAvgRating?user_id=` + this.profileData.profileUser.id, axiosConfig)
+        axios.get(`https://auctionportalbackend.herokuapp.com/api/opinion/getUserAvgRating?user_id=` + this.profileData.profileUser.id, axiosConfig)
             .then(res => console.log(this.rating = res.data))
             .catch(err => console.log(err))
       },
@@ -179,11 +181,11 @@ import Footer from './Footer.vue'
               }
           };
           var tmp
-          axios.get(`http://127.0.0.1:8000/api/profile/getUserIdByProfile?profile_id=` + this.$route.params.profileId , axiosConfig)
+          axios.get(`https://auctionportalbackend.herokuapp.com/api/profile/getUserIdByProfile?profile_id=` + this.$route.params.profileId , axiosConfig)
           .then(res => this.tmp = res.data)
           .then(res =>{
             console.log("tmp " + this.tmp)
-            axios.get(`http://127.0.0.1:8000/api/opinion/getUserOpinions?user_id=` + this.tmp, axiosConfig)
+            axios.get(`https://auctionportalbackend.herokuapp.com/api/opinion/getUserOpinions?user_id=` + this.tmp, axiosConfig)
                 .then(res => console.log(this.opinions = res.data))
                 .catch(err => console.log(err))
           })

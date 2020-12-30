@@ -1,23 +1,17 @@
 <template>
   <div>
     <div v-if="$getToken() == null">
-
       <b-jumbotron class="jumbotron jumbotron-special" header=" ">
         <h1> </h1>
         <h1> </h1>
         <h1> </h1>
         <h1> </h1>
       <b-navbar sticky toggleable="lg" type="dark" variant="dark">
-       <b-navbar-brand v-on:click="$goToAnotherPage('')">Home</b-navbar-brand>
+       <b-navbar-brand v-on:click="$goToAnotherPage('/')">Home</b-navbar-brand>
 
        <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
        <b-collapse id="nav-collapse" is-nav>
-         <b-nav-form>
-           <b-form-input size="sm" class="mr-sm-2" placeholder="Search auctions..."></b-form-input>
-           <b-button size="sm" class="my-2 my-sm-0">Search</b-button>
-         </b-nav-form>
-         <!-- Right aligned nav items -->
          <b-navbar-nav class="ml-auto">
            <b-nav-item v-b-modal.loginModal>Log In</b-nav-item>
            <b-nav-item v-on:click="$goToAnotherPage('/register/')">Register</b-nav-item>
@@ -39,15 +33,12 @@
       <h1> </h1>
       <h1> </h1>
        <b-navbar toggleable="lg" type="dark" variant="dark">
-         <b-navbar-brand v-on:click="$goToAnotherPage('')">Home</b-navbar-brand>
+         <b-navbar-brand v-on:click="$goToAnotherPage('/')">Home</b-navbar-brand>
          <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
          <b-collapse id="nav-collapse" is-nav>
 
-          <b-nav-form>
-            <b-form-input size="sm" class="mr-sm-2" placeholder="Search auctions..."></b-form-input>
-            <b-button size="sm" class="my-2 my-sm-0">Search</b-button>
-          </b-nav-form>
+
           <b-navbar-nav>
           <b-nav-item-dropdown text="Buying" right>
             <b-dropdown-item v-on:click="$goToAnotherPage('/wonauctions')">Auctions I've won</b-dropdown-item>
@@ -95,17 +86,15 @@ import axios from 'axios';
       return{
         username: '',
         password: '',
-        // token: localStorage.getItem('user-token') || null,
         userId: null,
         profileData: [],
+        token: null,
         is_staff: '',
       }
     },
-    //TODO to fix
     mounted: function (){
       this.userId = this.$getUserId()
-      this.getProfile(this.$getUserId())
-      console.log("----------" + this.$isStaff())
+      this.getProfile()
       this.isStaff()
     },
     methods: {
@@ -113,7 +102,7 @@ import axios from 'axios';
         this.$goToAnotherPage('/myprofile');
       },
       login(){
-        axios.post('http://127.0.0.1:8000/api-token-auth/',{
+        axios.post('https://auctionportalbackend.herokuapp.com/api-token-auth/',{
           username: this.username,
           password: this.password,
         })
@@ -125,7 +114,7 @@ import axios from 'axios';
         })
         .then(resp => {
           console.log(this.userId)
-          this.getProfile(this.userId)
+          this.getProfile()
         })
         .then(resp => {
           this.isStaff()
@@ -140,19 +129,17 @@ import axios from 'axios';
       logout() {
         localStorage.removeItem('user-token');
         this.token = null;
-        this.$router.go();
         this.$goToMainPage();
         this.is_staff = "False";
         },
 
-      getProfile(id){
-        console.log("costam")
+      getProfile(){
         let axiosConfig = {
             headers: {
-            'Authorization': 'Token ' + this.token
+            'Authorization': 'Token ' + localStorage.getItem("user-token")
             }
         };
-        axios.get(`http://127.0.0.1:8000/api/profileUser/getProfileByUserId?id=` + id , axiosConfig)
+        axios.get(`https://auctionportalbackend.herokuapp.com/api/profileUser/getMyProfile`, axiosConfig)
         .then(res => this.profileData = res.data)
         .catch(err => console.log(err))
       },
@@ -163,10 +150,10 @@ import axios from 'axios';
           }
         };
         var userId
-        axios.get(`http://127.0.0.1:8000/api/user-id`, axiosConfig)
+        axios.get(`https://auctionportalbackend.herokuapp.com/api/user-id`, axiosConfig)
             .then(res => console.log(userId = res.data[0].id))
             .then(res =>{
-            axios.get(`http://127.0.0.1:8000/api/staff/isStaffUser?user_id=` + userId, axiosConfig)
+            axios.get(`https://auctionportalbackend.herokuapp.com/api/staff/isStaffUser?user_id=` + userId, axiosConfig)
                   .then(res => {
                     this.is_staff = res.data
                   })
@@ -181,7 +168,7 @@ import axios from 'axios';
 
 <style scoped>
 .jumbotron-special{
-  background-image: url("../../static/bid_background4.jpg");
+  background-image: url("../../static/bidbackground.jpg");
   background-size: cover;
   margin-bottom: 0.5%;
 
@@ -191,4 +178,5 @@ import axios from 'axios';
   text-align: center;
   padding: 1%;
 }
+
 </style>

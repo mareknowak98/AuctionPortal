@@ -3,23 +3,25 @@
 
     <!-- <b-button size="sm" variant="success" @click="$isStaff"/> -->
     <b-list-group v-for="(auction, i) in auctions" :key="auction.id">
-      <b-list-group-item :to="$basePath + '/auctions/' + auction.id" class="auctionListItem">
+      <b-list-group-item :to="'/auctions/' + auction.id" class="auctionListItem">
 
         <b-card no-body class="overflow-hidden">
           <b-row no-gutters>
             <tr>
               <td width="300px">
-                <b-card-img :src="'http://localhost:8000' + auction.image"  fluid alt="Responsive image"></b-card-img>
+                <b-card-img :src="auction.auctionImage"  fluid alt="Responsive image"></b-card-img>
+                <!-- <b-card-img fluid alt="Responsive image"></b-card-img> -->
+
             </td>
             </tr>
             <b-col>
-              <b-card-body :title="auction.product_name">
+              <b-card-body :title="auction.auctionProductName">
                 <b-card-text>
                   <div id="entity-list">
-                    <td id="mytext" v-html="auction.description"></td>
+                    <td id="mytext" v-html="auction.auctionDescription"></td>
                   </div>
                 </b-card-text>
-                <p>Highest offer: <strong>{{auction.highest_bid}}$</strong></p>
+                <p>Highest offer: <strong>{{auction.auctionHighestBid }}$</strong></p>
                 <p>Time to end:{{auction.time_to_end}}</p>
                 <Roller :text="times_to_end[i]"/>
 
@@ -27,11 +29,11 @@
             </b-col>
           </b-row>
         </b-card>
-        <!-- <h2>{{auction.product_name}}</h2>
+        <!-- <h2>{{auction.auctionProductName}}</h2>
         <div>
           <b-img :src= "'http://localhost:8000' + auction.image " fluid alt="Responsive image" height="180px" width="250px"></b-img>
         </div>
-        <p>{{ auction.highest_bid }}</p>
+        <p>{{ auction.auctionHighestBid  }}</p>
         {{ auction }} -->
       </b-list-group-item>
     </b-list-group>
@@ -57,6 +59,7 @@ export default {
     return {
       auctions: [],
       times_to_end: [],
+      filters: [],
     }
   },
   mounted(){
@@ -68,7 +71,7 @@ export default {
   },
   methods: {
     getAuctions(){
-      axios.get("http://localhost:8000/api/auctions/")
+      axios.get("https://auctionportalbackend.herokuapp.com/api/auctions/")
         .then(res => (this.auctions = res.data))
         .then(res =>{
           this.getTimeToEnd();
@@ -80,7 +83,7 @@ export default {
       this.times_to_end = []
       try {
         for (var i in this.auctions){
-          var ending_date = new Date(this.auctions[i].date_end);
+          var ending_date = new Date(this.auctions[i].auctionDateEnd );
           var now_date = new Date();
           var time_between = ending_date - now_date;
           var days = parseInt((time_between)/(24*3600*1000));
@@ -98,7 +101,46 @@ export default {
           this.times_to_end = []
         }
       },
+    getFilteredAuctions: function(searchdata) {
+      console.log(searchdata)
+      let json_dict = JSON.stringify(searchdata)
+      let querybuilder = "https://auctionportalbackend.herokuapp.com/api/auctions/?"
+      console.log("querybuilder")
+      if (searchdata.search != '' && searchdata.search_in_desc == false)
+        querybuilder += "title=" + searchdata.search;
+      if (searchdata.search != '' && searchdata.search_in_desc == true)
+        querybuilder += "title=" + searchdata.search + "&desc=" + searchdata.search;
+      if (searchdata.selectedCategory)
+        querybuilder += "&cat=" + searchdata.selectedCategory;
+      if (searchdata.min_price != '' && parseFloat(searchdata.min_price) >= 0.0)
+        querybuilder += "&min=" + searchdata.min_price;
+      if (searchdata.max_price != '' && parseFloat(searchdata.max_price) >= 0.0 && parseFloat(searchdata.max_price) >= parseFloat(searchdata.min_price))
+        querybuilder += "&max=" + searchdata.max_price;
+      if (searchdata.selected == true)
+        querybuilder += "&new=True" 
+      if (searchdata.selected == false)
+        querybuilder += "&new=False" 
+      if (searchdata.selected2 == true)
+        querybuilder += "&ship=True" 
+      if (searchdata.selected2 == false)
+        querybuilder += "&ship=False"
+      if (searchdata.selected3 == 1)
+        querybuilder += "&price=1"
+      if (searchdata.selected3 == 2)
+        querybuilder += "&price=2"
+      if (searchdata.selected3 == 3)
+        querybuilder += "&time_left=1"
 
+      console.log(querybuilder)
+
+      axios.get(querybuilder)
+        .then(res => (this.auctions = res.data))
+        .then(res =>{
+          this.getTimeToEnd();
+        })
+        .catch(err => console.log(err));
+
+    }
 
   }
 }

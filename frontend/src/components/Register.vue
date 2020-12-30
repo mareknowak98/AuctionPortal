@@ -1,6 +1,5 @@
 <template>
   <div class="container">
-  <h1 class="title"> Register </h1>
   <navbar></navbar>
 
   <b-jumbotron class="jumbotron jumbotron-home">
@@ -19,7 +18,7 @@
         id="input-group-2"
         label="Email address:"
         label-for="input-2"
-        description="We'll use this email to activate your account"
+        description=""
       >
         <b-form-input
           id="input-1"
@@ -53,9 +52,7 @@
       <b-button type="submit" variant="primary">Submit</b-button>
 
     </b-form>
-    <b-card class="mt-3" header="Form Data Result">
-      <pre class="m-0">{{ form }}</pre>
-    </b-card>
+
     </div>
   </b-jumbotron>
   </div>
@@ -96,13 +93,10 @@ import axios from 'axios';
       registerUser(){
         //TODO make email authentiction and validation
         if (this.form.password1 == this.form.password2){
-          axios.post('http://127.0.0.1:8000/api/users/',{
+          axios.post('https://auctionportalbackend.herokuapp.com/api/users/',{
           username: this.form.username,
           email: this.form.email,
           password: this.form.password1,
-          })
-          .then(resp => {
-            console.log(resp);
           })
           .catch(err => {
           console.log(err);
@@ -116,13 +110,6 @@ import axios from 'axios';
 
 
       },
-
-      //TODELETE
-      onSubmit(evt) {
-        evt.preventDefault()
-        alert(JSON.stringify(this.form))
-      },
-
       onReset(evt) {
         evt.preventDefault()
         this.form.email = ''
@@ -141,4 +128,5 @@ import axios from 'axios';
         max-width: 1400px;
     }
 }
+
 </style>

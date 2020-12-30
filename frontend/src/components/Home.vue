@@ -5,16 +5,29 @@
        <b-container class="bv-example-row">
          <b-row class="text-center">
            <b-col class="myform1">
-             <p>Filters:<p>
              <div>
+                <b-form-group
+                  id="input-group-2"
+                  label="Search:"
+                  label-for="input-1"
+                >
+                  <b-form-input
+                    id="input-2"
+                    v-model="form.search"
+                    placeholder="Search..."
+                    required
+                  ></b-form-input>
+                  </b-form-group>
+                <b-button block v-on:click="searchAuctions()" class="my-2 my-sm-0" type="submit">Search</b-button>
+                <p> </p>
               <p>Category:</p>
                <b-form-group
                >
-                 <b-form-select inline v-model="selectedCategory">
+                 <b-form-select inline v-model="form.selectedCategory">
                   <template #first>
                     <b-form-select-option :value="null" disabled>-- Please select category --</b-form-select-option>
                   </template>
-                   <option v-for="category in categories" v-bind:key="category.id" v-bind:value="category.id">
+                   <option v-for="category in form.categories" v-bind:key="category.id" v-bind:value="category.id">
                      {{ category.category_name }}
                    </option>
                  </b-form-select>
@@ -30,7 +43,7 @@
                       step="0.01"
                       min=0
                       id="input-1"
-                      v-model="min_price"
+                      v-model="form.min_price"
                       placeholder="min"
                     ></b-form-input>
                   </td>
@@ -40,7 +53,7 @@
                       step="0.01"
                       min=0
                       id="input-2"
-                      v-model="max_price"
+                      v-model="form.max_price"
                       placeholder="max"
                     ></b-form-input>
                   </td>
@@ -49,7 +62,7 @@
 
               <tr>
                 <td>
-                  <b-form-checkbox class="b-form-checkbox b-form-checkbox-home" v-model="search_in_desc" name="check-button" switch default="false">
+                  <b-form-checkbox class="b-form-checkbox b-form-checkbox-home" v-model="form.search_in_desc" name="check-button" switch default="false">
                 Search in descriptions
                 </b-form-checkbox>
                 </td>
@@ -57,20 +70,20 @@
             </table>
 
             <p>Condition:</p>
-            <b-form-group width="400px">
-              <b-form-radio-group button-variant="secondary custom" buttons v-model="selected">
-                <b-form-radio value="true">New</b-form-radio>
-                <b-form-radio value="false">Used</b-form-radio>
-                <b-form-radio value="null">All</b-form-radio>
+            <b-form-group block>
+              <b-form-radio-group button-variant="secondary custom" buttons v-model="form.selected">
+                <b-form-radio v-bind:value=true>New</b-form-radio>
+                <b-form-radio v-bind:value=false>Used</b-form-radio>
+                <b-form-radio v-bind:value=null>All</b-form-radio>
               </b-form-radio-group>
             </b-form-group>
 
             <p>Is shipping available:</p>
             <b-form-group>
-              <b-form-radio-group button-variant="secondary custom" buttons v-model="selected2">
-                <b-form-radio value="true">Yes</b-form-radio>
-                <b-form-radio value="false">No</b-form-radio>
-                <b-form-radio value="null">All</b-form-radio>
+              <b-form-radio-group button-variant="secondary custom" buttons v-model="form.selected2">
+                <b-form-radio v-bind:value=true>Yes</b-form-radio>
+                <b-form-radio v-bind:value=false>No</b-form-radio>
+                <b-form-radio v-bind:value=null>All</b-form-radio>
               </b-form-radio-group>
             </b-form-group>
 
@@ -79,29 +92,21 @@
 
             <p>Sort by:</p>
              <b-form-group>
-               <b-form-radio-group button-variant="secondary custom2" stacked buttons v-model="selected3">
-                 <b-form-radio value="1">Price ascending</b-form-radio>
-                 <b-form-radio value="2">Price descending</b-form-radio>
-                 <b-form-radio value="3">Time left: the least</b-form-radio>
-                 <b-form-radio value="null">None</b-form-radio>
+               <b-form-radio-group button-variant="secondary custom2" stacked buttons v-model="form.selected3">
+                 <b-form-radio v-bind:value=1>Price ascending</b-form-radio>
+                 <b-form-radio v-bind:value=2>Price descending</b-form-radio>
+                 <b-form-radio v-bind:value=3>Time left: the least</b-form-radio>
+                 <b-form-radio v-bind:value=null>None</b-form-radio>
                </b-form-radio-group>
              </b-form-group>
 
            </b-col>
            <b-col class="myform2" cols="10">
-            <ListAuctions/>
+            <ListAuctions ref='componentOne'/>
            </b-col>
          </b-row>
          <div>
-           <!-- <div id="footercontainer">
-             <div class="fluid-container footer">
-               <p class="text-center">Marek Nowak Engeenering Thesis Project. WFiIS AGH 2020/2021. All Rights Reserved.</p>
-             </div>
-           </div>
 
-           <div id="root">
-              <footer-style></footer-style>
-            </div> -->
 
          </div>
        </b-container>
@@ -126,29 +131,38 @@ export default {
     Footer,
   },
   data() {
-    return{
-      selected: null,
-      selected2: null,
-      selected3: null,
-      categories: [],
-      selectedCategory: '',
-      min_price: '',
-      max_price: '',
-      search_in_desc: '',
+    return {
+      form: {
+          search: '',
+          selected: null,
+          selected2: null,
+          selected3: null,
+          categories: [],
+          selectedCategory: null,
+          min_price: '',
+          max_price: '',
+          search_in_desc: false,
+      },
     }
   },
   mounted: function () {
     this.categories = this.getCategories();
   },
+
+
+
   methods:{
     getCategories(){
-      axios.get("http://127.0.0.1:8000/api/categories/")
+      axios.get("https://auctionportalbackend.herokuapp.com/api/categories/")
         .then(res => {
-        this.categories = res.data
+        this.form.categories = res.data
         console.log(this.data)
         })
         .catch(err => console.log(err));
     },
+    searchAuctions: function() {
+      this.$refs.componentOne.getFilteredAuctions(this.form);
+    }
   }
 };
 </script>
@@ -157,10 +171,10 @@ export default {
 @import '../styles/style.css';
 
 .custom {
-    width: 60px !important;
+    width: 73px !important;
 }
 .custom2 {
-    width: 180px !important;
+    width: 219px!important;
 }
 
 

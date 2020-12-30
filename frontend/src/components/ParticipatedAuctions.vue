@@ -18,22 +18,22 @@
 
         <b-row align-v="center">
           <!-- <b-col sm="10"> -->
-          <b-list-group-item :to="$basePath + '/auctions/' + auction.id" class="auctionListItem">
+          <b-list-group-item :to="'/auctions/' + auction.id" class="auctionListItem">
             <b-card no-body class="overflow-hidden">
               <b-row no-gutters>
                 <tr>
                   <td width="300px">
-                  <b-card-img :src="'http://localhost:8000' + auction.image"  fluid alt="Responsive image"></b-card-img>
+                  <b-card-img :src="auction.auctionImage"  fluid alt="Responsive image"></b-card-img>
                 </td>
                 </tr>
                 <b-col>
-                  <b-card-body :title="auction.product_name">
+                  <b-card-body :title="auction.auctionProductName">
                     <b-card-text>
                       <div id="entity-list">
-                        <td id="mytext" v-html="auction.description"></td>
+                        <td id="mytext" v-html="auction.auctionDescription"></td>
                       </div>
                     </b-card-text>
-                    <p>Highest offer: <strong>{{auction.highest_bid}}$</strong></p>
+                    <p>Highest offer: <strong>{{auction.auctionHighestBid }}$</strong></p>
                     <Roller :text="auction.time_to_end"/>
                   </b-card-body>
                 </b-col>
@@ -88,7 +88,7 @@ import axios from 'axios';
             'Authorization': 'Token ' + this.$getToken()
           }
         };
-        let query = "http://127.0.0.1:8000/api/auctions/getMyParticipatedAuctions/?active="
+        let query = "https://auctionportalbackend.herokuapp.com/api/auctions/getMyParticipatedAuctions/?active="
         if (this.selected == 1)
           query += "" + "True"
         if (this.selected == 2)
