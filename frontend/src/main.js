@@ -1,14 +1,7 @@
 import Vue from "vue";
 import App from "./App.vue";
-import Register from './components/Register.vue';
-// import Home from './views/Home.vue';
-import ListAuctions from './components/ListAuctions.vue';
-import EnlargeableImage from '@diracleo/vue-enlargeable-image';
 
-import "./registerServiceWorker";
-// import router from "./router";
-import store from "./store";
-import axios from "axios";
+import Register from './components/Register.vue';
 import VueRouter from 'vue-router';
 import Home from './components/Home.vue';
 import NewAuction from './components/CreateNewAuction.vue';
@@ -24,134 +17,114 @@ import EndedAuctions from './components/EndedAuctions.vue';
 import WonAuctions from './components/WonAuctions.vue';
 import ParticipatedAuctions from './components/ParticipatedAuctions.vue';
 import StaffPanel from './components/StaffPanel.vue';
-import Playground from './components/Playground.vue';
-// import loader from "vue-ui-preloader";
 
-import plugin from '@serializedowen/vue-img-watermark'
-
-
-// Vue.use(Vuetable);
-
-
+import axios from "axios";
 window.axios = require('axios');
+
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
+
 Vue.use(VueRouter);
-// Vue.use(loader);
-// Install BootstrapVue
 Vue.use(BootstrapVue)
-    // Optionally install the BootstrapVue icon components plugin
 Vue.use(IconsPlugin)
+
+import "./registerServiceWorker";
+import EnlargeableImage from '@diracleo/vue-enlargeable-image';
 Vue.use(EnlargeableImage)
 Vue.component('enlargeable-image', EnlargeableImage)
-import { VueEditor } from "vue2-editor";
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 
-
-const basePath = process.env.BASE_PATH || '/';
-console.log(basePath)
-const routes = [
-    {
-        path: basePath + "/",
+const routes = [{
+        path: "/",
         name: "home",
         component: Home
     },
     {
-        path: basePath + "/register",
+        path: "/register",
         name: "register",
         component: Register
     },
-
-    // {
-    //     path: basePath + "/auctions",
-    //     name: "auction",
-    //     component: ListAuctions
-    // },
     {
-        path: basePath + "/newauction",
+        path: "/newauction",
         name: "newauction",
         component: NewAuction
     },
     {
-        path: basePath + "/auctions/:auctionId",
+        path: "/auctions/:auctionId",
         name: "auctionDetail",
         component: DetailedAuction
     },
     {
-        path: basePath + "/myprofile",
+        path: "/myprofile",
         name: "profile",
         component: Profile
     },
     {
-        path: basePath + "/profile/:profileId",
+        path: "/profile/:profileId",
         name: "userProfile",
         component: UserProfile
     },
     {
-        path: basePath + "/message/:userId",
+        path: "/message/:userId",
         name: "message",
         component: UserMessage
     },
     {
-        path: basePath + "/messages",
+        path: "/messages",
         name: "messages",
         component: MessageManager
     },
     {
-        path: basePath + "/opinion/:userId",
+        path: "/opinion/:userId",
         name: "opinion",
         component: AddOpinion
     },
     {
-        path: basePath + "/activeauctions",
+        path: "/activeauctions",
         name: "activeauctions",
         component: MyActualAuctions
     },
     {
-        path: basePath + "/editauction/:auctionId",
+        path: "/editauction/:auctionId",
         name: "editauction",
         component: EditAuction
     },
     {
-        path: basePath + "/endedauctions",
+        path: "/endedauctions",
         name: "endedauctions",
         component: EndedAuctions
     },
     {
-        path: basePath + "/wonauctions",
+        path: "/wonauctions",
         name: "wonauctions",
         component: WonAuctions
     },
     {
-        path: basePath + "/participatedauctions",
+        path: "/participatedauctions",
         name: "participatedauctions",
         component: ParticipatedAuctions
     },
     {
-        path: basePath + "/staffpanel",
+        path: "/staffpanel",
         name: "staffpanel",
         component: StaffPanel
     },
     {
-        path: basePath + "/playground",
-        name: "playground",
-        component: Playground
-    },
+        path: '/*',
+        redirect: { name: 'home' }
+    }
 
 ]
 
 Vue.mixin({
     methods: {
         $goToAnotherPage: function(page) {
-            this.$router.push(basePath + page);
+            this.$router.push(page);
         },
         $goToMainPage: function() {
-          if (this.$route.path !== basePath) this.$router.replace(basePath)
-            //
-            // console.log(basePath);
-            // this.$router.replace(basePath);
+            if (this.$route.path !== "/") this.$router.replace("/")
         },
         $getToken: function() {
             return localStorage.getItem("user-token");
@@ -163,13 +136,13 @@ Vue.mixin({
                 }
             };
             var userId;
-            axios.get(`http://127.0.0.1:8000/api/user-id`, axiosConfig)
+            axios.get(`https://auctionportalbackend.herokuapp.com/api/user-id`, axiosConfig)
                 .then(res => this.userId = res.data[0].id)
                 .catch(err => console.log(err))
             return userId;
         },
         $sleep: function(ms) {
-          return new Promise(resolve => setTimeout(resolve, ms));
+            return new Promise(resolve => setTimeout(resolve, ms));
         },
 
     },
@@ -178,13 +151,18 @@ Vue.mixin({
 
 const router = new VueRouter({
     routes: routes,
-    mode: 'history'
+    mode: 'history',
 });
 
 Vue.config.productionTip = false;
 
+const DEFAULT_TITLE = 'BidIt';
 
-Vue.prototype.$basePath = basePath;
+router.afterEach((to, from) => {
+    Vue.nextTick(() => {
+        document.title = to.meta.title || DEFAULT_TITLE;
+    });
+});
 
 new Vue({
     el: '#app',

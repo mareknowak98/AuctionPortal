@@ -14,7 +14,7 @@
         <b-form-group>
         <p>Choose image</p>
         <b-form-file
-          v-model="image"
+          v-model="auctionImage"
 
           placeholder="Choose a file or drop it here..."
           drop-placeholder="Drop file here..."
@@ -25,7 +25,7 @@
         <b-form-group id="input-group-1" label="Name of auction:" label-for="input-1">
           <b-form-input
             id="input-1"
-            v-model="product_name"
+            v-model="auctionProductName"
             required
             placeholder="Enter auction name"
           ></b-form-input>
@@ -45,12 +45,12 @@
 
         <p>Auction Description</p>
         <div id="textinput">
-          <vue-editor v-model="description" :editorToolbar="customToolbar"></vue-editor>
+          <vue-editor v-model="auctionDescription" :editorToolbar="customToolbar"></vue-editor>
         </div>
 
         <p> </p>
         <b-form-group label="Condition:">
-          <b-form-radio-group v-model="is_new" :options="options" :state="state" name="radio-validation">
+          <b-form-radio-group v-model="auctionIsNew" :options="options" :state="state" name="radio-validation">
             <b-form-invalid-feedback :state="state">Please select one</b-form-invalid-feedback>
             <b-form-valid-feedback :state="state"></b-form-valid-feedback>
           </b-form-radio-group>
@@ -62,7 +62,7 @@
           <b-form-datepicker
             required
             id="datepicker-full-width"
-            v-model="date_end"
+            v-model="auctionDateEnd "
             menu-class="w-100"
             calendar-width="100%"
             class="mb-2"
@@ -78,7 +78,7 @@
         <label for="input-live">Enter starting price: </label>
         <b-form-input
         id="input-live"
-        v-model="starting_price"
+        v-model="auctionStartingPrice "
         :state="priceState"
         aria-describedby="input-live-help input-live-feedback"
         placeholder="..."
@@ -94,7 +94,7 @@
         <label for="input-live">Enter minimal price:</label>
         <b-form-input
         id="input-live"
-        v-model="minimal_price"
+        v-model="auctionMinimalPrice "
         :state="minPrizeState"
         aria-describedby="input-live-help input-live-feedback"
         placeholder="..."
@@ -109,7 +109,7 @@
   <div>
     <p>   </p>
     <b-form-group label="Is shipping available">
-      <b-form-radio-group v-model="is_shipping_av" :options="options2" :state="state2" name="radio-validation">
+      <b-form-radio-group v-model="auctionIsShippingAv " :options="options2" :state="state2" name="radio-validation">
         <b-form-invalid-feedback :state="state2">Please select one</b-form-invalid-feedback>
         <b-form-valid-feedback :state="state2"></b-form-valid-feedback>
       </b-form-radio-group>
@@ -117,7 +117,7 @@
     <b-row>
     <b-col cols="6" >
 
-    <div v-if="is_shipping_av == 'true'">
+    <div v-if="auctionIsShippingAv  == 'true'">
       <div role="group">
           <label for="input-live">Enter shipping costs: </label>
           <b-form-input
@@ -200,18 +200,18 @@ import axios from 'axios';
           { text: 'No', value: 'false' },
         ],
         date: null,
-        product_name: '',
+        auctionProductName: '',
         categories: [],
         selectedCategory: '',
-        image: null,
-        description: '',
-        is_new: null,
-        date_end: '',
+        auctionImage: null,
+        auctionDescription: '',
+        auctionIsNew: null,
+        auctionDateEnd : '',
         date_end_hr: '00:00',
-        starting_price: '',
-        minimal_price: '',
-        is_shipping_av: null,
-        is_visable: this.is_shipping_av,
+        auctionStartingPrice : '',
+        auctionMinimalPrice : '',
+        auctionIsShippingAv : null,
+        is_visable: this.auctionIsShippingAv ,
         token: localStorage.getItem('user-token') || null,
 
         debugtext1: '',
@@ -222,20 +222,20 @@ import axios from 'axios';
 
     computed: {
       state() {
-        return Boolean(this.is_new)
+        return Boolean(this.auctionIsNew)
       },
       state2() {
-        return Boolean(this.is_shipping_av)
+        return Boolean(this.auctionIsShippingAv )
       },
       priceState() {
-        if (this.starting_price == "")
+        if (this.auctionStartingPrice  == "")
           return "isnull"
-        return this.isNumeric(this.starting_price) ? true : false
+        return this.isNumeric(this.auctionStartingPrice ) ? true : false
       },
       minPrizeState() {
-        if (this.minimal_price == "")
+        if (this.auctionMinimalPrice  == "")
           return "isnull"
-        return this.isNumeric(this.minimal_price) ? true : false
+        return this.isNumeric(this.auctionMinimalPrice ) ? true : false
       },
       shippingState() {
         if (this.shipping_cost == "")
@@ -255,10 +255,10 @@ import axios from 'axios';
     methods:{
       getVisability(){
         console.log("es")
-        if (this.is_shipping_av == null){
+        if (this.auctionIsShippingAv  == null){
           return 0;
         }
-        if (this.is_shipping_av == true){
+        if (this.auctionIsShippingAv  == true){
           this.is_visable = "true"
         }
         else{
@@ -270,7 +270,7 @@ import axios from 'axios';
           return !isNaN(str) && !isNaN(parseFloat(str))
       },
       getCategories(){
-        axios.get("http://127.0.0.1:8000/api/categories/")
+        axios.get("https://auctionportalbackend.herokuapp.com/api/categories/")
           .then(res => {
           this.categories = res.data
           })
@@ -278,7 +278,7 @@ import axios from 'axios';
       },
 
       createAuction(){
-        var fulldate_end = "" + this.date_end + "T" + this.date_end_hr + "Z"
+        var fulldate_end = "" + this.auctionDateEnd  + "T" + this.date_end_hr + "Z"
         this.debugtext1 = fulldate_end
 
         // getting current date
@@ -298,16 +298,16 @@ import axios from 'axios';
         this.token = TokenService.getToken();
         const formData = new FormData();
 
-        formData.append("image", this.image)
-        formData.append("product_name", this.product_name)
-        formData.append("description", this.description)
-        formData.append("is_new", this.is_new)
-        formData.append("category", this.selectedCategory)
-        formData.append("date_started", fulldate_start)
-        formData.append("date_end", fulldate_end)
-        formData.append("starting_price", this.starting_price)
-        formData.append("minimal_price", this.minimal_price)
-        formData.append("is_shipping_av", this.is_shipping_av)
+        formData.append("auctionImage", this.auctionImage)
+        formData.append("auctionProductName", this.auctionProductName)
+        formData.append("auctionDescription", this.auctionDescription)
+        formData.append("auctionIsNew", this.auctionIsNew)
+        formData.append("auctionCategory", this.selectedCategory)
+        formData.append("auctionDateStarted ", fulldate_start)
+        formData.append("auctionDateEnd ", fulldate_end)
+        formData.append("auctionStartingPrice ", this.auctionStartingPrice )
+        formData.append("auctionMinimalPrice ", this.auctionMinimalPrice )
+        formData.append("auctionIsShippingAv ", this.auctionIsShippingAv )
         formData.append("auctionShippingCost", this.sshipping_cost)
 
         let axiosConfig = {
@@ -315,7 +315,7 @@ import axios from 'axios';
             'Authorization': 'Token ' + this.token
           }
         };
-        axios.post(`http://127.0.0.1:8000/api/auctioncreate/`, formData,axiosConfig)
+        axios.post(`https://auctionportalbackend.herokuapp.com/api/auctioncreate/`, formData,axiosConfig)
         .then(res => console.log(res.data))
         .catch(err => console.log(err))
 

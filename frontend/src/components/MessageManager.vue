@@ -5,7 +5,7 @@
     <div v-if="token != null">
       <h1>Choose a converastions with user:</h1>
       <b-list-group v-for="user in users_with_messages" :key="user.usermessToUser__id">
-        <b-list-group-item :to="$basePath + '/message/' + user.usermessToUser__id + '/'">
+        <b-list-group-item :to="'/message/' + user.usermessToUser__id + '/'">
           <p>{{ user.usermessToUser__username }}</p>
         </b-list-group-item>
       </b-list-group>
@@ -51,7 +51,7 @@ import axios from 'axios';
               'Authorization': 'Token ' + this.token
               }
           };
-          axios.get(`http://127.0.0.1:8000/api/get_messages_user_list`, axiosConfig)
+          axios.get(`https://auctionportalbackend.herokuapp.com/api/get_messages_user_list`, axiosConfig)
           .then(res => console.log(this.users_with_messages = res.data))
           .catch(err => console.log(err))
         }

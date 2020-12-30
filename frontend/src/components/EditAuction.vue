@@ -33,7 +33,7 @@
             <b-form-group id="input-group-1" label="Name of auction:" label-for="input-1">
               <b-form-input
                 id="input-1"
-                v-model="auction.product_name"
+                v-model="auction.auctionProductName"
                 placeholder="Enter auction name"
               ></b-form-input>
             </b-form-group>
@@ -54,24 +54,24 @@
 
             <p>Auction Description</p>
             <div id="textinput">
-              <vue-editor v-model="auction.description" :editorToolbar="customToolbar"></vue-editor>
+              <vue-editor v-model="auction.auctionDescription" :editorToolbar="customToolbar"></vue-editor>
             </div>
 
             <p>    </p>
             <p>Condition: </p>
             <b-form-radio-group label="is new">
-              <b-form-radio v-model="auction.is_new" name="some-radios" value=true>New</b-form-radio>
-              <b-form-radio v-model="auction.is_new" name="some-radios" value=false>Used</b-form-radio>
+              <b-form-radio v-model="auction.auctionIsNew" name="some-radios" value=true>New</b-form-radio>
+              <b-form-radio v-model="auction.auctionIsNew" name="some-radios" value=false>Used</b-form-radio>
             </b-form-radio-group>
 
             <p>    </p>
             <p>Is shipping available: </p>
             <b-form-radio-group label="is shipping">
-              <b-form-radio v-model="auction.is_shipping_av" name="some-radios" value=true>Yes</b-form-radio>
-              <b-form-radio v-model="auction.is_shipping_av" name="some-radios" value=false>No</b-form-radio>
+              <b-form-radio v-model="auction.auctionIsShippingAv " name="some-radios" value=true>Yes</b-form-radio>
+              <b-form-radio v-model="auction.auctionIsShippingAv " name="some-radios" value=false>No</b-form-radio>
             </b-form-radio-group>
 
-            <div v-if="auction.is_shipping_av == 'true' || auction.is_shipping_av == true">
+            <div v-if="auction.auctionIsShippingAv  == 'true' || auction.auctionIsShippingAv  == true">
               <div role="group">
                   <label for="input-live">Enter shipping costs: </label>
                   <b-form-input
@@ -125,7 +125,7 @@ import axios from 'axios';
         categories: [],
         new_selectedCategory: '',
         new_image: null,
-        new_product_name: '',
+        // new_auctionProductName: '',
         customToolbar: [["bold", "italic", "underline"], [{ list: "ordered" }, { list: "bullet" }]],
 
 
@@ -143,12 +143,12 @@ import axios from 'axios';
 
     methods:{
       getAuction(id){
-        axios.get("http://localhost:8000/api/auctions/" + id)
+        axios.get("https://auctionportalbackend.herokuapp.com/api/auctions/" + id)
           .then(res => this.auction = res.data)
           .catch(err => console.log(err));
       },
       getCategories(){
-        axios.get("http://127.0.0.1:8000/api/categories/")
+        axios.get("https://auctionportalbackend.herokuapp.com/api/categories/")
           .then(res => {
           this.categories = res.data
           })
@@ -157,14 +157,14 @@ import axios from 'axios';
       updateAuction(){
         const formData = new FormData();
         if (this.new_image != null && this.new_image != '')
-          formData.append("image", this.new_image)
+          formData.append("auctionImage", this.new_image)
         if (this.new_selectedCategory != null && this.new_selectedCategory !='')
-          formData.append("category", this.new_selectedCategory)
-        formData.append("product_name", this.auction.product_name)
-        formData.append("description", this.auction.description)
-        formData.append("is_new", this.auction.is_new)
-        formData.append("is_shipping_av", this.auction.is_shipping_av)
-        if (this.auction.is_shipping_av == true || this.auction.is_shipping_av == 'true')
+          formData.append("auctionCategory", this.new_selectedCategory)
+        formData.append("auctionProductName", this.auction.auctionProductName)
+        formData.append("auctionDescription", this.auction.auctionDescription)
+        formData.append("auctionIsNew", this.auction.auctionIsNew)
+        formData.append("auctionIsShippingAv ", this.auction.auctionIsShippingAv )
+        if (this.auction.auctionIsShippingAv  == true || this.auction.auctionIsShippingAv  == 'true')
           formData.append("auctionShippingCost", this.auction.auctionShippingCost)
         else
           formData.append("auctionShippingCost", 0.0)
@@ -180,8 +180,8 @@ import axios from 'axios';
             }
         };
 
-        console.log("http://127.0.0.1:8000/api/auctioncreate/" + this.$route.params.auctionId)
-        axios.patch("http://127.0.0.1:8000/api/auctioncreate/" + this.$route.params.auctionId +'/', formData, axiosConfig)
+        console.log("https://auctionportalbackend.herokuapp.com/api/auctioncreate/" + this.$route.params.auctionId)
+        axios.patch("https://auctionportalbackend.herokuapp.com/api/auctioncreate/" + this.$route.params.auctionId +'/', formData, axiosConfig)
           .then(res => {
             console.log(res.status)
             alert ("Changes saved succesfully.");

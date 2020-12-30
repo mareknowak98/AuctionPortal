@@ -11,22 +11,22 @@
 
         <b-row align-v="center">
           <b-col sm="10">
-          <b-list-group-item :to="$basePath + '/auctions/' + auction.id" class="auctionListItem">
+          <b-list-group-item :to="'/auctions/' + auction.id" class="auctionListItem">
             <b-card no-body class="overflow-hidden">
               <b-row no-gutters>
                 <tr>
                   <td width="300px">
-                  <b-card-img :src="'http://localhost:8000' + auction.image"  fluid alt="Responsive image"></b-card-img>
+                  <b-card-img :src="auction.auctionImage"  fluid alt="Responsive image"></b-card-img>
                 </td>
                 </tr>
                 <b-col>
-                  <b-card-body :title="auction.product_name">
+                  <b-card-body :title="auction.auctionProductName">
                     <b-card-text>
                       <div id="entity-list">
-                        <td id="mytext" v-html="auction.description"></td>
+                        <td id="mytext" v-html="auction.auctionDescription"></td>
                       </div>
                     </b-card-text>
-                    <p>Bought by: <strong>{{auction.highest_bid}}$</strong></p>
+                    <p>Bought by: <strong>{{auction.auctionHighestBid }}$</strong></p>
                   </b-card-body>
                 </b-col>
               </b-row>
@@ -35,7 +35,7 @@
           </b-col>
           <b-col sm="2">
             <b-row>
-              <b-button block v-on:click="$goToAnotherPage('/message/' + auction.user_seller.id)" variant="secondary">Write message</b-button>
+              <b-button block v-on:click="$goToAnotherPage('/message/' + auction.auctionUserSeller.id)" variant="secondary">Write message</b-button>
             </b-row>
             <b-row>
               <!-- v-b-modal.deleteModal -->
@@ -85,7 +85,7 @@ import axios from 'axios';
             'Authorization': 'Token ' + this.$getToken()
           }
         };
-        axios.get(`http://127.0.0.1:8000/api/auctions/getMyWonAuctions`, axiosConfig)
+        axios.get(`https://auctionportalbackend.herokuapp.com/api/auctions/getMyWonAuctions`, axiosConfig)
         .then(res => this.my_won_auctions = res.data)
         .catch(err => console.log(err))
       },

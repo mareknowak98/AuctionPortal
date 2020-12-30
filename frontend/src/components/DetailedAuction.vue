@@ -6,35 +6,35 @@
     <b-container class="bv-example-row">
       <b-row>
         <b-col sm="4">
-          <enlargeable-image :src=auction.image :src_large=auction.image />
+          <enlargeable-image :src=auction.auctionImage :src_large=auction.auctionImage />
         </b-col>
         <b-col sm="5">
-          <h1>{{auction.product_name}}</h1>
-          <h2>Highest offer: <strong>{{auction.highest_bid}}$</strong></h2>
-          <p>Category: <strong>{{auction.category.category_name}}</strong></p>
-          <div v-if="auction.is_new==null">Condition: -</div>
-          <div v-if="auction.is_new==true">Condition: New</div>
-          <div v-if="auction.is_new==false">Condition: Used</div>
-          <p>Auction in term: {{auction.date_started}} - {{auction.date_end}}</p>
-          <div v-if="auction.is_active == true">
+          <h1>{{auction.auctionProductName}}</h1>
+          <h2>Highest offer: <strong>{{auction.auctionHighestBid }}$</strong></h2>
+          <p>Category: <strong>{{auction.auctionCategory.category_name}}</strong></p>
+          <div v-if="auction.auctionIsNew==null">Condition: -</div>
+          <div v-if="auction.auctionIsNew==true">Condition: New</div>
+          <div v-if="auction.auctionIsNew==false">Condition: Used</div>
+          <p>Auction in term: {{dataParser(auction.auctionDateStarted) }} - {{ dataParser(auction.auctionDateEnd) }}</p>
+          <div v-if="auction.auctionIsActive == true">
             <p>Time to end: <Roller :text="time_left"/></p>
           </div>
           <div v-else>
             <p>Time to end: <strong>ended</strong></p>
           </div>
 
-          <div v-if="auction.is_shipping_av==true">
+          <div v-if="auction.auctionIsShippingAv ==true">
           <p>Shipping: <strong>Yes ({{auction.auctionShippingCost}})$ </strong></p></div>
-          <div v-if="auction.is_shipping_av==false">
+          <div v-if="auction.auctionIsShippingAv ==false">
           <p>Shipping: No</p></div>
-          <div v-if="auction.is_shipping_av==null">
+          <div v-if="auction.auctionIsShippingAv ==null">
           <p>Shipping: - </p></div>
         </b-col>
         <b-col sm="3">
           <b-container class="bv-example-row">
             <b-row>
               <b-col sm="10">
-                <div v-if="$getToken() != null && auction.is_active == true">
+                <div v-if="$getToken() != null && auction.auctionIsActive == true && user_id!=auction.auctionUserSeller.id ">
                     <div role="group">
                         <label for="input-live">Your bid($):</label>
                         <b-form-input
@@ -59,7 +59,7 @@
                     </div>
                 </div>
           <p> </p>
-          from: <b-link v-on:click="$goToAnotherPage('/profile/' + userProfileId + '/')">{{auction.user_seller.username}}</b-link>
+          from: <b-link v-on:click="$goToAnotherPage('/profile/' + userProfileId + '/')">{{auction.auctionUserSeller.username}}</b-link>
           <div>
              <b-form-rating
                variant="warning"
@@ -97,7 +97,7 @@
         <b-col sm="12">
         <p> </p>
         <h2>Description:</h2>
-        <td id="mytext" v-html="auction.description">
+        <td id="mytext" v-html="auction.auctionDescription">
         </td>
         <h1>  </h1>
         <grid
@@ -149,6 +149,7 @@ import Grid from 'gridjs-vue'
     },
     data() {
       return {
+          user_id: '',
           name: '',
           auctionid: '',
           bid: '',
@@ -174,11 +175,6 @@ import Grid from 'gridjs-vue'
       }
     },
     mounted: function (){
-      let recaptchaScript = document.createElement('script')
-      recaptchaScript.async = true
-      recaptchaScript.setAttribute('src', 'https://unpkg.com/@diracleo/vue-enlargeable-image/dist/vue-enlargeable-image.min.js')
-      document.head.appendChild(recaptchaScript)
-
       this.token = TokenService.getToken();
       this.auctionid = this.$route.params.auctionId;
       this.getAuction(this.auctionid)
@@ -187,16 +183,16 @@ import Grid from 'gridjs-vue'
       window.setInterval(() => {
         this.getTimeToEnd()
       }, 1000)
-
+      this.getUserId()
     },
 
 
     methods:{
     getAuction(id){
-    console.log("http://localhost:8000/api/auctions/" + id)
-      axios.get("http://localhost:8000/api/auctions/" + id)
+    console.log("https://auctionportalbackend.herokuapp.com/api/auctions/" + id)
+      axios.get("https://auctionportalbackend.herokuapp.com/api/auctions/" + id)
         .then(res => this.auction = res.data)
-        .then(res => this.getUserAvgRating(this.auction.user_seller.id))
+        .then(res => this.getUserAvgRating(this.auction.auctionUserSeller.id))
         .catch(err => console.log(err));
     },
 
@@ -218,11 +214,23 @@ import Grid from 'gridjs-vue'
             }
         };
 
-        axios.post(`http://127.0.0.1:8000/api/bids/`, formData, axiosConfig)
+        axios.post(`https://auctionportalbackend.herokuapp.com/api/bids/`, formData, axiosConfig)
         .then(res => console.log(res.data))
         .catch(err => console.log(err))
         this.getAuction(this.auctionid)
 
+    },
+
+    getUserId() {
+        let axiosConfig = {
+          headers: {
+              'Authorization': 'Token ' + localStorage.getItem("user-token")
+          }
+        };
+
+        axios.get(`https://auctionportalbackend.herokuapp.com/api/user-id`, axiosConfig)
+          .then(res => this.user_id = res.data[0].id)
+          .catch(err => console.log(err))
     },
 
     getUserProfileId() {
@@ -233,8 +241,8 @@ import Grid from 'gridjs-vue'
                 'Authorization': 'Token ' + localStorage.getItem("user-token")
             }
         };
-        axios.post(`http://127.0.0.1:8000/api/get_user_profile_by_auction_id/`, formData, axiosConfig)
-            .then(res => console.log(this.userProfileId = res.data[0]))
+        axios.post(`https://auctionportalbackend.herokuapp.com/api/get_user_profile_by_auction_id/`, formData, axiosConfig)
+            .then(res => this.userProfileId = res.data[0])
             .catch(err => console.log(err))
         console.log("test" + this.profileId)
         return this.userProfileId;
@@ -242,7 +250,7 @@ import Grid from 'gridjs-vue'
 
     getTimeToEnd() {
       try {
-        var ending_date = new Date(this.auction.date_end);
+        var ending_date = new Date(this.auction.auctionDateEnd );
         var now_date = new Date();
         var time_between = ending_date - now_date;
         var days = parseInt((time_between)/(24*3600*1000));
@@ -261,11 +269,10 @@ import Grid from 'gridjs-vue'
     },
 
     getUserAvgRating(id){
-      axios.get(`http://127.0.0.1:8000/api/opinion/getUserAvgRating?user_id=` + this.auction.user_seller.id)
+      axios.get(`https://auctionportalbackend.herokuapp.com/api/opinion/getUserAvgRating?user_id=` + this.auction.auctionUserSeller.id)
           .then(res => console.log(this.user_rating = parseFloat(res.data)))
           .catch(err => console.log(err))
     },
-    //TODO validation
     reportAuction(){
       const formData = new FormData();
       let content = this.report_category + "\n" + this.report_content;
@@ -278,7 +285,7 @@ import Grid from 'gridjs-vue'
               'Authorization': 'Token ' + localStorage.getItem("user-token")
           }
       };
-      axios.post(`http://127.0.0.1:8000/api/report/`, formData, axiosConfig)
+      axios.post(`https://auctionportalbackend.herokuapp.com/api/report/`, formData, axiosConfig)
           .then(res => console.log(res.data))
           .catch(err => console.log(err))
     },
@@ -289,19 +296,24 @@ import Grid from 'gridjs-vue'
               'Authorization': 'Token ' + localStorage.getItem("user-token")
           }
       };
-      axios.get(`http://127.0.0.1:8000/api/bids/getAuctionBids/?auction_id=` + this.$route.params.auctionId, axiosConfig)
-          .then(res => this.bids = res.data)
-          .then(res =>{
-            this.rows = [];
-            for (var i in this.bids){
-              let dat = new Date(this.bids[i].bidDate);
+      axios.get(`https://auctionportalbackend.herokuapp.com/api/bids/getAuctionBids/?auction_id=` + this.$route.params.auctionId, axiosConfig)
+        .then(res => this.bids = res.data)
+        .then(res =>{
+          this.rows = [];
+          for (var i in this.bids){
+            let dat = new Date(this.bids[i].bidDate);
 
-              console.log(dat)
-              let tmp = [this.bids[i].bidUserBuyer.username, this.bids[i].bidPrice, dat.toISOString().split('T')[0]+ " "+ dat.toISOString().split('T')[1].split('Z')[0]]
-              this.rows.push(tmp)
-            }
-          })
-          .catch(err => console.log(err))
+            console.log(dat)
+            let tmp = [this.bids[i].bidUserBuyer.username, this.bids[i].bidPrice, dat.toISOString().split('T')[0]+ " "+ dat.toISOString().split('T')[1].split('Z')[0]]
+            this.rows.push(tmp)
+          }
+        })
+        .catch(err => console.log(err))
+    },
+
+    dataParser(date_str){
+      let date =  new Date(date_str);
+      return date.toISOString().split('T')[0]+ " "+ date.toISOString().split('T')[1].split('Z')[0].slice(0, -7);
     },
     },
 

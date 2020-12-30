@@ -175,4 +175,10 @@ CLOUDINARY_STORAGE = {
              'API_KEY': '863671644492483',
              'API_SECRET': 'z80XPfXZyxm-thbxlkWxyfqMjpA'
             }
+
+# /'amqps://crsvjgtl:6QRXh2wX_Q4NeNjLf6LxV5edLPvehCJ4@llama.rmq.cloudamqp.com/crsvjgtl'
+CELERY_BROKER_URL = 'redis://:pe0ba07e23eb15971bcf01bb1dc052a3b6ca865ccdaf432d44ddb4119aed8108e@ec2-174-129-249-71.compute-1.amazonaws.com:9019'
+CELERY_RESULT_BACKEND = 'redis://:pe0ba07e23eb15971bcf01bb1dc052a3b6ca865ccdaf432d44ddb4119aed8108e@ec2-174-129-249-71.compute-1.amazonaws.com:9019'
+CELERY_REDIS_MAX_CONNECTIONS = 2
+
 django_on_heroku.settings(locals())
