@@ -1,7 +1,9 @@
 import Vue from "vue";
 import App from "./App.vue";
-
 import Register from './components/Register.vue';
+import EnlargeableImage from '@diracleo/vue-enlargeable-image';
+import "./registerServiceWorker";
+import axios from "axios";
 import VueRouter from 'vue-router';
 import Home from './components/Home.vue';
 import NewAuction from './components/CreateNewAuction.vue';
@@ -18,23 +20,25 @@ import WonAuctions from './components/WonAuctions.vue';
 import ParticipatedAuctions from './components/ParticipatedAuctions.vue';
 import StaffPanel from './components/StaffPanel.vue';
 
-import axios from "axios";
+
+
+
 window.axios = require('axios');
-
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
-
 Vue.use(VueRouter);
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
-
-import "./registerServiceWorker";
-import EnlargeableImage from '@diracleo/vue-enlargeable-image';
 Vue.use(EnlargeableImage)
 Vue.component('enlargeable-image', EnlargeableImage)
+import { VueEditor } from "vue2-editor";
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+
+
+// const basePath = process.env.BASE_PATH || '/';
+// console.log(basePath)
 
 const routes = [{
         path: "/",
@@ -46,6 +50,11 @@ const routes = [{
         name: "register",
         component: Register
     },
+    // {
+    //     path: basePath + "/auctions",
+    //     name: "auction",
+    //     component: ListAuctions
+    // },
     {
         path: "/newauction",
         name: "newauction",
@@ -111,10 +120,11 @@ const routes = [{
         name: "staffpanel",
         component: StaffPanel
     },
-    {
-        path: '/*',
-        redirect: { name: 'home' }
-    }
+
+    // {
+    //     path: '/*',
+    //     redirect: { name: 'home' }
+    // }
 
 ]
 
@@ -163,6 +173,8 @@ router.afterEach((to, from) => {
         document.title = to.meta.title || DEFAULT_TITLE;
     });
 });
+
+// Vue.prototype.$basePath = basePath;
 
 new Vue({
     el: '#app',

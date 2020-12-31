@@ -1,5 +1,15 @@
 <template>
   <div class="container">
+    <b-alert
+      variant="danger"
+      dismissible
+      fade
+      :show="showDismissibleAlert"
+      @dismissed="showDismissibleAlert=false"
+    >
+      Log in to see Users profiles
+    </b-alert>
+
   <navbar></navbar>
   <b-jumbotron class="jumbotron jumbotron-home">
 
@@ -59,7 +69,13 @@
                     </div>
                 </div>
           <p> </p>
-          from: <b-link v-on:click="$goToAnotherPage('/profile/' + userProfileId + '/')">{{auction.auctionUserSeller.username}}</b-link>
+
+          <div v-if="$getToken() != null">
+            from: <b-link v-on:click="$goToAnotherPage('/profile/' + userProfileId + '/')">{{auction.auctionUserSeller.username}}</b-link>
+          </div>
+          <div v-else>
+            from: <b-link @click="showDismissibleAlert=true" variant="info" class="m-1">{{auction.auctionUserSeller.username}}</b-link>
+          </div>
           <div>
              <b-form-rating
                variant="warning"
@@ -237,14 +253,13 @@ import Grid from 'gridjs-vue'
         const formData = new FormData();
         formData.append("id", this.auctionid)
         let axiosConfig = {
-            headers: {
-                'Authorization': 'Token ' + localStorage.getItem("user-token")
-            }
+          headers: {
+              'Authorization': 'Token ' + localStorage.getItem("user-token")
+          }
         };
         axios.post(`https://auctionportalbackend.herokuapp.com/api/get_user_profile_by_auction_id/`, formData, axiosConfig)
-            .then(res => this.userProfileId = res.data[0])
-            .catch(err => console.log(err))
-        console.log("test" + this.profileId)
+          .then(res => this.userProfileId = res.data[0])
+          .catch(err => console.log(err))
         return this.userProfileId;
     },
 
@@ -260,7 +275,7 @@ import Grid from 'gridjs-vue'
         var minutes = parseInt((time_between)/(60*1000));
         time_between -= minutes*(60*1000);
         var seconds = parseInt((time_between)/(1000));
-        var res = "" + days + "d" + hours +":" + minutes + ":" + seconds + "";
+        var res = "" + days + " days " + hours +":" + minutes + ":" + seconds + "";
         this.time_left = res
       }
       catch (error){

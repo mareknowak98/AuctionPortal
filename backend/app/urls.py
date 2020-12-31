@@ -1,5 +1,8 @@
 from django.conf.urls import url, include
+from django.views.generic import TemplateView
 from rest_framework import routers
+from rest_framework.schemas import get_schema_view
+
 from app import views
 from django.urls import path
 

@@ -17,15 +17,13 @@ from rest_framework import response, decorators, permissions, status
 
 
 class UserViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows users to be viewed or edited.
-    """
     queryset = User.objects.all().order_by('-date_joined')
     serializer_class = UserSerializer
-
     permission_classes = [permissions.AllowAny]
 
     def get_queryset(self):
+        if self.request is None:
+            return User.objects.none()
         return User.objects.filter(id=self.request.user.id)
 
     @action(detail=False, methods=['get'])
@@ -47,9 +45,6 @@ class CategoryViewSet(viewsets.ModelViewSet):
 
 
 class AuctionViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows users to be viewed or edited.
-    """
     queryset = Auction.objects.all()
     serializer_class = AuctionSerializer
     authentication_classes = (TokenAuthentication,)
@@ -98,9 +93,6 @@ class AuctionViewSet(viewsets.ModelViewSet):
         serializer = AuctionSerializer(auctions, many=True)
         return Response(serializer.data)
 
-    ##TODO to fix
-    # params:
-    # active - boolean, determine the output to active/ended auctions
     # http://127.0.0.1:8000/api/auctions/getMyAuctions/?active=True&ended=False
     @action(detail=False, methods=['get'])
     def getMyAuctions(self, request, **kwargs):
@@ -146,13 +138,8 @@ class AuctionViewSet(viewsets.ModelViewSet):
         serializer = AuctionSerializer(auctions_queryset, many=True)
         return Response(serializer.data)
 
-    ##TODO find and check hishest_bid parameter in case on ending auction
-
 
 class AuctionCreate(viewsets.ModelViewSet):
-    """
-    Create Auction - only for authenticated users.
-    """
     queryset = Auction.objects.all()
     serializer_class = AuctionCreateSerializer
     authentication_classes = (TokenAuthentication,)
@@ -296,7 +283,8 @@ class ProfileViewSet(viewsets.ModelViewSet):
     #     print(data)
 
     def get_queryset(self):
-        print(self.request.user.id)
+        if self.request is None:
+            return Profile.objects.none()
         user = self.request.user
         return Profile.objects.filter(profileUser=user)
 

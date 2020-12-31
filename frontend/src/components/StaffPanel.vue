@@ -143,9 +143,7 @@
 
             </div>
             <div v-if="activetab === 2" class="tabcontent">
-                <!-- User Interface controls -->
                 <b-container fluid class="bv-example-row" >
-
                   <b-row>
                     <b-col cols="6">
                     <b-form-group
@@ -378,20 +376,17 @@
         </div>
     </div>
 
-
   <Footer></Footer>
   </b-jumbotron>
   </div>
 </template>
 
 
-
 <script>
 import Navbar from './Navbar.vue'
 import Footer from './Footer.vue'
-
-
 import axios from 'axios';
+
   export default {
     name: "StaffPanel",
     components:{
@@ -715,9 +710,16 @@ import axios from 'axios';
         max-width: 1400px;
     }
 }
+.jumbotron-home{
+    margin: 0%;
+    padding: 1%;
+    padding-left:0.5%;
+    padding-right:0.5%;
+
+}
 * {
   box-sizing: border-box;
-  margin: 0;
+  /* margin: 0; */
   padding: 0;
 }
 

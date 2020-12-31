@@ -43,14 +43,15 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
+    # 'django.contrib.staticfiles',
     'corsheaders',
     'app',
     # 'app.apps.AppConfig',
     'rest_framework',
     'rest_framework.authtoken',
-    # 'djcelery',
     'cloudinary_storage',
+    'django.contrib.staticfiles',  # required for serving swagger ui's css/js files
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
@@ -99,9 +100,15 @@ DATABASES = {
         'PASSWORD': 'UzGtm7oMaLalp0Ru1elbcGSHDOkcXUlz',
         'HOST': 'dumbo.db.elephantsql.com',
         'PORT': '5432',
-    }
-}
+    },
 
+}
+import sys
+if 'test' in sys.argv:
+    DATABASES['default'] = {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'mydatabase'
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -168,6 +175,7 @@ REST_FRAMEWORK = {
 
     ],
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
 }
 
 CLOUDINARY_STORAGE = {

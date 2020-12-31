@@ -3,12 +3,12 @@
   <navbar></navbar>
   <b-jumbotron class="jumbotron jumbotron-home">
     <div v-if="token != null">
-      <h1 id="myh1">Add an auction</h1>
 
       <b-form @submit.prevent="createAuction" >
         <b-container class="bv-example-row">
           <b-row class="justify-content-md-center">
             <b-col col lg="8">
+        <h1 id="myh1">Add an auction</h1>
 
 
         <b-form-group>
@@ -66,6 +66,7 @@
             menu-class="w-100"
             calendar-width="100%"
             class="mb-2"
+            :min=min_date
           ></b-form-datepicker>
         </b-col>
           <b-col cols="5" ><vue-timepicker required v-model="date_end_hr"></vue-timepicker>
@@ -116,49 +117,39 @@
     </b-form-group>
     <b-row>
     <b-col cols="6" >
-
-    <div v-if="auctionIsShippingAv  == 'true'">
-      <div role="group">
-          <label for="input-live">Enter shipping costs: </label>
-          <b-form-input
-          id="input-live"
-          v-model="shipping_cost"
-          :state="shippingState"
-          aria-describedby="input-live-help input-live-feedback"
-          placeholder="..."
-          trim
-          ></b-form-input>
-          <b-form-invalid-feedback id="input-live-feedback">
-          Enter a numeric value
-          </b-form-invalid-feedback>
+      <div v-if="auctionIsShippingAv  == 'true'">
+        <div role="group">
+            <label for="input-live">Enter shipping costs: </label>
+            <b-form-input
+            id="input-live"
+            v-model="shipping_cost"
+            :state="shippingState"
+            aria-describedby="input-live-help input-live-feedback"
+            placeholder="..."
+            trim
+            ></b-form-input>
+            <b-form-invalid-feedback id="input-live-feedback">
+            Enter a numeric value
+            </b-form-invalid-feedback>
+        </div>
       </div>
-    </div>
     </b-col>
+
     <b-col cols="6" >
     </b-col>
     </b-row>
-
+    </div>
+    <p> </p>
+    <b-button type="submit" variant="secondary">Submit</b-button>
+    </b-col>
+    </b-row>
+    </b-container>
+    </b-form>
+    </div>
+    <div v-else>
+      <h1>Log in to add auction</h1>
     </div>
 
-
-    <p>         </p>
-
-
-      <b-button type="submit" variant="secondary">Submit</b-button>
-    </b-col>
-   </b-row>
-   </b-container>
-      </b-form>
-
-
-      </div>
-      <div v-else>
-        <h1>Log in to add auction</h1>
-      </div>
-
-
-
-    <!-- <p>{{$data}}</p> -->
     <Footer></Footer>
 
   </b-jumbotron>
@@ -174,7 +165,6 @@ import {TokenService} from '../store/service'
 import { VueEditor } from "vue2-editor";
 import '../styles/style.css';
 
-
 import axios from 'axios';
   export default {
     name: "NewAuction",
@@ -186,6 +176,11 @@ import axios from 'axios';
     },
 
     data() {
+      const now = new Date()
+      const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+      const minDate = new Date(today)
+      minDate.setDate(minDate.getDate() + 1)
+
       return{
         content: "",
         shipping_cost: "",
@@ -216,7 +211,7 @@ import axios from 'axios';
 
         debugtext1: '',
         debugtext2: '',
-
+        min_date: minDate,
       }
     },
 
@@ -281,20 +276,15 @@ import axios from 'axios';
         var fulldate_end = "" + this.auctionDateEnd  + "T" + this.date_end_hr + "Z"
         this.debugtext1 = fulldate_end
 
-        // getting current date
         var today = new Date();
         var dd = String(today.getDate()).padStart(2, '0');
         var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
         var yyyy = today.getFullYear();
 
-
         var fulldate_start = yyyy + "-" + mm + "-" + dd + "T" + today.getHours() + ":"
           + today.getMinutes() + ":" + today.getSeconds() + "Z";
 
         this.debugtext2 = fulldate_start
-
-        console.log('Date string is ' + fulldate_end)
-
         this.token = TokenService.getToken();
         const formData = new FormData();
 
@@ -316,11 +306,11 @@ import axios from 'axios';
           }
         };
         axios.post(`https://auctionportalbackend.herokuapp.com/api/auctioncreate/`, formData,axiosConfig)
-        .then(res => console.log(res.data))
+        .then(res => {
+            this.$goToAnotherPage('/'); 
+          })
         .catch(err => console.log(err))
 
-        this.$sleep(500); //TODO check it
-        this.$router.back();
       },
     },
     created() {
