@@ -6,7 +6,8 @@
   <div v-if="token != null">
     <b-list-group v-for="profile in profileData" :key="profile.id">
     </b-list-group>
-
+  
+  
   <b-card>
     <b-media>
       <template #aside>

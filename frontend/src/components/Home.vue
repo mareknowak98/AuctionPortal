@@ -158,6 +158,9 @@ export default {
         this.form.categories = res.data
         console.log(this.data)
         })
+        .then(res=>{
+          this.form.categories.push({"category_name" : "All", "id" : ""})
+        })
         .catch(err => console.log(err));
     },
     searchAuctions: function() {

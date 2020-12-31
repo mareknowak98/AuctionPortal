@@ -41,14 +41,6 @@
                 ></b-form-input>
               </b-form-group>
 
-              <b-form-group id="input-group-3" label="Your account number:" label-for="input-3">
-                <b-form-input
-                  id="input-3"
-                  v-model="acc_num"
-                  :placeholder = profile.profileBankAccountNr
-                ></b-form-input>
-              </b-form-group>
-
               <b-form-group id="input-group-4" label="Your telephone number:" label-for="input-4">
                 <b-form-input
                   id="input-4"

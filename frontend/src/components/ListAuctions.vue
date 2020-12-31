@@ -1,7 +1,6 @@
 <template>
   <div class="">
 
-    <!-- <b-button size="sm" variant="success" @click="$isStaff"/> -->
     <b-list-group v-for="(auction, i) in auctions" :key="auction.id">
       <b-list-group-item :to="'/auctions/' + auction.id" class="auctionListItem">
 
@@ -10,8 +9,6 @@
             <tr>
               <td width="300px">
                 <b-card-img :src="auction.auctionImage"  fluid alt="Responsive image"></b-card-img>
-                <!-- <b-card-img fluid alt="Responsive image"></b-card-img> -->
-
             </td>
             </tr>
             <b-col>
@@ -29,12 +26,6 @@
             </b-col>
           </b-row>
         </b-card>
-        <!-- <h2>{{auction.auctionProductName}}</h2>
-        <div>
-          <b-img :src= "'http://localhost:8000' + auction.image " fluid alt="Responsive image" height="180px" width="250px"></b-img>
-        </div>
-        <p>{{ auction.auctionHighestBid  }}</p>
-        {{ auction }} -->
       </b-list-group-item>
     </b-list-group>
 
@@ -46,7 +37,6 @@
 
 
 <script>
-// @ is an alias to /src
 import axios from "axios";
 import Roller from "vue-roller";
 
@@ -93,7 +83,7 @@ export default {
           var minutes = parseInt((time_between)/(60*1000));
           time_between -= minutes*(60*1000);
           var seconds = parseInt((time_between)/(1000));
-          var res = "" + days + "d" + hours +":" + minutes + ":" + seconds + "";
+          var res = "" + days + " days " + hours +":" + minutes + ":" + seconds + "";
           this.times_to_end.push(res)
           }
         }
@@ -130,8 +120,6 @@ export default {
         querybuilder += "&price=2"
       if (searchdata.selected3 == 3)
         querybuilder += "&time_left=1"
-
-      console.log(querybuilder)
 
       axios.get(querybuilder)
         .then(res => (this.auctions = res.data))
