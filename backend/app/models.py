@@ -5,7 +5,6 @@ from django.dispatch import receiver
 from django.db.models.signals import post_save
 from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
-from datetime import datetime
 
 
 
@@ -22,7 +21,6 @@ class Profile(models.Model):
     profileUserSurname = models.CharField(blank=True, null=True, max_length=50)
     profileUser = models.OneToOneField(User, on_delete=models.CASCADE)
     profileAvatar = models.ImageField(default='https://res.cloudinary.com/dm2tx6lhe/image/upload/v1608653722/media/images/default_d19dbf.jpg', upload_to='images/', blank=True, null=True)
-    profileBankAccountNr = models.CharField(max_length=30, blank=True, null=True)  # TODO set to real max len
     profileTelephoneNumber = models.CharField(max_length=15, blank=True, null=True)
 
     def __str__(self):
@@ -59,7 +57,7 @@ class Category(models.Model):
 
 class Auction(models.Model):
     auctionUserSeller = models.ForeignKey(User, on_delete=models.CASCADE, related_name='auctionUserSeller')
-    auctionImage = models.ImageField(default='https://res.cloudinary.com/dm2tx6lhe/image/upload/v1608590488/media/images/default_auction_fe1wvk.jpg', upload_to='images/', blank=True, null=True)
+    auctionImage = models.ImageField(default='https://res.cloudinary.com/dm2tx6lhe/image/upload/v1608590488/media/images/default_auction_fe1wvk', upload_to='images/', blank=True, null=True)
     auctionCategory = models.ForeignKey(Category, on_delete=models.PROTECT, related_name='auctionCategory', default=4)
     auctionProductName = models.CharField(max_length=50, default='')
     auctionDescription = models.TextField(blank=True, null=True)
@@ -77,9 +75,9 @@ class Auction(models.Model):
     def save(self, *args, **kwargs):
         create_task = False
         if self.pk is None:
-            self.auctionHighestBid = self.auctionMinimalPrice
+            self.auctionHighestBid = self.auctionStartingPrice
             create_task=True
-            if self.auctionIsShippingAv:
+            if self.auctionIsShippingAv is None:
                 self.auctionShippingCost = 20.0
 
         super(Auction, self).save(*args, **kwargs)

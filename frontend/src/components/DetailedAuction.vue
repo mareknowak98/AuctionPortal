@@ -9,7 +9,15 @@
     >
       Log in to see Users profiles
     </b-alert>
-
+    <b-alert
+      variant="danger"
+      dismissible
+      fade
+      :show="showOverbidAlert"
+      @dismissed="showOverbidAlert=false"
+    >
+      You cannot overbid yourself
+    </b-alert>
   <navbar></navbar>
   <b-jumbotron class="jumbotron jumbotron-home">
 
@@ -23,12 +31,18 @@
           <h2>Highest offer: <strong>{{auction.auctionHighestBid }}$</strong></h2>
           <p>Category: <strong>{{auction.auctionCategory.category_name}}</strong></p>
           <div v-if="auction.auctionIsNew==null">Condition: -</div>
-          <div v-if="auction.auctionIsNew==true">Condition: New</div>
-          <div v-if="auction.auctionIsNew==false">Condition: Used</div>
-          <p>Auction in term: {{dataParser(auction.auctionDateStarted) }} - {{ dataParser(auction.auctionDateEnd) }}</p>
+          <div v-if="auction.auctionIsNew==true">Condition: <strong>New</strong></div>
+          <div v-if="auction.auctionIsNew==false">Condition: <strong>Used</strong></div>
+          <p>Auction in term: <strong>{{dataParser(auction.auctionDateStarted) }} - {{ dataParser(auction.auctionDateEnd) }}</strong></p>
           <div v-if="auction.auctionIsActive == true">
-            <p>Time to end: <Roller :text="time_left"/></p>
-          </div>
+                <table>
+                  <td>
+                    <p>Time to end: </p>
+                  </td>
+                  <th>
+                    <Roller :text="time_left"/>
+                  </th>
+                </table>          </div>
           <div v-else>
             <p>Time to end: <strong>ended</strong></p>
           </div>
@@ -36,7 +50,7 @@
           <div v-if="auction.auctionIsShippingAv ==true">
           <p>Shipping: <strong>Yes ({{auction.auctionShippingCost}})$ </strong></p></div>
           <div v-if="auction.auctionIsShippingAv ==false">
-          <p>Shipping: No</p></div>
+          <p>Shipping: <strong>No</strong></p></div>
           <div v-if="auction.auctionIsShippingAv ==null">
           <p>Shipping: - </p></div>
         </b-col>
@@ -56,7 +70,7 @@
                         trim
                         ></b-form-input>
                         <b-form-invalid-feedback id="input-live-feedback">
-                        Enter a numeric value
+                        Bid must be higher than the highest offer and be numeric value
                         </b-form-invalid-feedback>
                       <b-row>
                         <b-col sm="12">
@@ -130,12 +144,8 @@
       </b-col>
       <b-col sm="0">
       </b-col>
-
       </b-row>
-
     </b-container>
-
-    <!-- {{ auction }} -->
     <Footer></Footer>
   </b-jumbotron>
   </div>
@@ -160,7 +170,10 @@ import Grid from 'gridjs-vue'
       nameState() {
         if (this.bid == "")
           return "isnull"
-        return this.isNumeric(this.bid) ? true : false
+        let res = this.isNumeric(this.bid) ? true : false;
+        if (res)
+          var res2 = parseFloat(this.bid) > parseFloat(this.auction.auctionHighestBid) + 0.01 ? true : false;
+        return res && res2;
       }
     },
     data() {
@@ -199,6 +212,9 @@ import Grid from 'gridjs-vue'
       window.setInterval(() => {
         this.getTimeToEnd()
       }, 1000)
+      window.setInterval(() => {
+        this.getAuction()
+      }, 10000)
       this.getUserId()
     },
 
@@ -230,8 +246,22 @@ import Grid from 'gridjs-vue'
             }
         };
 
+        console.log(this.user_id)
+        console.log(this.auction.auctionUserHighestBid)
+
+        if (parseInt(this.user_id)== parseInt(this.auction.auctionUserHighestBid)){
+          this.bid = ''
+          this.showOverbidAlert = true;
+          return;
+        }
+
         axios.post(`https://auctionportalbackend.herokuapp.com/api/bids/`, formData, axiosConfig)
         .then(res => console.log(res.data))
+        .then(res => {
+          this.bid = '';
+          this.getBids();
+          this.getAuction(this.$route.params.auctionId);
+        })
         .catch(err => console.log(err))
         this.getAuction(this.auctionid)
 
@@ -317,8 +347,6 @@ import Grid from 'gridjs-vue'
           this.rows = [];
           for (var i in this.bids){
             let dat = new Date(this.bids[i].bidDate);
-
-            console.log(dat)
             let tmp = [this.bids[i].bidUserBuyer.username, this.bids[i].bidPrice, dat.toISOString().split('T')[0]+ " "+ dat.toISOString().split('T')[1].split('Z')[0]]
             this.rows.push(tmp)
           }

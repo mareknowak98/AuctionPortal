@@ -104,13 +104,13 @@ import axios from 'axios';
         .catch(err => console.log(err))
       },
       deleteAuction(id){
-        console.log(`https://auctionportalbackend.herokuapp.com/api/auctioncreate/` + id +'/')
+        console.log(`https://auctionportalbackend.herokuapp.com/api/auctions/` + id +'/')
         let axiosConfig = {
           headers: {
             'Authorization': 'Token ' + this.$getToken()
           }
         };
-        axios.delete(`https://auctionportalbackend.herokuapp.com/api/auctioncreate/` + id +'/', axiosConfig)
+        axios.delete(`https://auctionportalbackend.herokuapp.com/api/auctions/` + id +'/', axiosConfig)
         .then(res => console.log(res.data))
         .then(res => this.getMyActiveAuctions())
         .catch(err => console.log(err))

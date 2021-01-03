@@ -4,8 +4,6 @@ from celery import shared_task
 # import app.models as mod
 # import
 
-
-
 from app import models
 
 #end auction when auctionDateEnd expire

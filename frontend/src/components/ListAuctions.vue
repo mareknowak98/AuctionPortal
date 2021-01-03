@@ -19,8 +19,15 @@
                   </div>
                 </b-card-text>
                 <p>Highest offer: <strong>{{auction.auctionHighestBid }}$</strong></p>
-                <p>Time to end:{{auction.time_to_end}}</p>
-                <Roller :text="times_to_end[i]"/>
+
+                <table>
+                  <td>
+                    <p>Time to end:{{auction.time_to_end}}</p>
+                  </td>
+                  <th>
+                    <Roller :text="times_to_end[i]"/>
+                  </th>
+                </table>
 
               </b-card-body>
             </b-col>

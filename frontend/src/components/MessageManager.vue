@@ -3,13 +3,19 @@
   <navbar></navbar>
   <b-jumbotron class="jumbotron jumbotron-home">
     <div v-if="token != null">
-      <h1>Send message to:</h1>
-      <b-list-group v-for="user in users_with_messages" :key="user.usermessToUser__id">
-        <b-list-group-item :to="'/message/' + user.usermessToUser__id + '/'">
-          <b-avatar button v-on:click="$goToAnotherPage('/profile/' + user.usermessToUser__id)" :src="user.profile.profileAvatar" size="5rem" variant="primary" text="FF"></b-avatar>
-          {{ user.usermessToUser__username }}
-        </b-list-group-item>
-      </b-list-group>
+      <b-container class="bv-example-row">
+        <b-row class="justify-content-md-center">
+          <b-col col lg="8">
+            <h1>Messages:</h1>
+            <b-list-group v-for="user in users_with_messages" :key="user.usermessFromUser__id">
+              <b-list-group-item :to="'/message/' + user.usermessFromUser_id + '/'">
+                <b-avatar button v-on:click="$goToAnotherPage('/profile/' + user.usermessFromUser__id)" :src="user.profile.profileAvatar" size="5rem" variant="primary" text="FF"></b-avatar>
+                {{ user.usermessFromUser__username }}
+              </b-list-group-item>
+            </b-list-group>
+          </b-col>
+      </b-row>
+    </b-container>
     </div>
 
     <div v-else>
@@ -55,7 +61,7 @@ import axios from 'axios';
         };
         var result
         axios.get(`https://auctionportalbackend.herokuapp.com/api/profileUser/getUserImage?user_id=` + id, axiosConfig)
-            .then(res => result = res.data)
+            .then(res => console.log(result = res.data))
             .then(res =>{
               this.$set(this.users_with_messages[index], "profile", result)
             })
@@ -65,14 +71,30 @@ import axios from 'axios';
       getUsersMessaged(){
         let axiosConfig = {
             headers: {
-            'Authorization': 'Token ' + this.token
+            'Authorization': 'Token ' + localStorage.getItem("user-token")
             }
         };
         axios.get(`https://auctionportalbackend.herokuapp.com/api/get_messages_user_list`, axiosConfig)
         .then(res => this.users_with_messages = res.data)
         .then(res => {
+          let tmp_list = []
           for (let user in this.users_with_messages){
-            let tmp = this.getProfileData(this.users_with_messages[user].usermessToUser__id, user)
+            console.log(this.users_with_messages[user])
+            let tmp;
+            if ('usermessToUser__id' in this.users_with_messages[user]){
+              console.log("Es")
+              tmp = {'usermessFromUser_id' : this.users_with_messages[user].usermessToUser__id, 'usermessFromUser__username': this.users_with_messages[user].usermessToUser__username}
+            }
+            else
+              tmp = this.users_with_messages[user]
+            tmp_list.push(tmp)
+          }
+          this.users_with_messages = [...new Map(tmp_list.map(item => [item['usermessFromUser_id'], item])).values()]
+
+        })
+        .then(res => {
+          for (let user in this.users_with_messages){
+            let tmp = this.getProfileData(this.users_with_messages[user].usermessFromUser_id, user)
           }
 
         })

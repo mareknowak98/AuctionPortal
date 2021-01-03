@@ -1,5 +1,14 @@
 <template>
   <div>
+    <b-alert
+      variant="danger"
+      dismissible
+      fade
+      :show="showCredentialsAlert"
+      @dismissed="showCredentialsAlert=false"
+    >
+      Invalid password or username.
+    </b-alert>
     <div v-if="$getToken() == null">
       <b-jumbotron class="jumbotron jumbotron-special" header=" ">
         <h1> </h1>
@@ -19,7 +28,8 @@
        </b-collapse>
      </b-navbar>
      <b-modal id="loginModal" title="Log in" @ok="login" ok-title="Log in">
-       <label class="mb-2">Please enter your username, then your password, and press Log in.</label>
+
+       <label class="mb-2">Please enter your username and password, then press Log in.</label>
        <b-form-input class="mb-2" placeholder="Username" v-model="username"></b-form-input>
        <!-- <b-form-input class="mb-2" placeholder="Email" v-model="email" autocomplete="email"></b-form-input> -->
        <b-form-input class="mb-2" placeholder="Password" v-model="password" type="password"></b-form-input>
@@ -84,6 +94,7 @@ import axios from 'axios';
     },
     data(){
       return{
+        reoader: 1,
         username: '',
         password: '',
         userId: null,
@@ -118,12 +129,15 @@ import axios from 'axios';
         })
         .then(resp => {
           this.isStaff()
+          this.$goToMainPage();
         })
         .catch(err => {
-          console.log(err);
+          this.username = '';
+          this.password = '';
           localStorage.removeItem('user-token');
+          this.showCredentialsAlert = true;
+          this.$forceUpdate();
         })
-        this.$goToMainPage();
       },
 
       logout() {
@@ -131,6 +145,7 @@ import axios from 'axios';
         this.token = null;
         this.$goToMainPage();
         this.is_staff = "False";
+        this.$forceUpdate();
         },
 
       getProfile(){

@@ -51,6 +51,81 @@ class AuctionViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticatedOrReadOnly,)
 
     # search_fields = ('auctionProductName', 'auctionDescription')
+    def create(self, request, *args, **kwargs):
+        user = request.user
+        data = request.data
+        # print(data)
+        flag1 = True if data['auctionIsNew'] == 'true' else False
+        flag2 = True if data['auctionIsShippingAv'] == 'true' else False
+        if data['auctionImage'] != 'null':
+            auctionImage = data['auctionImage']
+        else:
+            auctionImage = 'https://res.cloudinary.com/dm2tx6lhe/image/upload/v1608590488/media/images/default_auction_fe1wvk'
+
+        if data['auctionDateStarted'] > data['auctionDateEnd']:
+            HttpResponseNotAllowed("You cannot set ending date in the past")
+        if data['auctionMinimalPrice'] != "" and data['auctionStartingPrice'] > data['auctionMinimalPrice']:
+            HttpResponseNotAllowed("Starting Price must be higher than minimal price")
+        if data['auctionMinimalPrice'] == "":
+            min_price = data['auctionStartingPrice']
+        else:
+            min_price = data['auctionMinimalPrice']
+
+        newAuction = Auction.objects.create(
+            auctionUserSeller=user,
+            auctionImage=auctionImage,
+            auctionCategory=Category.objects.get(id=data['auctionCategory']),
+            auctionProductName=data['auctionProductName'],
+            auctionDescription=data['auctionDescription'],
+            auctionIsNew=flag1,
+            auctionDateStarted=data['auctionDateStarted'],
+            auctionDateEnd=data['auctionDateEnd'],
+            auctionStartingPrice=data['auctionStartingPrice'],
+            auctionMinimalPrice=min_price,
+            auctionIsShippingAv=flag2,
+        )
+        serializer = AuctionCreateSerializer(newAuction, many=False)
+        return Response(serializer.data)
+
+    # endpoint: (patch) http://127.0.0.1:8000/api/auctioncreate/88/
+    def partial_update(self, request, *args, **kwargs):
+        data = request.data
+        print(data)
+        auction_obj = self.get_object()
+        print(auction_obj)
+
+        flag1 = True if data.get('auctionIsNew', auction_obj.auctionIsNew) == 'true' else False
+        flag2 = True if data.get('auctionIsShippingAv', auction_obj.auctionIsShippingAv) == 'true' else False
+
+        auction_obj.auctionImage = data.get('auctionImage', auction_obj.auctionImage)
+        auction_obj.auctionCategory = Category.objects.get(id=data.get('auctionCategory', auction_obj.auctionCategory.id))
+        auction_obj.auctionProductName = data.get('auctionProductName', auction_obj.auctionProductName)
+        auction_obj.auctionDescription = data.get('auctionDescription', auction_obj.auctionDescription)
+        auction_obj.auctionIsNew = flag1
+        auction_obj.auctionIsShippingAv = flag2
+        auction_obj.auctionShippingCost = data.get('auctionShippingCost', auction_obj.auctionShippingCost)
+
+        if data.get('auctionIsShippingAv') is None and data.get('auctionShippingCost') is not None:
+            return HttpResponseNotAllowed("Not allowed")
+        if data.get('auctionDateEnd'):
+            return HttpResponseNotAllowed("You cannot change end date of auction")
+        if data.get('auctionStartingPrice') or data.get('auctionMinimalPrice'):
+            return HttpResponseNotAllowed("You cannot this")
+        if data.get('auctionHighestBid') or data.get('auctionUserHighestBid') or data.get('auctionDateStarted') or data.get(
+                'auctionUserSeller') or data.get('auctionIsActive'):
+            return HttpResponseNotAllowed("You are not alleowed to change this params")
+
+        auction_obj.save()
+        serializer = AuctionCreateSerializer(auction_obj, many=False)
+        return Response(serializer.data)
+
+    def destroy(self, request, *args, **kwargs):
+        user = request.user
+        auction_obj = self.get_object()
+        if user == auction_obj.auctionUserSeller:
+            return super(AuctionViewSet, self).destroy(request, *args, **kwargs)
+        else:
+            return HttpResponseNotAllowed("You are not allowed to delete not your auctions")
 
     def list(self, request, *args, **kwargs):
         params = request.GET
@@ -139,89 +214,6 @@ class AuctionViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
 
-class AuctionCreate(viewsets.ModelViewSet):
-    queryset = Auction.objects.all()
-    serializer_class = AuctionCreateSerializer
-    authentication_classes = (TokenAuthentication,)
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
-
-    def create(self, request, *args, **kwargs):
-        user = request.user
-        data = request.data
-        # print(data)
-        flag1 = True if data['auctionIsNew'] == 'true' else False
-        flag2 = True if data['auctionIsShippingAv'] == 'true' else False
-        if data['auctionImage'] != 'null':
-            auctionImage = data['auctionImage']
-        else:
-            auctionImage = '/default_auction.jpg'
-
-        if data['auctionDateStarted'] > data['auctionDateEnd']:
-            HttpResponseNotAllowed("You cannot set ending date in the past")
-        if data['auctionMinimalPrice'] != "" and data['auctionStartingPrice'] > data['auctionMinimalPrice']:
-            HttpResponseNotAllowed("Starting Price must be higher than minimal price")
-        if data['auctionMinimalPrice'] == "":
-            min_price = data['auctionStartingPrice']
-        else:
-            min_price = data['auctionMinimalPrice']
-
-        newAuction = Auction.objects.create(
-            auctionUserSeller=user,
-            auctionImage=auctionImage,
-            auctionCategory=Category.objects.get(id=data['auctionCategory']),
-            auctionProductName=data['auctionProductName'],
-            auctionDescription=data['auctionDescription'],
-            auctionIsNew=flag1,
-            auctionDateStarted=data['auctionDateStarted'],
-            auctionDateEnd=data['auctionDateEnd'],
-            auctionStartingPrice=data['auctionStartingPrice'],
-            auctionMinimalPrice=min_price,
-            auctionIsShippingAv=flag2,
-        )
-        serializer = AuctionCreateSerializer(newAuction, many=False)
-        return Response(serializer.data)
-
-    # endpoint: (patch) http://127.0.0.1:8000/api/auctioncreate/88/
-    def partial_update(self, request, *args, **kwargs):
-        data = request.data
-        print(data)
-        auction_obj = self.get_object()
-        print(auction_obj)
-
-        flag1 = True if data.get('auctionIsNew', auction_obj.auctionIsNew) == 'true' else False
-        flag2 = True if data.get('auctionIsShippingAv', auction_obj.auctionIsShippingAv) == 'true' else False
-
-        auction_obj.auctionImage = data.get('auctionImage', auction_obj.auctionImage)
-        auction_obj.auctionCategory = Category.objects.get(id=data.get('auctionCategory', auction_obj.auctionCategory.id))
-        auction_obj.auctionProductName = data.get('auctionProductName', auction_obj.auctionProductName)
-        auction_obj.auctionDescription = data.get('auctionDescription', auction_obj.auctionDescription)
-        auction_obj.auctionIsNew = flag1
-        auction_obj.auctionIsShippingAv = flag2
-        auction_obj.auctionShippingCost = data.get('auctionShippingCost', auction_obj.auctionShippingCost)
-
-        if data.get('auctionIsShippingAv') is None and data.get('auctionShippingCost') is not None:
-            return HttpResponseNotAllowed("Not allowed")
-        if data.get('auctionDateEnd'):
-            return HttpResponseNotAllowed("You cannot change end date of auction")
-        if data.get('auctionStartingPrice') or data.get('auctionMinimalPrice'):
-            return HttpResponseNotAllowed("You cannot this")
-        if data.get('auctionHighestBid') or data.get('auctionUserHighestBid') or data.get('auctionDateStarted') or data.get(
-                'auctionUserSeller') or data.get('auctionIsActive'):
-            return HttpResponseNotAllowed("You are not alleowed to change this params")
-
-        auction_obj.save()
-        serializer = AuctionCreateSerializer(auction_obj, many=False)
-        return Response(serializer.data)
-
-    def destroy(self, request, *args, **kwargs):
-        user = request.user
-        auction_obj = self.get_object()
-        if user == auction_obj.auctionUserSeller:
-            return super(AuctionCreate, self).destroy(request, *args, **kwargs)
-        else:
-            return HttpResponseNotAllowed("You are not alleowed to delete not your auctions")
-
-
 class BidViewSet(viewsets.ModelViewSet):
     queryset = Bid.objects.all()
     serializer_class = BidSerializer
@@ -265,11 +257,11 @@ class BidViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
 
-class BidCreate(viewsets.ModelViewSet):
-    queryset = Bid.objects.all()
-    serializer_class = BidCreateSerializer
-    authentication_classes = (TokenAuthentication,)
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+# class BidCreate(viewsets.ModelViewSet):
+#     queryset = Bid.objects.all()
+#     serializer_class = BidCreateSerializer
+#     authentication_classes = (TokenAuthentication,)
+#     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
 
 class ProfileViewSet(viewsets.ModelViewSet):
@@ -303,15 +295,11 @@ class ProfileViewSet(viewsets.ModelViewSet):
                 data['profileUserSurname']) > 0 and data['profileUserSurname'].isalpha():
             return HttpResponseNotAllowed("Name and surname have to be letter strings")
 
-        if re.match("^[0-9 ]+$", data['profileBankAccountNr']):
-            return HttpResponseNotAllowed("Account number may only contains digits")
 
         if len(data['profileUserName']) > 0:
             profile.profileUserName = data['profileUserName']
         if len(data['profileUserSurname']) > 0:
             profile.profileUserSurname = data['profileUserSurname']
-        if len(data['profileBankAccountNr']) > 0:
-            profile.profileBankAccountNr = data['profileBankAccountNr']
         if len(data['profileTelephoneNumber']) > 0:
             profile.profileTelephoneNumber = data['profileTelephoneNumber']
         if data['profileAvatar'] is not None and not isinstance(data['profileAvatar'], str):
@@ -443,16 +431,21 @@ def get_user_profile_by_auction_id(request):
 
 
 # return all users with messages with request user
+from itertools import chain
+
 @decorators.api_view(["GET"])
 def get_messages_user_list(request):
     if request.method == 'GET':
         user = request.user
         messages = UserMessage.objects.filter(usermessFromUser=user).values('usermessToUser__id',
                                                                             'usermessToUser__username').distinct()
+        print(messages)
         messages2 = UserMessage.objects.filter(usermessToUser=user).values('usermessFromUser_id',
-                                                                           'usermessFromUser__username').distinct()
-        messages.union(messages2)
-        return response_created(messages)
+                                                                            'usermessFromUser__username').distinct()
+        print(messages2)
+        # messages.union(messages2)
+        # print(messages)
+        return response_created(list(chain(messages, messages2)))
 
 
 class MessageViewset(viewsets.ModelViewSet):

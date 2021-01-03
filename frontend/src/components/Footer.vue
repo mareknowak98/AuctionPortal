@@ -6,9 +6,8 @@
          <p>Contact us: <strong>auctionportalsupp@gmail.com</strong> </p>
        </div>
        <div id="contacts--social">
-         <div></div>
-         <div></div>
-         <div></div>
+         <p>Marek Nowak 2020.</p>
+
 
        </div>
      </div>

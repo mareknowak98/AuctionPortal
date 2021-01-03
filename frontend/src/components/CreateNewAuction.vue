@@ -8,7 +8,7 @@
         <b-container class="bv-example-row">
           <b-row class="justify-content-md-center">
             <b-col col lg="8">
-        <h1 id="myh1">Add an auction</h1>
+        <h1>Add an auction</h1>
 
 
         <b-form-group>
@@ -305,7 +305,7 @@ import axios from 'axios';
             'Authorization': 'Token ' + this.token
           }
         };
-        axios.post(`https://auctionportalbackend.herokuapp.com/api/auctioncreate/`, formData,axiosConfig)
+        axios.post(`https://auctionportalbackend.herokuapp.com/api/auctions/`, formData,axiosConfig)
         .then(res => {
             this.$goToAnotherPage('/'); 
           })
