@@ -1,7 +1,5 @@
 from django.conf.urls import url, include
-from django.views.generic import TemplateView
 from rest_framework import routers
-from rest_framework.schemas import get_schema_view
 
 from app import views
 from django.urls import path
@@ -10,9 +8,9 @@ router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet, basename='users')
 router.register(r'categories', views.CategoryViewSet, basename="categories")
 router.register(r'auctions', views.AuctionViewSet, basename="auctions")
-router.register(r'auctioncreate', views.AuctionCreate, basename="auction-create")
+# router.register(r'auctioncreate', views.AuctionCreate, basename="auction-create")
 router.register(r'bids', views.BidViewSet, basename="bids")
-router.register(r'makebid', views.BidCreate, basename="makebid")
+# router.register(r'makebid', views.BidCreate, basename="makebid")
 router.register(r'profile', views.ProfileViewSet, basename="profile")
 router.register(r'user-id', views.UserViewSet, basename="UserId")
 router.register(r'profileUser', views.ProfileUserViewSet, basename="profileUser")

@@ -13,7 +13,6 @@
 
         <div class="content">
             <div v-if="activetab === 1" class="tabcontent">
-                <!-- {{reports}} -->
                 <b-container fluid class="bv-example-row" >
 
                   <b-row>
@@ -94,11 +93,11 @@
                       <span style="white-space: pre-line">{{row.item.reportContent}}</span>
                       <p><strong>Auction deatils</strong></p>
                         <ul class='b'>
-                          <li>Auction name: {{row.item.reportAuction.product_name}}</li>
-                          <li>Category: {{row.item.reportAuction.category.category_name}}</li>
-                          <li>Description: {{row.item.reportAuction.description}}</li>
-                          <li>Started: {{parseDate(row.item.reportAuction.date_started)}}</li>
-                          <li>Planned ending: {{parseDate(row.item.reportAuction.date_end)}}</li>
+                          <li>Auction name: {{row.item.reportAuction.auctionProductName}}</li>
+                          <li>Category: {{row.item.reportAuction.auctionCategory.category_name}}</li>
+                          <li>Description: {{row.item.reportAuction.auctionDescription}}</li>
+                          <li>Started: {{parseDate(row.item.reportAuction.auctionDateStarted)}}</li>
+                          <li>Planned ending: {{parseDate(row.item.reportAuction.auctionDateEnd)}}</li>
                           <li>Is now active: {{row.item.reportAuction.auctionIsActive}}</li>
                         </ul>
                       <p><strong>Reporting user</strong></p>
@@ -330,7 +329,7 @@
 
                 <template #cell(actions)="row">
                   <b-row>
-                  <div v-if="row.item.is_superuser == true">
+                  <div v-if="row.item.is_superuser == true || row.item.is_active == false">
                     <b-button size="sm" disabled @click="info1_staff(row.item, row.index, $event.target)" class="mr-1">
                       Add to staff
                     </b-button>
@@ -437,8 +436,8 @@ import axios from 'axios';
 
         fields_auctions: [
           { key: 'id', label: 'Report id', sortable: true, sortDirection: 'desc' },
-          { key: 'reportAuction.product_name', label: 'Auction name', sortable: true, class: 'desc' },
-          { key: 'reportAuction.description', label: 'Auction description', formatter: 'shortenAuction', sortable: true, sortDirection: 'desc', thStyle: {width: '350px'}},
+          { key: 'reportAuction.auctionProductName', label: 'Auction name', sortable: true, class: 'desc' },
+          { key: 'reportAuction.auctionDescription', label: 'Auction description', formatter: 'shortenAuction', sortable: true, sortDirection: 'desc', thStyle: {width: '350px'}},
           { key: 'reportUser.username', label: 'Report by:', sortable: true, sortDirection: 'desc' },
           { key: 'reportContent', label: 'Report:', sortable: true, formatter: 'shortenAuction', sortDirection: 'desc',  thStyle: {width: '350px'}},
           { key: 'actions', label: 'Actions' }
@@ -488,7 +487,7 @@ import axios from 'axios';
     },
     methods:{
       inforemoveAuction(item, index, button) {
-        this.removeAuctionModal.title = `Delete: ${item.reportAuction.product_name}`
+        this.removeAuctionModal.title = `Delete: ${item.reportAuction.auctionProductName}`
         this.removeAuctionModal.content = JSON.stringify(item, null, 2)
         this.$root.$emit('bv::show::modal', this.removeAuctionModal.id, this.removeAuction)
       },

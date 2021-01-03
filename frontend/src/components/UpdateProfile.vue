@@ -7,7 +7,7 @@
         <b-col col lg="8">
         <div v-if="$getToken() != null">
             <b-list-group v-for="profile in profileData" :key="profile.id">
-            <b>{{profile.profileUser.username}}</b>
+            <h2>{{profile.profileUser.username}}</h2>
             <b>Your current avatar:</b>
             <b-row class="justify-content-md-center">
             <div class="imagecontainer">
@@ -49,7 +49,7 @@
                 ></b-form-input>
               </b-form-group>
 
-              <b-button type="submit" variant="primary">Update</b-button>
+              <b-button type="submit" block variant="secondary">Update</b-button>
 
 
       </b-form>
@@ -93,7 +93,6 @@ import axios from 'axios';
         image: null,
         name: '',
         surname: '',
-        acc_num: '',
         tel_num: '',
       }
     },
@@ -121,7 +120,6 @@ import axios from 'axios';
         const formData = new FormData();
         formData.append("profileUserName", this.name)
         formData.append("profileUserSurname", this.surname)
-        formData.append("profileBankAccountNr", this.acc_num)
         formData.append("profileTelephoneNumber", this.tel_num)
         formData.append("profileAvatar", this.image)
         formData.append("profileNumberOfOpinions", '')
@@ -134,9 +132,12 @@ import axios from 'axios';
         };
         axios.put(`https://auctionportalbackend.herokuapp.com/api/profile/` + this.profileData[0].id + '/', formData, axiosConfig)
         .then(res => console.log(res.data))
+        .then(res =>{
+          this.getProfile()
+        })
         .catch(err => console.log(err))
 
-        location.reload();
+        
         },
 
 

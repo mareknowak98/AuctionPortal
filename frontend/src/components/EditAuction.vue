@@ -4,7 +4,6 @@
   <b-jumbotron class="jumbotron jumbotron-home">
 
   <div v-if="$getToken != null">
-    <h1 id="myh1">Edit auction : {{auction.title}}</h1>
 
     <notification v-if="$route.query.success === true" messageType="success">
      Report has been
@@ -17,7 +16,7 @@
       <b-container class="bv-example-row">
         <b-row class="justify-content-md-center">
           <b-col col lg="8">
-            <!-- {{auction}} -->
+            <h1 id="myh1">Edit auction : {{auction.title}}</h1>
 
             <b-form-group>
             <p>Choose image</p>
@@ -180,8 +179,8 @@ import axios from 'axios';
             }
         };
 
-        console.log("https://auctionportalbackend.herokuapp.com/api/auctioncreate/" + this.$route.params.auctionId)
-        axios.patch("https://auctionportalbackend.herokuapp.com/api/auctioncreate/" + this.$route.params.auctionId +'/', formData, axiosConfig)
+        console.log("https://auctionportalbackend.herokuapp.com/api/auctions/" + this.$route.params.auctionId)
+        axios.patch("https://auctionportalbackend.herokuapp.com/api/auctions/" + this.$route.params.auctionId +'/', formData, axiosConfig)
           .then(res => {
             console.log(res.status)
             alert ("Changes saved succesfully.");
@@ -189,13 +188,9 @@ import axios from 'axios';
             this.$sleep(500);
             this.$router.back();
           })
-
           .catch(err => {
             console.log(err)
             alert ("Error ocured.");
-
-            // commit('setMessage', {response: 'failure', type: type})
-
           });
 
 

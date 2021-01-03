@@ -50,7 +50,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'cloudinary_storage',
-    'django.contrib.staticfiles',  # required for serving swagger ui's css/js files
+    'django.contrib.staticfiles',
     'drf_yasg',
 ]
 
@@ -129,8 +129,6 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-# Internationalization
-# https://docs.djangoproject.com/en/3.1/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
 
@@ -143,20 +141,10 @@ USE_L10N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.1/howto/static-files/
-
 STATIC_URL = '/static/'
 
 CORS_ALLOW_HEADERS = ['*']
-#example ports
-# CORS_ALLOWED_ORIGINS = [
-#     "http://localhost:8080",
-#     "http://localhost:8081",
-#     "http://localhost:8082",
-#     "http://auctionportalfrontend.herokuapp.com:8080",
-#     "http://auctionportalbackend.herokuapp.com:8080",
-# ]
+
 CORS_ORIGIN_ALLOW_ALL = True # If this is used then `CORS_ORIGIN_WHITELIST` will not have any effect
 CORS_ALLOW_CREDENTIALS = True
 
@@ -171,8 +159,6 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.AllowAny',
-        # 'rest_framework_simplejwt.authentication.JWTAuthentication',
-
     ],
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
     'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
@@ -184,7 +170,6 @@ CLOUDINARY_STORAGE = {
              'API_SECRET': 'z80XPfXZyxm-thbxlkWxyfqMjpA'
             }
 
-# /'amqps://crsvjgtl:6QRXh2wX_Q4NeNjLf6LxV5edLPvehCJ4@llama.rmq.cloudamqp.com/crsvjgtl'
 CELERY_BROKER_URL = 'redis://:pe0ba07e23eb15971bcf01bb1dc052a3b6ca865ccdaf432d44ddb4119aed8108e@ec2-174-129-249-71.compute-1.amazonaws.com:9019'
 CELERY_RESULT_BACKEND = 'redis://:pe0ba07e23eb15971bcf01bb1dc052a3b6ca865ccdaf432d44ddb4119aed8108e@ec2-174-129-249-71.compute-1.amazonaws.com:9019'
 CELERY_REDIS_MAX_CONNECTIONS = 2
