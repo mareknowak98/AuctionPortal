@@ -79,16 +79,16 @@ import axios from 'axios';
 
     methods:{
       sendMessage(){
-          const formData = new FormData();
-          formData.append("to_user_id", this.userToId)
-          formData.append("text", this.messageText)
+          const axiosFormData = new FormData();
+          axiosFormData.append("to_user_id", this.userToId)
+          axiosFormData.append("text", this.messageText)
 
-          let axiosConfig = {
+          let axiosTokenConfig = {
               headers: {
                   'Authorization': 'Token ' + localStorage.getItem("user-token")
               }
           };
-          axios.post(`https://auctionportalbackend.herokuapp.com/api/messaging/send/`, formData, axiosConfig)
+          axios.post(`https://auctionportalbackend.herokuapp.com/api/messaging/send/`, axiosFormData, axiosTokenConfig)
               .then(res => res.data)
               .then(res => {
                 this.getMessages()

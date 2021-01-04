@@ -61,9 +61,38 @@
                 placeholder="Confirm your Password"
               ></b-form-input>
             </b-form-group>
-            <b-button block type="submit" v-on:click="registerUser()" variant="secondary">Submit</b-button>
-            </b-form>
+
+          <div>
+              <b-form-checkbox-group
+                v-model="form.confirm_rules"
+                :options="options"
+                :state="state"
+                name="checkbox-validation"
+                unchecked-value=false
+
+              ><b-link v-b-modal.RegisterModal>Link</b-link>
+              <b-form-invalid-feedback :state="state">Confirm to register</b-form-invalid-feedback>
+              <b-form-valid-feedback :state="state">Thank you</b-form-valid-feedback>
+              </b-form-checkbox-group>
+          </div>
+
+          <p></p>
+
+          <b-button block type="submit" v-on:click="registerUser()" variant="secondary">Submit</b-button>
+          </b-form>
+
     </div>
+    <b-modal id="RegisterModal" size="lg" title="Large Modal">
+      Here bedzie regulamin
+      <h2></h2>
+      <h2></h2>
+      <h2></h2>
+      <h2></h2>
+      <h2></h2>
+      <h2></h2>
+      <h2></h2>
+    </b-modal>
+
     </b-col>
     </b-row>
     </b-container>
@@ -90,8 +119,12 @@ import axios from 'axios';
 
     data() {
       return {
+        options: [
+          { text: 'I have read the terms and conditions of membership and agree with the content.', value: true},
+        ],
         form: {
           token: localStorage.getItem('user-token') || null,
+          confirm_rules: false,
           username: '',
           email: '',
           password1: '',
@@ -102,13 +135,26 @@ import axios from 'axios';
 
     mounted: function () {
       this.form.token = this.$getToken();
-      console.log("Token to " + this.form.token);
     },
 
+    computed: {
+      state() {
+        let res;
+        if (this.form.confirm_rules == true)
+          return true;
+        if (this.form.confirm_rules.length >= 1)
+          return true;
+        else
+          return false;
+      },
+    },
 
     methods:{
+      uncheck(){
+        console.log("es")
+        this.form.confirm_rules = !this.form.confirm_rules
+      },
       registerUser(){
-
         if (this.form.password1 == this.form.password2){
           axios.post('https://auctionportalbackend.herokuapp.com/api/users/',{
           username: this.form.username,

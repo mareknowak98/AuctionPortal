@@ -502,7 +502,7 @@ class OpinionViewSet(viewsets.ModelViewSet):
             return HttpResponseNotAllowed("1-5 rating scale")
         opinion_obj.opinionDescription = data.get('opinionDescription', opinion_obj.opinionDescription)
         opinion_obj.opinionStars = data.get('opinionStars', opinion_obj.opinionStars)
-        tz = pytz.timezone('Poland')  # -1 hour idk why
+        # tz = pytz.timezone('Poland')
         opinion_obj.opinionDate = datetime.now() + dt.timedelta(hours=1)
         opinion_obj.save()
         serializer = OpinionSerializer(opinion_obj, many=False)
