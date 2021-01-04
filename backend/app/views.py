@@ -35,13 +35,21 @@ class UserViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['get'])
     def getUsers(self, request, **kwargs):
-        users = User.objects.all()
-        serializer = UserStaffSerializer(users, many=True)
-        return Response(serializer.data)
+        user = self.request.user
+        if user.is_staff or user.is_superuser:
+            users = User.objects.all()
+            serializer = UserStaffSerializer(users, many=True)
+            return Response(serializer.data)
+        else:
+            return HttpResponseNotAllowed("Allowed only for staff members!")
 
-class CategoryViewSet(viewsets.ModelViewSet):
+
+
+class CategoryViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+    permission_classes = (IsAuthenticatedOrReadOnly,)
+
 
 
 class AuctionViewSet(viewsets.ModelViewSet):
@@ -129,7 +137,7 @@ class AuctionViewSet(viewsets.ModelViewSet):
 
     def list(self, request, *args, **kwargs):
         params = request.GET
-        print(list(params.values()))
+        # print(list(params.values()))
         auctions = Auction.objects.all().filter(auctionIsActive=True)
         title = self.request.query_params.get('title', None)
         desc = self.request.query_params.get('desc', None)  # auctionDescription
@@ -173,17 +181,12 @@ class AuctionViewSet(viewsets.ModelViewSet):
     def getMyAuctions(self, request, **kwargs):
         auctionIsActive = self.request.query_params.get('active', None)
         is_ended = self.request.query_params.get('ended', None)
-        print(self.request.query_params)
-        print(type(auctionIsActive))
-        print(is_ended)
         user = request.user
         if auctionIsActive == 'True':
             myAuctions = Auction.objects.filter(auctionUserSeller=user, auctionIsActive=auctionIsActive)
         if auctionIsActive == 'False' and is_ended == 'True':
-            print(1)
             myAuctions = Auction.objects.filter(auctionUserSeller=user, auctionIsActive=auctionIsActive, auctionUserHighestBid__isnull=False)
         if auctionIsActive == 'False' and is_ended == 'False':
-            print(2)
             myAuctions = Auction.objects.filter(auctionUserSeller=user, auctionIsActive=auctionIsActive, auctionUserHighestBid__isnull=True)
         if auctionIsActive == 'False' and is_ended == None:
             myAuctions = Auction.objects.filter(auctionUserSeller=user, auctionIsActive=auctionIsActive)
@@ -208,7 +211,6 @@ class AuctionViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['get'])
     def getMyWonAuctions(self, request, **kwargs):
         user = request.user
-        print(user)
         auctions_queryset = Auction.objects.filter(auctionUserHighestBid=user.id, auctionIsActive=False)
         serializer = AuctionSerializer(auctions_queryset, many=True)
         return Response(serializer.data)
@@ -218,7 +220,7 @@ class BidViewSet(viewsets.ModelViewSet):
     queryset = Bid.objects.all()
     serializer_class = BidSerializer
     authentication_classes = (TokenAuthentication,)
-    permission_classes = (permissions.IsAuthenticated,)
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
     def create(self, request, *args, **kwargs):
         data = request.data
@@ -251,7 +253,6 @@ class BidViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['get'])
     def getAuctionBids(self, request, **kwargs):
         auction_id = self.request.query_params.get('auction_id', None)
-        print(auction_id)
         bids = reversed(Bid.objects.filter(bidAuction=auction_id))
         serializer = BidCreateSerializer(bids, many=True)
         return Response(serializer.data)
@@ -634,8 +635,6 @@ class StaffViewSet(viewsets.ModelViewSet):
         user_request = request.user
         ban_unban = data.get('ban')
         ban = ban_unban == 'True'
-        print(type(ban))
-        print(ban)
         user_id = data.get('user_id')
         if user_request.is_staff or user_request.is_superuser:
             try:

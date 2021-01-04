@@ -89,7 +89,7 @@ import axios from 'axios';
               }
           };
           axios.post(`https://auctionportalbackend.herokuapp.com/api/messaging/send/`, formData, axiosConfig)
-              .then(res => console.log(res.data))
+              .then(res => res.data)
               .then(res => {
                 this.getMessages()
               })
@@ -107,9 +107,7 @@ import axios from 'axios';
           };
           axios.post(`https://auctionportalbackend.herokuapp.com/api/messages/getMessagesWithUser/`, formData, axiosConfig)
               .then(res => this.messages = res.data)
-              .then(res =>{
-                this.processMessages()
-              })
+              .then(res => this.processMessages())
               .catch(err => console.log(err))
       },
 

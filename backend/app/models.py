@@ -20,7 +20,7 @@ class Profile(models.Model):
     profileUserName = models.CharField(blank=True, null=True, max_length=50)
     profileUserSurname = models.CharField(blank=True, null=True, max_length=50)
     profileUser = models.OneToOneField(User, on_delete=models.CASCADE)
-    profileAvatar = models.ImageField(default='https://res.cloudinary.com/dm2tx6lhe/image/upload/v1608653722/media/images/default_d19dbf.jpg', upload_to='images/', blank=True, null=True)
+    profileAvatar = models.ImageField(default='https://res.cloudinary.com/dm2tx6lhe/image/upload/v1608653722/media/images/default_d19dbf', upload_to='images/', blank=True, null=True)
     profileTelephoneNumber = models.CharField(max_length=15, blank=True, null=True)
 
     def __str__(self):

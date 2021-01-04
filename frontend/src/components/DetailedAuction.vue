@@ -336,13 +336,8 @@ import Grid from 'gridjs-vue'
     },
 
     getBids(){
-      let axiosConfig = {
-          headers: {
-              'Authorization': 'Token ' + localStorage.getItem("user-token")
-          }
-      };
-      axios.get(`https://auctionportalbackend.herokuapp.com/api/bids/getAuctionBids/?auction_id=` + this.$route.params.auctionId, axiosConfig)
-        .then(res => this.bids = res.data)
+      axios.get(`https://auctionportalbackend.herokuapp.com/api/bids/getAuctionBids/?auction_id=` + this.$route.params.auctionId)
+        .then(res => console.log(this.bids = res.data))
         .then(res =>{
           this.rows = [];
           for (var i in this.bids){
