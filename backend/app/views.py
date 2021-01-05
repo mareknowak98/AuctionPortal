@@ -1,7 +1,5 @@
-import re
 import datetime as dt
 from datetime import datetime
-import pytz
 from django.contrib.auth.models import User, Group
 from django.http import HttpResponseNotAllowed, JsonResponse
 from rest_framework import viewsets, mixins
@@ -14,6 +12,7 @@ from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnl
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework import response, decorators, permissions, status
+from itertools import chain
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -35,13 +34,19 @@ class UserViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['get'])
     def getUsers(self, request, **kwargs):
-        users = User.objects.all()
-        serializer = UserStaffSerializer(users, many=True)
-        return Response(serializer.data)
+        user = self.request.user
+        if user.is_staff or user.is_superuser:
+            users = User.objects.all()
+            serializer = UserStaffSerializer(users, many=True)
+            return Response(serializer.data)
+        else:
+            return HttpResponseNotAllowed("Allowed only for staff members!")
 
-class CategoryViewSet(viewsets.ModelViewSet):
+
+class CategoryViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+    permission_classes = (IsAuthenticatedOrReadOnly,)
 
 
 class AuctionViewSet(viewsets.ModelViewSet):
@@ -50,11 +55,9 @@ class AuctionViewSet(viewsets.ModelViewSet):
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticatedOrReadOnly,)
 
-    # search_fields = ('auctionProductName', 'auctionDescription')
     def create(self, request, *args, **kwargs):
         user = request.user
         data = request.data
-        # print(data)
         flag1 = True if data['auctionIsNew'] == 'true' else False
         flag2 = True if data['auctionIsShippingAv'] == 'true' else False
         if data['auctionImage'] != 'null':
@@ -98,7 +101,8 @@ class AuctionViewSet(viewsets.ModelViewSet):
         flag2 = True if data.get('auctionIsShippingAv', auction_obj.auctionIsShippingAv) == 'true' else False
 
         auction_obj.auctionImage = data.get('auctionImage', auction_obj.auctionImage)
-        auction_obj.auctionCategory = Category.objects.get(id=data.get('auctionCategory', auction_obj.auctionCategory.id))
+        auction_obj.auctionCategory = Category.objects.get(
+            id=data.get('auctionCategory', auction_obj.auctionCategory.id))
         auction_obj.auctionProductName = data.get('auctionProductName', auction_obj.auctionProductName)
         auction_obj.auctionDescription = data.get('auctionDescription', auction_obj.auctionDescription)
         auction_obj.auctionIsNew = flag1
@@ -111,7 +115,8 @@ class AuctionViewSet(viewsets.ModelViewSet):
             return HttpResponseNotAllowed("You cannot change end date of auction")
         if data.get('auctionStartingPrice') or data.get('auctionMinimalPrice'):
             return HttpResponseNotAllowed("You cannot this")
-        if data.get('auctionHighestBid') or data.get('auctionUserHighestBid') or data.get('auctionDateStarted') or data.get(
+        if data.get('auctionHighestBid') or data.get('auctionUserHighestBid') or data.get(
+                'auctionDateStarted') or data.get(
                 'auctionUserSeller') or data.get('auctionIsActive'):
             return HttpResponseNotAllowed("You are not alleowed to change this params")
 
@@ -128,8 +133,6 @@ class AuctionViewSet(viewsets.ModelViewSet):
             return HttpResponseNotAllowed("You are not allowed to delete not your auctions")
 
     def list(self, request, *args, **kwargs):
-        params = request.GET
-        print(list(params.values()))
         auctions = Auction.objects.all().filter(auctionIsActive=True)
         title = self.request.query_params.get('title', None)
         desc = self.request.query_params.get('desc', None)  # auctionDescription
@@ -173,18 +176,15 @@ class AuctionViewSet(viewsets.ModelViewSet):
     def getMyAuctions(self, request, **kwargs):
         auctionIsActive = self.request.query_params.get('active', None)
         is_ended = self.request.query_params.get('ended', None)
-        print(self.request.query_params)
-        print(type(auctionIsActive))
-        print(is_ended)
         user = request.user
         if auctionIsActive == 'True':
             myAuctions = Auction.objects.filter(auctionUserSeller=user, auctionIsActive=auctionIsActive)
         if auctionIsActive == 'False' and is_ended == 'True':
-            print(1)
-            myAuctions = Auction.objects.filter(auctionUserSeller=user, auctionIsActive=auctionIsActive, auctionUserHighestBid__isnull=False)
+            myAuctions = Auction.objects.filter(auctionUserSeller=user, auctionIsActive=auctionIsActive,
+                                                auctionUserHighestBid__isnull=False)
         if auctionIsActive == 'False' and is_ended == 'False':
-            print(2)
-            myAuctions = Auction.objects.filter(auctionUserSeller=user, auctionIsActive=auctionIsActive, auctionUserHighestBid__isnull=True)
+            myAuctions = Auction.objects.filter(auctionUserSeller=user, auctionIsActive=auctionIsActive,
+                                                auctionUserHighestBid__isnull=True)
         if auctionIsActive == 'False' and is_ended == None:
             myAuctions = Auction.objects.filter(auctionUserSeller=user, auctionIsActive=auctionIsActive)
 
@@ -208,7 +208,6 @@ class AuctionViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['get'])
     def getMyWonAuctions(self, request, **kwargs):
         user = request.user
-        print(user)
         auctions_queryset = Auction.objects.filter(auctionUserHighestBid=user.id, auctionIsActive=False)
         serializer = AuctionSerializer(auctions_queryset, many=True)
         return Response(serializer.data)
@@ -218,7 +217,7 @@ class BidViewSet(viewsets.ModelViewSet):
     queryset = Bid.objects.all()
     serializer_class = BidSerializer
     authentication_classes = (TokenAuthentication,)
-    permission_classes = (permissions.IsAuthenticated,)
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
     def create(self, request, *args, **kwargs):
         data = request.data
@@ -251,7 +250,6 @@ class BidViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['get'])
     def getAuctionBids(self, request, **kwargs):
         auction_id = self.request.query_params.get('auction_id', None)
-        print(auction_id)
         bids = reversed(Bid.objects.filter(bidAuction=auction_id))
         serializer = BidCreateSerializer(bids, many=True)
         return Response(serializer.data)
@@ -294,7 +292,6 @@ class ProfileViewSet(viewsets.ModelViewSet):
         if not len(data['profileUserName']) > 0 and data['profileUserName'].isalpha() or not len(
                 data['profileUserSurname']) > 0 and data['profileUserSurname'].isalpha():
             return HttpResponseNotAllowed("Name and surname have to be letter strings")
-
 
         if len(data['profileUserName']) > 0:
             profile.profileUserName = data['profileUserName']
@@ -431,7 +428,6 @@ def get_user_profile_by_auction_id(request):
 
 
 # return all users with messages with request user
-from itertools import chain
 
 @decorators.api_view(["GET"])
 def get_messages_user_list(request):
@@ -441,7 +437,7 @@ def get_messages_user_list(request):
                                                                             'usermessToUser__username').distinct()
         print(messages)
         messages2 = UserMessage.objects.filter(usermessToUser=user).values('usermessFromUser_id',
-                                                                            'usermessFromUser__username').distinct()
+                                                                           'usermessFromUser__username').distinct()
         print(messages2)
         # messages.union(messages2)
         # print(messages)
@@ -459,6 +455,7 @@ class MessageViewset(viewsets.ModelViewSet):
     userToID - user to check messages with
     endpoint: http://127.0.0.1:8000/api/messages/getMessagesWithUser/
     '''
+
     @action(detail=False, methods=['post'])
     def getMessagesWithUser(self, request, **kwargs):
         user = request.user
@@ -501,7 +498,7 @@ class OpinionViewSet(viewsets.ModelViewSet):
             return HttpResponseNotAllowed("1-5 rating scale")
         opinion_obj.opinionDescription = data.get('opinionDescription', opinion_obj.opinionDescription)
         opinion_obj.opinionStars = data.get('opinionStars', opinion_obj.opinionStars)
-        tz = pytz.timezone('Poland')  # -1 hour idk why
+        # tz = pytz.timezone('Poland')
         opinion_obj.opinionDate = datetime.now() + dt.timedelta(hours=1)
         opinion_obj.save()
         serializer = OpinionSerializer(opinion_obj, many=False)
@@ -634,8 +631,6 @@ class StaffViewSet(viewsets.ModelViewSet):
         user_request = request.user
         ban_unban = data.get('ban')
         ban = ban_unban == 'True'
-        print(type(ban))
-        print(ban)
         user_id = data.get('user_id')
         if user_request.is_staff or user_request.is_superuser:
             try:

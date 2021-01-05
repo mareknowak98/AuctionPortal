@@ -121,10 +121,10 @@ const routes = [{
         component: StaffPanel
     },
 
-    // {
-    //     path: '/*',
-    //     redirect: { name: 'home' }
-    // }
+    {
+        path: '/*',
+        redirect: { name: 'home' }
+    }
 
 ]
 
