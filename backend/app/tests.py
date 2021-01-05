@@ -21,7 +21,6 @@ class RegistrationTestCase(APITestCase):
         response = self.client.post("/api/users/", data)
         data = {"username": "testCaseUser2", "password": "testingStrongPassword"}
         response = self.client.post("/api-token-auth/", data)
-        print(response.status_code)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
 
@@ -118,7 +117,6 @@ class ProfileViewTestCase(APITestCase):
                 "profileTelephoneNumber": "123456789", "profileAvatar": "pathtoimg"}
         response = self.client.put(reverse("profile-detail", kwargs={"pk": self.user.id}), data)
         response = self.client.get(reverse("profileUser-detail", kwargs={"pk": 1}))
-        print(response.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['profileAvatar'],
                          "https://res.cloudinary.com/dm2tx6lhe/image/upload/v1/media/https://res.cloudinary.com/dm2tx6lhe/image/upload/v1608653722/media/images/default_d19dbf")
@@ -128,7 +126,6 @@ class ProfileViewTestCase(APITestCase):
                 "profileTelephoneNumber": "123456789", "profileAvatar": "pathtoimg"}
         response = self.client.put(reverse("profile-detail", kwargs={"pk": self.user.id}), data)
         response = self.client.get(reverse("profileUser-getMyProfile"))
-        print(response.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['profileAvatar'],
                          "https://res.cloudinary.com/dm2tx6lhe/image/upload/v1/media/https://res.cloudinary.com/dm2tx6lhe/image/upload/v1608653722/media/images/default_d19dbf")
@@ -252,7 +249,7 @@ class BidViewTestCase(APITestCase):
     def api_authentiaction(self):
         self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token.key)
 
-    def test_make(self):
+    def test_post_bid_ok(self):
         data = {"bidAuction": 1, "bidPrice": 2000}
         response = self.client.post(reverse("bids-list"), data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)

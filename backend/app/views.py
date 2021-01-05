@@ -42,6 +42,19 @@ class UserViewSet(viewsets.ModelViewSet):
         else:
             return HttpResponseNotAllowed("Allowed only for staff members!")
 
+    @action(detail=False, methods=['get'])
+    def getPrivileges(self, request, **kwargs):
+        user = self.request.user
+        result = {}
+        if user.is_staff:
+            result["is_staff"] = True
+        else:
+            result["is_staff"] = False
+        if user.is_superuser:
+            result["is_superuser"] = True
+        else:
+            result["is_superuser"] = False
+        return Response(result)
 
 class CategoryViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet):
     queryset = Category.objects.all()

@@ -12,7 +12,7 @@
 
 
         <b-form-group>
-        <p>Choose image</p>
+        <p>Choose image:</p>
         <b-form-file
           v-model="auctionImage"
 
@@ -43,7 +43,7 @@
         </b-form-group>
 
 
-        <p>Auction Description</p>
+        <p>Auction Description:</p>
         <div id="textinput">
           <vue-editor v-model="auctionDescription" :editorToolbar="customToolbar"></vue-editor>
         </div>
@@ -102,14 +102,14 @@
         trim
         ></b-form-input>
         <b-form-invalid-feedback id="input-live-feedback">
-        Enter a numeric value
+        Enter a numeric value.
         </b-form-invalid-feedback>
     </div>
     </b-col>
   </b-row>
   <div>
     <p>   </p>
-    <b-form-group label="Is shipping available">
+    <b-form-group label="Is shipping available:">
       <b-form-radio-group v-model="auctionIsShippingAv " :options="options2" :state="state2" name="radio-validation">
         <b-form-invalid-feedback :state="state2">Please select one</b-form-invalid-feedback>
         <b-form-valid-feedback :state="state2"></b-form-valid-feedback>
