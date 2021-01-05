@@ -11,11 +11,9 @@ from .models import Auction, Category, Bid, Profile, UserMessage, Message, UserO
 
 
 class RegistrationTestCase(APITestCase):
-
     def test_register(self):
         data = {"username": "testCaseUser", "email": "testingmail@gmail.com", "password": "testingStrongPassword"}
         response = self.client.post("/api/users/", data)
-        print(response.status_code)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
     def test_login(self):
@@ -25,7 +23,6 @@ class RegistrationTestCase(APITestCase):
         response = self.client.post("/api-token-auth/", data)
         print(response.status_code)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-
 
 
 class UserViewTestCase(APITestCase):
@@ -50,16 +47,17 @@ class UserViewTestCase(APITestCase):
         self.assertEqual(tmpuser, self.user)
 
     def test_getUsers(self):
-        self.user.is_staff=True
-        self.user.is_superuser=True
+        self.user.is_staff = True
+        self.user.is_superuser = True
         self.user.save()
         response = self.client.get(reverse("users-getUsers"))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.user.is_staff=False
-        self.user.is_superuser=False
+        self.user.is_staff = False
+        self.user.is_superuser = False
         self.user.save()
         response = self.client.get(reverse("users-getUsers"))
         self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+
 
 class CategoriesViewTestCase(APITestCase):
     def setUp(self):
@@ -74,6 +72,21 @@ class CategoriesViewTestCase(APITestCase):
         response = self.client.post(reverse("categories-list"))
         self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
 
+    def test_get(self):
+        category = Category(**{"category_name": "Category1"})
+        category.save()
+        category = Category(**{"category_name": "Category2"})
+        category.save()
+        category = Category(**{"category_name": "Category3"})
+        category.save()
+        response = self.client.get(reverse("categories-list"))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(dict(response.data[0])["category_name"], "Category1")
+        self.assertEqual(dict(response.data[1])["category_name"], "Category2")
+        self.assertEqual(dict(response.data[2])["category_name"], "Category3")
+
+
+
 class ProfileViewTestCase(APITestCase):
     def setUp(self):
         self.user = User.objects.create_user(username="auctionTestUser", password="testingStrongPassword")
@@ -84,14 +97,15 @@ class ProfileViewTestCase(APITestCase):
         self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token.key)
 
     def test_update(self):
-        data = {"profileUserName": "TestName", "profileUserSurname": "TestSurname", "profileTelephoneNumber": "123456789", "profileAvatar": "pathtoimg"}
-        response = self.client.put(reverse("profile-detail", kwargs={"pk" : self.user.id}), data)
+        data = {"profileUserName": "TestName", "profileUserSurname": "TestSurname",
+                "profileTelephoneNumber": "123456789", "profileAvatar": "pathtoimg"}
+        response = self.client.put(reverse("profile-detail", kwargs={"pk": self.user.id}), data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.client.force_authenticate(user=None)
-        data = {"profileUserName": "TestName", "profileUserSurname": "TestSurname", "profileTelephoneNumber": "123456789", "profileAvatar": "pathtoimg"}
-        response = self.client.put(reverse("profile-detail", kwargs={"pk" : 1}), data)
+        data = {"profileUserName": "TestName", "profileUserSurname": "TestSurname",
+                "profileTelephoneNumber": "123456789", "profileAvatar": "pathtoimg"}
+        response = self.client.put(reverse("profile-detail", kwargs={"pk": 1}), data)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
-
 
     def test_getUserIdByProfile(self):
         data = {"profile_id": 1}
@@ -103,10 +117,11 @@ class ProfileViewTestCase(APITestCase):
         data = {"profileUserName": "TestName", "profileUserSurname": "TestSurname",
                 "profileTelephoneNumber": "123456789", "profileAvatar": "pathtoimg"}
         response = self.client.put(reverse("profile-detail", kwargs={"pk": self.user.id}), data)
-        response = self.client.get(reverse("profileUser-detail", kwargs={"pk" : 1}))
+        response = self.client.get(reverse("profileUser-detail", kwargs={"pk": 1}))
         print(response.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data['profileAvatar'], "https://res.cloudinary.com/dm2tx6lhe/image/upload/v1/media/https://res.cloudinary.com/dm2tx6lhe/image/upload/v1608653722/media/images/default_d19dbf")
+        self.assertEqual(response.data['profileAvatar'],
+                         "https://res.cloudinary.com/dm2tx6lhe/image/upload/v1/media/https://res.cloudinary.com/dm2tx6lhe/image/upload/v1608653722/media/images/default_d19dbf")
 
     def test_getMyProfile(self):
         data = {"profileUserName": "TestName", "profileUserSurname": "TestSurname",
@@ -122,11 +137,11 @@ class ProfileViewTestCase(APITestCase):
         data = {"profileUserName": "TestName", "profileUserSurname": "TestSurname",
                 "profileTelephoneNumber": "123456789", "profileAvatar": "pathtoimg"}
         response = self.client.put(reverse("profile-detail", kwargs={"pk": self.user.id}), data)
-        data = {"id" : self.user.id}
+        data = {"id": self.user.id}
         response = self.client.get(reverse("profileUser-getProfileByUserId"), data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['profileAvatar'],
-                             "https://res.cloudinary.com/dm2tx6lhe/image/upload/v1/media/https://res.cloudinary.com/dm2tx6lhe/image/upload/v1608653722/media/images/default_d19dbf")
+                         "https://res.cloudinary.com/dm2tx6lhe/image/upload/v1/media/https://res.cloudinary.com/dm2tx6lhe/image/upload/v1608653722/media/images/default_d19dbf")
 
 
 class AuctionViewTestCase(APITestCase):
@@ -140,7 +155,7 @@ class AuctionViewTestCase(APITestCase):
         self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token.key)
 
     def test_create(self):
-        category = Category(**{"category_name": "sth"})
+        category = Category(**{"category_name": "test Category"})
         category.save()
         data = {
             "auctionUserSeller": self.user,
@@ -173,12 +188,13 @@ class AuctionViewTestCase(APITestCase):
             "auctionProductName": "TestProd2",
             "auctionDescription": "TestDescription2",
             "auctionIsNew": "false",
-            "auctionShippingCost" : 100,
+            "auctionShippingCost": 100,
             "auctionIsShippingAv": "true",
         }
         response = self.client.patch(reverse("auctions-detail", kwargs={"pk": 1}), data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data["auctionImage"], 'https://res.cloudinary.com/dm2tx6lhe/image/upload/v1/media/newimageurl')
+        self.assertEqual(response.data["auctionImage"],
+                         'https://res.cloudinary.com/dm2tx6lhe/image/upload/v1/media/newimageurl')
         self.assertEqual(response.data["auctionProductName"], "TestProd2")
         self.assertEqual(response.data["auctionDescription"], "TestDescription2")
         self.assertEqual(response.data["auctionIsNew"], False)
@@ -200,7 +216,8 @@ class AuctionViewTestCase(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         response = self.client.get(reverse("auctions-list"))
         nr_auctions_after = len(response.data)
-        self.assertEqual(nr_auctions_before, nr_auctions_after+1)
+        self.assertEqual(nr_auctions_before, nr_auctions_after + 1)
+
 
 class BidViewTestCase(APITestCase):
     def setUp(self):
@@ -232,12 +249,11 @@ class BidViewTestCase(APITestCase):
         self.token = Token.objects.get(user=self.user)
         self.api_authentiaction()
 
-
     def api_authentiaction(self):
         self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token.key)
 
     def test_make(self):
-        data = {"bidAuction": 1, "bidPrice" : 2000}
+        data = {"bidAuction": 1, "bidPrice": 2000}
         response = self.client.post(reverse("bids-list"), data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -259,12 +275,12 @@ class MessageViewTestCase(APITestCase):
         self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token.key)
 
     def test_send_message(self):
-        data = {"to_user_id" : 2, "text": "Testing Message"}
+        data = {"to_user_id": 2, "text": "Testing Message"}
         response = self.client.post(reverse("send"), data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
     def test_get_users_with_messages(self):
-        data = {"to_user_id" : 2, "text": "Testing Message"}
+        data = {"to_user_id": 2, "text": "Testing Message"}
         self.client.post(reverse("send"), data)
         self.token = Token.objects.get(user=self.user2)
         self.api_authentiaction()
@@ -274,7 +290,7 @@ class MessageViewTestCase(APITestCase):
         self.assertEqual(response.data[0]["usermessFromUser__username"], "auctionTestUser")
 
     def test_get_messages_with_user(self):
-        data = {"to_user_id" : 2, "text": "Testing Message"}
+        data = {"to_user_id": 2, "text": "Testing Message"}
         self.client.post(reverse("send"), data)
         self.token = Token.objects.get(user=self.user2)
         self.api_authentiaction()
@@ -293,11 +309,11 @@ class MessageViewTestCase(APITestCase):
         self.assertEqual(response["id"], 1)
         self.assertEqual(response["messageContent"], "Testing Message")
 
+
 class OpinionViewTestCase(APITestCase):
     def setUp(self):
         self.user = User.objects.create_user(username="auctionTestUser", password="testingStrongPassword")
         self.user2 = User.objects.create_user(username="auctionTestUser2", password="testingStrongPassword")
-        # user2.save()
         self.user2.save()
         self.token = Token.objects.get(user=self.user)
         self.api_authentiaction()
@@ -321,7 +337,7 @@ class OpinionViewTestCase(APITestCase):
         opinion_user_about = dict(opinion["opinionUserAuthor"])
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(opinion["opinionUserAbout"], 2)
-        self.assertEqual(opinion["opinionDescription"],  'Test description')
+        self.assertEqual(opinion["opinionDescription"], 'Test description')
         self.assertEqual(opinion["opinionStars"], 5)
         self.assertEqual(opinion_user_about["id"], 1)
         self.assertEqual(opinion_user_about["username"], 'auctionTestUser')
@@ -335,5 +351,3 @@ class OpinionViewTestCase(APITestCase):
         response = self.client.get(reverse("opinion-getUserAvgRating"), data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data, 4.5)
-
-
