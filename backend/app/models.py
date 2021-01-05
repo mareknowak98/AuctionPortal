@@ -77,7 +77,7 @@ class Auction(models.Model):
         if self.pk is None:
             self.auctionHighestBid = self.auctionStartingPrice
             create_task=True
-            if self.auctionIsShippingAv is None:
+            if self.auctionShippingCost is None and self.auctionIsShippingAv is True:
                 self.auctionShippingCost = 20.0
 
         super(Auction, self).save(*args, **kwargs)

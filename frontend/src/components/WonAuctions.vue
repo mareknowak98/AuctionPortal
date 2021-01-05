@@ -5,7 +5,6 @@
   <b-jumbotron class="jumbotron jumbotron-home">
     <!-- {{this.my_auctions}} -->
     <b-list-group v-for="auction in my_won_auctions" :key="auction.id">
-      {{auction}}
 
       <b-container class="bv-example-row bv-example-row-flex-cols">
 

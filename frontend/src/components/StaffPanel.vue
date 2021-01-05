@@ -329,7 +329,8 @@
 
                 <template #cell(actions)="row">
                   <b-row>
-                  <div v-if="row.item.is_superuser == true || row.item.is_active == false">
+                   <div v-if="is_superuser == true">
+                  <div v-if="row.item.is_superuser == true || row.item.is_active == false || row.item.is_staff == true">
                     <b-button size="sm" disabled @click="info1_staff(row.item, row.index, $event.target)" class="mr-1">
                       Add to staff
                     </b-button>
@@ -349,6 +350,8 @@
                       Remove from staff
                     </b-button>
                   </div>
+                  </div>
+
                 </b-row>
                 </template>
               </b-table>
@@ -399,7 +402,8 @@ import axios from 'axios';
         reports: [],
         users: [],
         users_table: [],
-
+        is_staff: null,
+        is_superuser: null,
         fields: [
           { key: 'id', label: 'User id', sortable: true, sortDirection: 'desc' },
           { key: 'username', label: 'User username', sortable: true, class: 'desc' },
@@ -483,7 +487,7 @@ import axios from 'axios';
     },
     mounted: function () {
       this.getReports()
-
+      this.getPrivileges()
     },
     methods:{
       inforemoveAuction(item, index, button) {
@@ -559,6 +563,21 @@ import axios from 'axios';
           this.totalRowsAuctions = this.reports.length
         })
         .catch(err => console.log(err))
+      },
+
+      getPrivileges(){
+        let axiosConfig = {
+          headers: {
+            'Authorization': 'Token ' + localStorage.getItem("user-token")
+          }
+        };
+        let data;
+        axios.get(`https://auctionportalbackend.herokuapp.com/api/users/getPrivileges`, axiosConfig)
+          .then(res => {
+            this.is_staff = res.data["is_staff"]
+            this.is_superuser = res.data["is_superuser"]
+            })
+          .catch(err => console.log(err))
       },
 
       getUsers(){
