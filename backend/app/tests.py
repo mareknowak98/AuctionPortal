@@ -119,7 +119,7 @@ class ProfileViewTestCase(APITestCase):
         response = self.client.get(reverse("profileUser-detail", kwargs={"pk": 1}))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['profileAvatar'],
-                         "https://res.cloudinary.com/dm2tx6lhe/image/upload/v1/media/https://res.cloudinary.com/dm2tx6lhe/image/upload/v1608653722/media/images/default_d19dbf")
+                         "https://res.cloudinary.com/dm2tx6lhe/image/upload/v1/media/images/default_d19dbf")
 
     def test_getMyProfile(self):
         data = {"profileUserName": "TestName", "profileUserSurname": "TestSurname",
@@ -128,7 +128,7 @@ class ProfileViewTestCase(APITestCase):
         response = self.client.get(reverse("profileUser-getMyProfile"))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['profileAvatar'],
-                         "https://res.cloudinary.com/dm2tx6lhe/image/upload/v1/media/https://res.cloudinary.com/dm2tx6lhe/image/upload/v1608653722/media/images/default_d19dbf")
+                         "https://res.cloudinary.com/dm2tx6lhe/image/upload/v1/media/images/default_d19dbf")
 
     def test_getProfileByUserId(self):
         data = {"profileUserName": "TestName", "profileUserSurname": "TestSurname",
@@ -138,7 +138,7 @@ class ProfileViewTestCase(APITestCase):
         response = self.client.get(reverse("profileUser-getProfileByUserId"), data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['profileAvatar'],
-                         "https://res.cloudinary.com/dm2tx6lhe/image/upload/v1/media/https://res.cloudinary.com/dm2tx6lhe/image/upload/v1608653722/media/images/default_d19dbf")
+                         "https://res.cloudinary.com/dm2tx6lhe/image/upload/v1/media/images/default_d19dbf")
 
 
 class AuctionViewTestCase(APITestCase):
