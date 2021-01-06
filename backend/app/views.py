@@ -281,10 +281,6 @@ class ProfileViewSet(viewsets.ModelViewSet):
     authentication_classes = (TokenAuthentication,)
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
-    # def retrieve(self, request, *args, **kwargs):
-    #     data = request.data
-    #     print(data)
-
     def get_queryset(self):
         if self.request is None:
             return Profile.objects.none()
