@@ -90,11 +90,8 @@ import axios from 'axios';
           };
           axios.post(`https://auctionportalbackend.herokuapp.com/api/messaging/send/`, axiosFormData, axiosTokenConfig)
               .then(res => res.data)
-              .then(res => {
-                this.getMessages()
-              })
+              .then(res => this.getMessages())
               .catch(err => console.log(err))
-          console.log("test" + this.profileId)
       },
       getMessages(){
           const formData = new FormData();
