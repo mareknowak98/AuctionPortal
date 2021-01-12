@@ -76,6 +76,7 @@
                   id="rating-inline"
                   inline value="4"
                   variant="warning"
+                  readonly
                   v-model="opinion.opinionStars"
                   ></b-form-rating>
 

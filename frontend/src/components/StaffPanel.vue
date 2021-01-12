@@ -329,29 +329,34 @@
 
                 <template #cell(actions)="row">
                   <b-row>
-                   <div v-if="is_superuser == true">
-                  <div v-if="row.item.is_superuser == true || row.item.is_active == false || row.item.is_staff == true">
-                    <b-button size="sm" disabled @click="info1_staff(row.item, row.index, $event.target)" class="mr-1">
-                      Add to staff
-                    </b-button>
+                    <table><tr>
+                  <div v-if="is_superuser == true">
+                    <td>
+                    <div v-if="row.item.is_superuser == true || row.item.is_active == false || row.item.is_staff == true">
+                      <b-button size="sm" disabled @click="info1_staff(row.item, row.index, $event.target)" class="mr-1">
+                        Add to staff
+                      </b-button>
+                    </div>
+                    <div v-else>
+                      <b-button size="sm" @click="info1_staff(row.item, row.index, $event.target)" class="mr-1">
+                        Add to staff
+                      </b-button>
+                    </div>
+                    </td>
+                    <td>
+                    <div v-if="row.item.is_superuser == true || row.item.is_staff == false">
+                      <b-button size="sm" disabled @click="info2_staff(row.item, row.index, $event.target)" class="mr-1">
+                        Remove from staff
+                      </b-button>
+                    </div>
+                    <div v-else>
+                      <b-button size="sm" @click="info2_staff(row.item, row.index, $event.target)" class="mr-1">
+                        Remove from staff
+                      </b-button>
+                    </div>
+                    </td>
                   </div>
-                  <div v-else>
-                    <b-button size="sm" @click="info1_staff(row.item, row.index, $event.target)" class="mr-1">
-                      Add to staff
-                    </b-button>
-                  </div>
-                  <div v-if="row.item.is_superuser == true">
-                    <b-button size="sm" disabled @click="info2_staff(row.item, row.index, $event.target)" class="mr-1">
-                      Remove from staff
-                    </b-button>
-                  </div>
-                  <div v-else>
-                    <b-button size="sm" @click="info2_staff(row.item, row.index, $event.target)" class="mr-1">
-                      Remove from staff
-                    </b-button>
-                  </div>
-                  </div>
-
+                  </tr></table>
                 </b-row>
                 </template>
               </b-table>
@@ -435,7 +440,7 @@ import axios from 'axios';
             sortByFormatted: true,
             filterByFormatted: true
           },
-        { key: 'actions', label: 'Actions' }
+        { key: 'actions', label: 'Actions' , thStyle: {width: '350px'}}
         ],
 
         fields_auctions: [
@@ -443,7 +448,7 @@ import axios from 'axios';
           { key: 'reportAuction.auctionProductName', label: 'Auction name', sortable: true, class: 'desc' },
           { key: 'reportAuction.auctionDescription', label: 'Auction description', formatter: 'shortenAuction', sortable: true, sortDirection: 'desc', thStyle: {width: '350px'}},
           { key: 'reportUser.username', label: 'Report by:', sortable: true, sortDirection: 'desc' },
-          { key: 'reportContent', label: 'Report:', sortable: true, formatter: 'shortenAuction', sortDirection: 'desc',  thStyle: {width: '350px'}},
+          { key: 'reportContent', label: 'Report:', sortable: true, formatter: 'shortenAuction', sortDirection: 'desc',  thStyle: {width: '250px'}},
           { key: 'actions', label: 'Actions' }
 
         ],
